@@ -1,4 +1,4 @@
-#include "GameScreenState.hpp"
+#include "gamescreenstate.hpp"
 #include <algorithm>
 #include <SFML/Graphics.hpp>
 

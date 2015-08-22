@@ -1,5 +1,5 @@
-#include "ScreenStack.hpp"
-#include "ScreenState.hpp"
+#include "screenstack.hpp"
+#include "screenstate.hpp"
 
 
 void ScreenStack::clearStack()

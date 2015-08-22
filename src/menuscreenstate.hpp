@@ -1,9 +1,11 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include <vector>
 
-#include "ScreenState.hpp"
+#include "screenstate.hpp"
 
 class MenuScreenState : public ScreenState
 {

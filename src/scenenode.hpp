@@ -1,5 +1,5 @@
-#ifndef SCENENODE_HPP_INCLUDED
-#define SCENENODE_HPP_INCLUDED
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
@@ -34,5 +34,3 @@ class Scene : public sf::Drawable
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
         SceneNode* m_sceneNode;
 };
-
-#endif // SCENENODE_HPP_INCLUDED

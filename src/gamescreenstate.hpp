@@ -1,5 +1,7 @@
-#include "ScreenState.hpp"
-#include "Level.hpp"
+#pragma once
+
+#include "screenstate.hpp"
+#include "level.hpp"
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
