@@ -1,4 +1,4 @@
-#include "level.hpp"
+#include "niveau.hpp"
 
 Level::Level (int id, sf::Vector2f cp, std::vector<Floor> floors) : m_id_floor(id), m_checkPoint(cp), m_floors(floors) {};
 
