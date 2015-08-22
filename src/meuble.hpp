@@ -5,15 +5,18 @@
 //  Created by Thibault Dardinier on 22/08/2015.
 //  Copyright 2015 Thibault Dardinier. All rights reserved.
 //
+//TODO Utiliser SceneNode
+//TODO Utiliser SceneNode
+//TODO Utiliser SceneNode
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include "monster.hpp"
-#include "spritescenenode.hpp"
+
+class Monster;
 
 /* classe pour les lampes. */
 
-class Lampe: public SpriteSceneNode
+class Lampe
 {
 public:
     bool isLighting(sf::Vector2f point) const;
@@ -31,57 +34,71 @@ private:
 
 enum Action {CACHER, ALLUMER, BRUITER, FINIR};
 
-class Meuble: public SpriteSceneNode
+class Meuble
 {
 public:
+    inline Meuble(sf::Sprite const& sprite, sf::FloatRect const& hitbox) :
+        m_sprite(sprite), m_hitBox(hitbox) {}
     virtual bool canInteract(sf::Vector2f point) const;
-    virtual Action interact(Monster &me);
     virtual ~Meuble();
-//private:
+    virtual Action interact(Monster &me);
+private:
     sf::Sprite m_sprite;
-    sf::FloatRect m_hitBox;
+    sf::FloatRect const m_hitBox;
 };
 
 class Lit: public Meuble
 {
 public:
-    virtual Action interact(Monster &me);
+    inline Lit(sf::Sprite const& sprite, sf::FloatRect const& hitbox) :
+        Meuble(sprite, hitbox), m_used(false) {}
     virtual ~Lit();
+    virtual Action interact(Monster &me);
+    bool m_used;
 };
 
 class Cachette: public Meuble
 {
 public:
-    virtual Action interact(Monster &me);
+    inline Cachette(sf::Sprite const& sprite, sf::FloatRect const& hitbox) :
+        Meuble(sprite, hitbox), m_used(false) {}
     virtual ~Cachette();
+    virtual Action interact(Monster &me);
     bool m_used;
 };
 
 class Tapis: public Meuble
 {
 public:
+    inline Tapis(sf::Sprite const& sprite, sf::FloatRect const& hitbox,
+            sf::FloatRect const& inhitbox) :
+        Meuble(sprite, hitbox), m_inHitBox(inhitbox), m_used(false) {}
     virtual bool canInteract(sf::Vector2f point) const;
-    virtual Action interact(Monster &me);
     virtual ~Tapis();
-//private:
-    sf::FloatRect m_intHitBox;
+    virtual Action interact(Monster &me);
+private:
+    sf::FloatRect const m_inHitBox;
     bool m_used;
 };
 
 class MeubleBruit: public Meuble
 {
 public:
-    virtual Action interact(Monster &me);
+    inline MeubleBruit(sf::Sprite const& sprite, sf::FloatRect const& hitbox, sf::Time time) :
+        Meuble(sprite, hitbox), m_temps(time) {}
     virtual ~MeubleBruit();
-//private:
+    virtual Action interact(Monster &me);
+private:
     sf::Time m_temps;
 };
 
 class Interrupteur: public Meuble
 {
 public:
-    virtual Action interact(Monster &me);
+    inline Interrupteur(sf::Sprite const& sprite, sf::FloatRect const& hitbox, int id) :
+        Meuble(sprite, hitbox), m_id_light(id) {}
     virtual ~Interrupteur();
-//private:
-    Lampe *m_light;
+    virtual Action interact(Monster &me);
+private:
+    int m_id_light;
 };

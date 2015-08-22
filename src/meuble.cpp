@@ -30,7 +30,9 @@ bool Meuble::canInteract(sf::Vector2f point) const
 }
 
 Action Meuble::interact(Monster &me)
-{}
+{
+    return BRUITER;// TODO À changer
+}
 
 Meuble::~Meuble()
 {}
@@ -52,16 +54,7 @@ Lit::~Lit()
 
 Action Cachette::interact(Monster &me)
 {
-    if (m_used)
-    {
-        m_used = false;
-        me.m_is_cache = false;
-    }
-    else
-    {
-        m_used = true;
-        me.m_is_cache = true;
-    }
+    // TODO
     return CACHER;
 }
 
@@ -103,6 +96,7 @@ MeubleBruit::~MeubleBruit()
 Action Interrupteur::interact(Monster &me)
 {
     m_light->switcher();
+    return BRUITER; // TODO À changer
 }
 
 Interrupteur::~Interrupteur()
