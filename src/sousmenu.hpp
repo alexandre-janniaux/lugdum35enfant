@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "menuelements.hpp"
+#include "resourcemanager.hpp"
 
 class SousMenu
 {
@@ -14,4 +15,6 @@ private:
     int m_menuSize;
     int m_cursor;
     std::vector< MenuElement* > m_elements;
+    
+    
 };

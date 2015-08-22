@@ -27,11 +27,3 @@ class SceneNode: public sf::Transformable, public sf::Drawable
         bool m_computed;
         int m_layer;
 };
-
-/*
-class Scene : public sf::Drawable
-{
-    private:
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-        SceneNode* m_sceneNode;
-};*/
