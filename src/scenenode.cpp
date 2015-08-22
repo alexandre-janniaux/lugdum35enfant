@@ -1,5 +1,15 @@
 #include "scenenode.hpp"
 
+SceneNode::SceneNode(int layer)
+: m_children()
+, m_parent()
+, m_absoluteTransform()
+, m_computed(false)
+, m_layer(0)
+{
+
+}
+
 void SceneNode::attachParent(SceneNode* ptrParent)
 {
     m_parent = ptrParent;
@@ -34,13 +44,4 @@ void SceneNode::compute(std::multimap<int,SceneNode*>& renderQueue,bool force)
 
 void SceneNode::draw(sf::RenderTarget& target,sf::RenderStates states) const
 {
-}
-
-void Scene::draw(sf::RenderTarget& target,sf::RenderStates states) const
-{
-    std::multimap<int,SceneNode*> _renderQueue;
-    m_sceneNode->compute(_renderQueue,false);
-
-    for (auto& it : _renderQueue)
-        target.draw(*it.second);
 }
