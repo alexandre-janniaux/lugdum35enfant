@@ -11,6 +11,14 @@ const unsigned char BOTTOM = 1;
 const unsigned char LEFT = 2;
 const unsigned char RIGHT = 3;
 
+const float TIME_SPEED = 1;
+const float KEY_ACCEL = 800;
+const float MAX_SPEED = 200;
+const float PERSO_SIZE = 20;
+const float AIR_VISC = 0.01;
+const float SOLID_ACCEL = 200;
+
+
 inline float clamp(float x, float min, float max) {
 	 return std::max(std::min(x, max), min);
 }
@@ -37,9 +45,9 @@ void GameScreenState::updateSprites() {
 	sprites.resize(1);
 
 	sf::RectangleShape sprite;
-	sprite.setSize(sf::Vector2f(40, 40));
+	sprite.setSize(sf::Vector2f(2 * PERSO_SIZE, 2 * PERSO_SIZE));
 	sprite.setFillColor(sf::Color::Red);
-	sprite.setPosition(pos - sf::Vector2f(20, 20));
+	sprite.setPosition(pos - sf::Vector2f(PERSO_SIZE, PERSO_SIZE));
 	sprites.push_back(sprite);
 }
 
@@ -65,35 +73,33 @@ void GameScreenState::render(sf::RenderTarget& target) {
 	}
 }
 
-
-const float TIME_SPEED = 1;
 void GameScreenState::update(const sf::Time& time) {
 	float s = time.asSeconds() * TIME_SPEED;
-	sf::Vector2f offset = velocity * s + ((float) 0.5) * s * s * acceleration;
+	sf::Vector2f offset = velocity * s + 0.5f * s * s * acceleration;
 	pos += offset;
 	m_view.move(offset);
-	sf::Vector2f oldv = velocity + ((float) 0.5) * s * acceleration;
+	sf::Vector2f oldv = velocity + 0.5f * s * acceleration;
 	velocity += s * acceleration;
 	acceleration = sf::Vector2f(0, 0);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		velocity.x = std::min(velocity.x + (float)800 * s, (float)200);
+		velocity.x += KEY_ACCEL * s;
     }
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		velocity.x = std::max(velocity.x - (float)800 * s, (float)-200);
+		velocity.x -= KEY_ACCEL * s;
 	}
 	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-		velocity.y = std::min(velocity.y + (float)800 * s, (float)200);
+		velocity.y += KEY_ACCEL * s;
     }
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		velocity.y = std::max(velocity.y - (float)800 * s, (float)-200);
+		velocity.y -= KEY_ACCEL * s;
 	}
+	velocity.x = clamp(velocity.x, -MAX_SPEED, MAX_SPEED);
+	velocity.y = clamp(velocity.y, -MAX_SPEED, MAX_SPEED);
 	
-	velocity.x = std::max(std::min(velocity.x, (float)1500), (float)-1500);
-	velocity.y = std::max(std::min(velocity.y, (float)1500), (float)-1500);
-	rectangle me_ex = rectangle(pos - sf::Vector2f(20, 19.9), pos + sf::Vector2f(20, 19.9));
-	rectangle me_ey = rectangle(pos - sf::Vector2f(19.9, 20), pos + sf::Vector2f(19.9, 20));
-	rectangle me = rectangle(pos - sf::Vector2f(20, 20), pos + sf::Vector2f(20, 20));
+	rectangle me_ex = rectangle(pos - sf::Vector2f(PERSO_SIZE, PERSO_SIZE - 0.1f), pos + sf::Vector2f(PERSO_SIZE, PERSO_SIZE - 0.1f));
+	rectangle me_ey = rectangle(pos - sf::Vector2f(PERSO_SIZE - 0.1f, PERSO_SIZE), pos + sf::Vector2f(PERSO_SIZE - 0.1f, PERSO_SIZE));
+	rectangle me = rectangle(pos - sf::Vector2f(PERSO_SIZE, PERSO_SIZE), pos + sf::Vector2f(PERSO_SIZE, PERSO_SIZE));
 	for (unsigned char i = 0; i < 4; i++) touching_walls[i] = 0;
 	for (unsigned int i = 0; i < level.boxes.size(); i++) {
 		if (level.boxes[i].intersects(me_ex)) {
@@ -161,17 +167,17 @@ void GameScreenState::update(const sf::Time& time) {
 		}
 	}
  
-	velocity.x *= pow(0.01, s);
+	velocity.x *= pow(AIR_VISC, s);
 	if (velocity.x >= 0) {
-		velocity.x = std::max(velocity.x - 200.f * s, 0.f);
+		velocity.x = std::max(velocity.x - SOLID_ACCEL * s, 0.f);
 	} else {
-		velocity.x = std::min(velocity.x + 200.f * s, 0.f);
+		velocity.x = std::min(velocity.x + SOLID_ACCEL * s, 0.f);
 	}
-	velocity.y *= pow(0.01, s);
+	velocity.y *= pow(AIR_VISC, s);
 	if (velocity.y >= 0) {
-		velocity.y = std::max(velocity.y - 200.f * s, 0.f);
+		velocity.y = std::max(velocity.y - SOLID_ACCEL * s, 0.f);
 	} else {
-		velocity.y = std::min(velocity.y + 200.f * s, 0.f);
+		velocity.y = std::min(velocity.y + SOLID_ACCEL * s, 0.f);
 	}
 }
 
