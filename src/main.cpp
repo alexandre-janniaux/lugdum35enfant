@@ -1,9 +1,10 @@
 #include "cpp_std_11.h"
 
 #include <SFML/Graphics.hpp>
-#include "GameScreenState.h"
-#include "MenuScreenState.h"
-#include "ScreenStack.h"
+#include <iostream>
+#include "GameScreenState.hpp"
+#include "MenuScreenState.hpp"
+#include "ScreenStack.hpp"
 
 
 int main(int argc, char** argv) 
@@ -17,10 +18,10 @@ int main(int argc, char** argv)
 	
 	ScreenStack screenStack;
 	screenStack.registerState(ScreenState::Menu, make_unique<MenuScreenState>());
-	screenStack.registerState(ScreenState::Game, make_unique<GameScreenState>());
+//	screenStack.registerState(ScreenState::Game, make_unique<GameScreenState>());
 	
-	screenStack.pushState(ScreenState::Game);
-
+//	screenStack.pushState(ScreenState::Game);
+	screenStack.pushState(ScreenState::Menu);
 	sf::Event event;
     sf::Clock clock;
 
