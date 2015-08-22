@@ -77,13 +77,15 @@ void GameScreenState::update(const sf::Time& time) {
 	acceleration = sf::Vector2f(0, 0);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 		velocity.x = std::min(velocity.x + (float)800 * s, (float)200);
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 		velocity.x = std::max(velocity.x - (float)800 * s, (float)-200);
 	}
 	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 		velocity.y = std::min(velocity.y + (float)800 * s, (float)200);
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+    }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 		velocity.y = std::max(velocity.y - (float)800 * s, (float)-200);
 	}
 	
@@ -139,52 +141,38 @@ void GameScreenState::update(const sf::Time& time) {
 	for (unsigned int i = 0; i < level.boxes.size(); i++) {
 		if (level.boxes[i].intersects(me_ex)) {
 			if (me_ey.minp.x >= level.boxes[i].minp.x) {
-				touching_walls[LEFT] = std::max(touching_walls[LEFT], (unsigned char)1);
+				velocity.x = std::max(velocity.x, 0.f);
+				acceleration.x = std::max(acceleration.x, 0.f);
 			}
 			if (me_ey.maxp.x <= level.boxes[i].maxp.x) {
-				touching_walls[RIGHT] = std::max(touching_walls[RIGHT], (unsigned char)1);
+				velocity.x = std::min(velocity.x, 0.f);
+				acceleration.x = std::min(acceleration.x, 0.f);
 			}
 		}
 		if (level.boxes[i].intersects(me_ey)) {
 			if (me_ex.minp.y >= level.boxes[i].minp.y) {
-				touching_walls[TOP] = std::max(touching_walls[TOP], (unsigned char)1);
+				velocity.y = std::max(velocity.y, 0.f);
+				acceleration.y = std::max(acceleration.y, 0.f);
 			}
 			if (me_ex.maxp.y <= level.boxes[i].maxp.y) {
-				touching_walls[BOTTOM] = std::max(touching_walls[BOTTOM], (unsigned char)1);
+				velocity.y = std::min(velocity.y, 0.f);
+				acceleration.y = std::min(acceleration.y, 0.f);
 			}
 		}
 	}
-	switch (touching_walls[LEFT]) {
-		case 1:
-			velocity.x = std::max(velocity.x, (float)0);
-			acceleration.x = std::max(acceleration.x, (float)0);
-			break;
-		default: break;
-	}
-	switch (touching_walls[RIGHT]) {
-		case 1:
-			velocity.x = std::min(velocity.x, (float)0);
-			acceleration.x = std::min(acceleration.x, (float)0);
-			break;
-		default: break;
-	}
-	switch (touching_walls[TOP]) {
-		case 1:
-			velocity.y = std::max(velocity.y, (float)0);
-			acceleration.y = std::max(acceleration.y, (float)0);
-			break;
-		default: break;
-	}
-	switch (touching_walls[BOTTOM]) {
-		case 1:
-			velocity.y = std::min(velocity.y, (float)0);
-			acceleration.y = std::min(acceleration.y, (float)0);
-			break;
-		default: break;
-	}
  
 	velocity.x *= pow(0.01, s);
+	if (velocity.x >= 0) {
+		velocity.x = std::max(velocity.x - 200.f * s, 0.f);
+	} else {
+		velocity.x = std::min(velocity.x + 200.f * s, 0.f);
+	}
 	velocity.y *= pow(0.01, s);
+	if (velocity.y >= 0) {
+		velocity.y = std::max(velocity.y - 200.f * s, 0.f);
+	} else {
+		velocity.y = std::min(velocity.y + 200.f * s, 0.f);
+	}
 }
 
 void GameScreenState::window_update(const sf::RenderWindow& window)
