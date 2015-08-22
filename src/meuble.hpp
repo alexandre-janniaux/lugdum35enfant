@@ -8,12 +8,12 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-
-class Monster;
+#include "monster.hpp"
+#include "spritescenenode.hpp"
 
 /* classe pour les lampes. */
 
-class Lampe
+class Lampe: public SpriteSceneNode
 {
 public:
     bool isLighting(sf::Vector2f point) const;
@@ -31,15 +31,15 @@ private:
 
 enum Action {CACHER, ALLUMER, BRUITER, FINIR};
 
-class Meuble
+class Meuble: public SpriteSceneNode
 {
 public:
     virtual bool canInteract(sf::Vector2f point) const;
     virtual Action interact(Monster &me);
     virtual ~Meuble();
-private:
-    sf::Sprite const m_sprite;
-    sf::FloatRect const m_hitBox;
+//private:
+    sf::Sprite m_sprite;
+    sf::FloatRect m_hitBox;
 };
 
 class Lit: public Meuble
@@ -63,8 +63,8 @@ public:
     virtual bool canInteract(sf::Vector2f point) const;
     virtual Action interact(Monster &me);
     virtual ~Tapis();
-private:
-    sf::FloatRect const m_intHitBox;
+//private:
+    sf::FloatRect m_intHitBox;
     bool m_used;
 };
 
@@ -73,7 +73,7 @@ class MeubleBruit: public Meuble
 public:
     virtual Action interact(Monster &me);
     virtual ~MeubleBruit();
-private:
+//private:
     sf::Time m_temps;
 };
 
@@ -82,6 +82,6 @@ class Interrupteur: public Meuble
 public:
     virtual Action interact(Monster &me);
     virtual ~Interrupteur();
-private:
+//private:
     Lampe *m_light;
 };

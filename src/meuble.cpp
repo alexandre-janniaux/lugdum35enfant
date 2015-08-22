@@ -52,7 +52,16 @@ Lit::~Lit()
 
 Action Cachette::interact(Monster &me)
 {
-    // TODO
+    if (m_used)
+    {
+        m_used = false;
+        me.m_is_cache = false;
+    }
+    else
+    {
+        m_used = true;
+        me.m_is_cache = true;
+    }
     return CACHER;
 }
 
