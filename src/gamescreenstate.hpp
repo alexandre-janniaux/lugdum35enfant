@@ -1,7 +1,7 @@
 #pragma once
 
 #include "screenstate.hpp"
-#include "level.hpp"
+
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -20,15 +20,5 @@ class GameScreenState : public ScreenState {
 
 	private:
 	sf::View m_view;
-	Level level;
-	std::vector<sf::RectangleShape> sprites;
-	sf::Vector2f pos;
-	sf::Vector2f velocity;
-	sf::Vector2f acceleration;
-	unsigned char touching_walls[4];
-	int advancement;
-	void resetPos();
-	void updateSprites();
 	void updateView(sf::RenderTarget& target);
-
 };
