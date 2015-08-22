@@ -14,6 +14,7 @@ SET(
     src/ScreenStack.cpp
     src/GameScreenState.cpp
     src/MenuScreenState.cpp
+    ../ludum33/scenenode.cpp
 )
 
 ADD_EXECUTABLE(
