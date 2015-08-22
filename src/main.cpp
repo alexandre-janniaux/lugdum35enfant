@@ -5,6 +5,7 @@
 #include "gamescreenstate.hpp"
 #include "menuscreenstate.hpp"
 #include "screenstack.hpp"
+#include "resourcemanager.hpp"
 
 
 int main(int argc, char** argv) 
@@ -16,6 +17,8 @@ int main(int argc, char** argv)
 	window.create(window_mode, window_title);
 	window.setFramerateLimit(60);
 	
+	
+	
 	ScreenStack screenStack;
 	screenStack.registerState(ScreenState::Menu, make_unique<MenuScreenState>());
 //	screenStack.registerState(ScreenState::Game, make_unique<GameScreenState>());
@@ -23,7 +26,7 @@ int main(int argc, char** argv)
 //	screenStack.pushState(ScreenState::Game);
 	screenStack.pushState(ScreenState::Menu);
 	sf::Event event;
-    sf::Clock clock;
+	sf::Clock clock;
 
 	while (window.isOpen()) {
 	    while (window.pollEvent(event)) {
