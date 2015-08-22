@@ -1,3 +1,15 @@
+# Executable
+LD35
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
+# Backup
+*~
+
 # Compiled Object files
 *.slo
 *.lo
