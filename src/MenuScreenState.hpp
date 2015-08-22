@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <vector>
 
@@ -26,4 +27,6 @@ private:
 
     sf::Texture m_background_texture;
     sf::Sprite m_background;
+    
+    sf::Music m_music;
 };
