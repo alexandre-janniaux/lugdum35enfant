@@ -10,7 +10,7 @@
 int main(int argc, char** argv) 
 {
 	sf::RenderWindow window;
-	sf::String window_title = "Bamboo Painter";
+	sf::String window_title = "Ludum Dare 35";
 	sf::VideoMode window_mode (800,600);
 
 	window.create(window_mode, window_title);

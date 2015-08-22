@@ -4,7 +4,7 @@ MenuScreenState::MenuScreenState()
 {
     m_selected = 0;
 
-    m_menuSize = 5;
+    m_menuSize = 4;
 
     m_font.loadFromFile("menu_font.ttf");
 
@@ -35,9 +35,16 @@ MenuScreenState::MenuScreenState()
     m_menus[3].setString("QUITTER");
     m_menus[3].setPosition(offset.x, offset.y + 3 * space);
 
-    m_background_texture.loadFromFile("background.jpg");
+    m_background_texture.loadFromFile("background.png");
 
     m_background.setTexture(m_background_texture);
+    m_background.setScale(800.0f / m_background.getLocalBounds().width,
+			  600.0f / m_background.getLocalBounds().height);
+  
+    if (!m_music.openFromFile("Under_the_bed_-_menu.wav"))
+	std::cout << "Can't load menu's music." << std::endl; // error
+    m_music.setLoop(true);
+    m_music.play();
 }
 
 void MenuScreenState::event(const sf::RenderTarget& target, const sf::Event& event)
