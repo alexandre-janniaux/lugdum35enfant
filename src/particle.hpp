@@ -2,7 +2,6 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <cmath>
-
 #include "scenenode.hpp"
 
 template<typename T>
@@ -43,6 +42,7 @@ private:
     std::vector<Particle<T>*> m_particles;
     float m_Frequency;
     float m_NumberOfParticles;
+    float m_NumberOfParticlesMax;
     SceneNode* m_node;
 };
 
@@ -50,6 +50,7 @@ template<typename T>
 ParticleEmitter<T>::ParticleEmitter(T copy, SceneNode* node)
 : m_Frequency()
 , m_NumberOfParticles()
+, m_NumberOfParticlesMax()
 , m_particles()
 , m_node(node)
 {
@@ -80,16 +81,31 @@ void ParticleEmitter<T>::setNumberOfParticles(float number)
 template<typename T>
 void ParticleEmitter<T>::update(sf::Time time)
 {
-    float initNb(m_NumberOfParticles);
     m_NumberOfParticles+=time.asSeconds()*m_Frequency;
-    for (int i=0; i<(static_cast<int>(m_NumberOfParticles)-static_cast<int>(initNb)); i++)
-        addParticle();
+    if (m_NumberOfParticles<m_NumberOfParticlesMax)
+        {
+            for (int i=0; i<(static_cast<int>(m_NumberOfParticles)-m_particles.size()); i++)
+                addParticle();
+        }
     for (int i=0;i<m_particles.size(); i++)
     {
-        m_particles[i]->pos+=m_particles[i]->vel*time.asSeconds();
-        m_particles[i]->lifetime-=time.asSeconds();
-        apply(m_particles[i]);
-        effect(m_particles[i]);
+        if (m_particles[i] != nullptr)
+        {
+            m_particles[i]->lifetime-=time.asSeconds();
+            if (m_particles[i]->lifetime<0)
+            {
+                delete m_particles[i];
+                m_particles[i] = nullptr;
+                m_NumberOfParticles-=1;
+            }
+            else
+            {
+                m_particles[i]->pos+=m_particles[i]->vel*time.asSeconds();
+                m_particles[i]->node.setPosition(m_particles[i]->pos);
+                apply(m_particles[i]);
+                effect(m_particles[i]);
+            }
+        }
     }
 }
 
@@ -116,8 +132,19 @@ template<typename T>
 void ParticleEmitter<T>::addParticle()
 {
     float angle(rand());
-    m_particles.push_back(new Particle<T> {m_node->getPosition(), sf::Vector2f (cos(angle),sin(angle)), 2.f, 2.f, T() });
-    m_particles.back()->node.attachParent(m_node);
+    if (m_particles.size() == m_NumberOfParticlesMax)
+        {
+            int i(0);
+            while (m_particles[i] != nullptr)
+                i++;
+            m_particles[i] = new Particle<T> {m_node->getPosition(), sf::Vector2f (cos(angle),sin(angle)), 2.f, 2.f, T() };
+            m_particles[i]->node.attachParent(m_node);
+        }
+    else
+    {
+        m_particles.push_back(new Particle<T> {m_node->getPosition(), sf::Vector2f (cos(angle),sin(angle)), 2.f, 2.f, T() });
+        m_particles.back()->node.attachParent(m_node);
+    }
 }
 
 template<typename T>
