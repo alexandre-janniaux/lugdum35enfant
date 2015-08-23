@@ -21,6 +21,7 @@ SET(
     src/lamp.cpp
     src/lighthandler.cpp
     src/geometry.cpp
+    src/lightray.cpp
 )
 
 ADD_EXECUTABLE(

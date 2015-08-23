@@ -2,7 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include "scenenode.hpp"
 #include "geometry.hpp"
+#include "lightray.hpp"
 #include <cmath>
+
 
 namespace Math
 {
@@ -12,6 +14,7 @@ namespace Math
 class Lamp : public SceneNode
 {
     public:
+        Lamp(sf::Color,float,float,float);
         void computeLight(std::vector<sf::Rect<float>> const&);
         void addRay(sf::Vector2f, sf::Vector2f);
 
@@ -21,11 +24,12 @@ class Lamp : public SceneNode
         std::vector<Segment> splitRay(Segment,Segment);
         std::vector<Segment> rectangleToSegments(sf::Rect<float> const&);
         void buildRays();
+        sf::ConvexShape segmentToTriangle(Segment);
 
     private:
         bool m_computedLight;
         //static float distance(sf::Vector2f);
-        std::vector<sf::ConvexShape> m_light;
+        //std::vector<sf::ConvexShape> m_light;
         std::vector<Segment> m_lightSegmentList;
         sf::Color m_color;
         float m_radius;

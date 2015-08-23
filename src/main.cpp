@@ -6,9 +6,11 @@
 #include "menuscreenstate.hpp"
 #include "screenstack.hpp"
 #include "resourcemanager.hpp"
+#include "scene.hpp"
+#include "lamp.hpp"
 
 
-int main(int argc, char** argv) 
+int main(int argc, char** argv)
 {
 	sf::RenderWindow window;
 	sf::String window_title = "Ludum Dare 35";
@@ -16,14 +18,18 @@ int main(int argc, char** argv)
 
 	window.create(window_mode, window_title);
 	window.setFramerateLimit(60);
-	
-	
+
+
 	ScreenStack screenStack;
 	screenStack.registerState(ScreenState::Menu, make_unique<MenuScreenState>());
 //	screenStack.registerState(ScreenState::Game, make_unique<GameScreenState>());
-	
+
 //	screenStack.pushState(ScreenState::Game);
 	screenStack.pushState(ScreenState::Menu);
+
+	Scene scene;
+	Lamp(sf::Color::Blue,10.f,0.f,6.f).attachParent(scene.getRootNode());
+
 	sf::Event event;
 	sf::Clock clock;
 
@@ -31,19 +37,20 @@ int main(int argc, char** argv)
 	    while (window.pollEvent(event)) {
 	        if (event.type == sf::Event::Closed)
                 window.close();
-            else 
+            else
 				//menu_screen_state.event(window, event);
                 screenStack.onEvent(window, event);
 	    }
-		
+
 	    window.clear();
 	    screenStack.onDraw(window);
 		//menu_screen_state.render(window);
 	    window.display();
+	    window.draw(scene);
 		//screenStack.window_update(window);
 		screenStack.onUpdate(clock.getElapsedTime());
 		//menu_screen_state.update(clock.getElapsedTime());
         clock.restart();
-		
+
 	}
 }

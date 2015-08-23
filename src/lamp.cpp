@@ -1,22 +1,15 @@
 #include "lamp.hpp"
 
-/*
-void Lamp::distance(sf::Vector2f point)
-{
-    return sqrt(point.x*point.x+point.y*point.y);
-}
-*/
 
-void Lamp::addRay(sf::Vector2f pointA,sf::Vector2f pointB)
+Lamp::Lamp(sf::Color color,float radius, float angleStart,float angleEnd)
+: m_color(color)
+, m_radius(radius)
+, m_angleStart(angleStart)
+, m_angleEnd(angleEnd)
 {
-    /*
-    sf::ConvexShape _triangle(3);
-    _triangle.setPoint(0,sf::Vector2f(0.f,0.f));
-    _triangle.setPoint(1,pointA);
-    _triangle.setPoint(2,pointB);
-    _triangle.setFillColor(m_color);
-    m_light.push_back(_triangle);
-    */
+    setPosition(0.f,0.f);
+    setScale(1.f,1.f);
+    setRotation(0.f);
 }
 
 void Lamp::generateBaseRay()
@@ -68,7 +61,7 @@ void Lamp::computeLight(std::vector<sf::Rect<float>> const& obstacles)
             auto it=m_lightSegmentList.begin();
             while (it!=m_lightSegmentList.end())
             {
-                _newRays=Lamp::splitRay(*it,obstacleSegment);
+                obstacleSegment.intersection_triangle(getTransform().transformPoint(sf::Vector2f(0.f,0.f)),*it,_newRays);
                 *it=_newRays.back();
                 _newRays.pop_back();
                 while (!_newRays.empty())
@@ -80,4 +73,19 @@ void Lamp::computeLight(std::vector<sf::Rect<float>> const& obstacles)
             }
         }
     }
+    m_children.clear();
+    for (auto& it : m_lightSegmentList)
+    {
+        LightRay(segmentToTriangle(it)).attachParent(this);
+    }
+}
+
+sf::ConvexShape Lamp::segmentToTriangle(Segment segment)
+{
+    sf::ConvexShape triangle(3);
+    triangle.setPoint(0,getTransform().transformPoint(sf::Vector2f(0.f,0.f)));
+    triangle.setPoint(1,segment.p1);
+    triangle.setPoint(2,segment.p2);
+    triangle.setFillColor(m_color);
+    return triangle;
 }
