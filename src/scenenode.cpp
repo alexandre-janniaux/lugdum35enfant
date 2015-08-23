@@ -19,7 +19,7 @@ SceneNode::SceneNode(SceneNode & parent, int layer)
 , m_layer(layer)
 , m_computed(false)
 {
-    attacheParent(parent);
+    attachParent(parent);
 }
 
 SceneNode::~SceneNode()
@@ -29,10 +29,10 @@ SceneNode::~SceneNode()
 
 void SceneNode::attachParent(SceneNode& ptrParent)
 {
-    ptrParent->m_children.push_back(this);
+    ptrParent.m_children.push_back(this);
     if(m_parent)
         detachParent();
-    m_parent = ptrParent;
+    m_parent = &ptrParent;
     invalidate();
 }
 
