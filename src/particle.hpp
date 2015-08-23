@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <cmath>
@@ -17,7 +18,6 @@ struct Particle
 struct SmokeShape : public SceneNode
 {
     sf::CircleShape m_Shape;
-    float lifetime_max;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const {
         states.transform *= getAbsoluteTransform();
         target.draw(m_Shape);
@@ -29,33 +29,35 @@ template<typename T>
 class ParticleEmitter : public SceneNode
 {
 public:
-    ParticleEmitter(T copy, SceneNode* node);
+    ParticleEmitter(T copy, SceneNode& node, int);
     //~ParticleEmitter();
     void setFrequency(float);
-    void setNumberOfParticles(float);
-    void setNumberOfParticlesMax(float);
-    int getNumberOfParticles() { return m_particles.size(); }
+    void setNumberOfParticles(int);
+    inline int getNumberOfParticles() { return m_particles.size(); }
     void update(sf::Time);
-    void addParticle();
+    void addParticle(int);
     void apply(Particle<T>*);
     void effect(Particle<T>*);
 private:
     std::vector<Particle<T>*> m_particles;
     float m_Frequency;
-    float m_NumberOfParticles;
-    float m_NumberOfParticlesMax;
-    SceneNode* m_node;
+    int m_NumberOfParticles;
+    SceneNode& m_node;
 };
 
 template<typename T>
-ParticleEmitter<T>::ParticleEmitter(T copy, SceneNode* node)
+ParticleEmitter<T>::ParticleEmitter(T copy, SceneNode& node, int number)
 : m_Frequency()
-, m_NumberOfParticles()
-, m_NumberOfParticlesMax()
+, m_NumberOfParticles(number)
 , m_particles()
 , m_node(node)
 {
-
+    for (int i=0; i<m_NumberOfParticles; i++)
+    {
+        float angle(rand());
+        m_particles.push_back(new Particle<T> {m_node.getPosition(), sf::Vector2f (cos(angle),sin(angle)), 2.f, (1.f+(rand()%100)/100.f), T() });
+        m_particles.back()->node.attachParent(&m_node);
+    }
 }
 
 /*ParticleSystem::~ParticleSystem()
@@ -74,53 +76,39 @@ void ParticleEmitter<T>::setFrequency(float frequency)
 }
 
 template<typename T>
-void ParticleEmitter<T>::setNumberOfParticles(float number)
+void ParticleEmitter<T>::setNumberOfParticles(int number)
 {
     m_NumberOfParticles = number;
 }
 
 template<typename T>
-void ParticleEmitter<T>::setNumberOfParticlesMax(float number)
-{
-    m_NumberOfParticlesMax = number;
-}
-
-template<typename T>
 void ParticleEmitter<T>::update(sf::Time time)
 {
-    m_NumberOfParticles+=time.asSeconds()*m_Frequency;
-    if (m_NumberOfParticles<m_NumberOfParticlesMax)
-        {
-            for (int i=0; i<(static_cast<int>(m_NumberOfParticles)-m_particles.size()); i++)
-                addParticle();
-        }
     for (int i=0;i<m_particles.size(); i++)
     {
-        if (m_particles[i] != nullptr)
+        m_particles[i]->lifetime-=time.asSeconds();
+        if (m_particles[i]->lifetime<0)
         {
-            m_particles[i]->lifetime-=time.asSeconds();
-            if (m_particles[i]->lifetime<0)
-            {
-                delete m_particles[i];
-                m_particles[i] = nullptr;
-                m_NumberOfParticles-=1;
-            }
-            else
-            {
-                m_particles[i]->pos+=m_particles[i]->vel*time.asSeconds();
-                m_particles[i]->node.setPosition(m_particles[i]->pos);
-                apply(m_particles[i]);
-                effect(m_particles[i]);
-            }
+            delete m_particles[i];
+            m_particles[i] = nullptr;
+            addParticle(i);
+        }
+        else
+        {
+            m_particles[i]->pos+=m_particles[i]->vel*time.asSeconds();
+            m_particles[i]->node.setPosition(m_particles[i]->pos);
+            apply(m_particles[i]);
+            effect(m_particles[i]);
         }
     }
 }
 
+
 template<>
 void ParticleEmitter<SmokeShape>::apply(Particle<SmokeShape>* particle)
 {
-    sf::Vector2f gravity(0,0.3);
-    particle->vel-=gravity;
+    sf::Vector2f gravity(0,0.01);
+    particle->vel+=gravity;
 }
 
 template<>
@@ -136,22 +124,11 @@ void ParticleEmitter<T>::effect(Particle<T>* particle)
 }
 
 template<typename T>
-void ParticleEmitter<T>::addParticle()
+void ParticleEmitter<T>::addParticle(int num)
 {
     float angle(rand());
-    if (m_particles.size() == m_NumberOfParticlesMax)
-        {
-            int i(0);
-            while (m_particles[i] != nullptr)
-                i++;
-            m_particles[i] = new Particle<T> {m_node->getPosition(), sf::Vector2f (cos(angle),sin(angle)), 2.f, 2.f, T() };
-            m_particles[i]->node.attachParent(m_node);
-        }
-    else
-    {
-        m_particles.push_back(new Particle<T> {m_node->getPosition(), sf::Vector2f (cos(angle),sin(angle)), 2.f, 2.f, T() });
-        m_particles.back()->node.attachParent(m_node);
-    }
+    m_particles[num] = new Particle<T> {m_node.getPosition(), sf::Vector2f (cos(angle),sin(angle)), 2.f, 1.f+(rand()%100)/100.f, T() };
+    m_particles[num]->node.attachParent(&m_node);
 }
 
 template<typename T>

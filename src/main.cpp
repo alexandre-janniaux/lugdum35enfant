@@ -18,10 +18,8 @@ int main()
     text.setPosition({50.f,90.f});
 	text.setFont(font);
 
-    ParticleEmitter<SmokeShape> p(shape_ref, scene.getRootNode());
+    ParticleEmitter<SmokeShape> p(shape_ref, scene.getRootNode(), 100);
     p.setFrequency(60);
-    p.setNumberOfParticles(60);
-	p.setNumberOfParticlesMax(100);
     p.setPosition({400.f, 300.f});
     sf::RenderWindow window({800,600}, "toto");
 
