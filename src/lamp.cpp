@@ -7,9 +7,7 @@ Lamp::Lamp(sf::Color color,float radius, float angleStart,float angleEnd)
 , m_angleStart(angleStart)
 , m_angleEnd(angleEnd)
 {
-    setPosition(0.f,0.f);
-    setScale(1.f,1.f);
-    setRotation(0.f);
+    setPosition(sf::Vector2f(0.f,0.f));
 }
 
 void Lamp::generateBaseRay()
