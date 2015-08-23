@@ -8,33 +8,45 @@
 class MenuElement
 {
 public:
-    virtual void event(const sf::Event & event);
-    virtual void render(sf::RenderTarget & target) const;
-    virtual void update(sf::Time time);
-private:
+    MenuElement();
+    virtual ~MenuElement();
+    void setPosition(sf::Vector2f position);
+    virtual void event(const sf::Event & event)=0;
+    virtual void render(sf::RenderTarget& target)=0;
+    virtual void update(sf::Time time)=0;
+    
+    void select();
+    void unselect();
+    
+protected:
+    sf::Text* m_displayLabel;
+    bool m_selected;
+    sf::Vector2f m_position;
 };
 
 
-class Checkbox
+class Checkbox : public MenuElement
 {
 public:
-    Checkbox(bool state, std::function<void(bool)> callback);
+    Checkbox(std::function<void(bool)> callback, bool state, sf::String texte);
     void event(const sf::Event & event);
-    void render(sf::RenderTarget & target) const;
+    void render(sf::RenderTarget & target);
     void update(sf::Time time);
     
 private:
     sf::Text m_label;
+    sf::Sprite m_checkbox;
     bool m_state;
     std::function<void(bool)> m_callback;
 };
 
-class PushButton
+class PushButton : public MenuElement
 {
 public:
-    PushButton(std::function<void()> callback);
+    PushButton(std::function<void()> callback, sf::String texte);
+    virtual ~PushButton();
     void event(const sf::Event & event);
-    void render(sf::RenderTarget & target) const;
+    void render(sf::RenderTarget & target);
     void update(sf::Time time);
     
 private:
@@ -42,12 +54,12 @@ private:
     std::function<void()> m_callback;
 };
 
-class MultiChoice
+class MultiChoice : public MenuElement
 {
 public:
     MultiChoice(int state, std::function<void(int)> callback);
     void event(const sf::Event & event);
-    void render(sf::RenderTarget & target) const;
+    void render(sf::RenderTarget & target);
     void update(sf::Time time);  
     
 private:
@@ -55,12 +67,3 @@ private:
     int m_state;
     std::function<void(int)> m_callback;
 };
-
-
-
-/*
- * checkbox
- * liste
- * boutons
- * 
- */
