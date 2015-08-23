@@ -1,23 +1,21 @@
 #pragma once
 
 struct ScreenMessage {
-	enum Action {Push, Pop, Clear};
+	enum Action {PUSH, POP, CLEAR};
 
 	static ScreenMessage Push(int id) {
-		action = Push;
-		screen = id;
+	    return {PUSH, id};
 	}
 
 	static ScreenMessage Pop() {
-		action = Pop;
-		screen = -1;
+	    return {POP,-1};
 	}
 
 	static ScreenMessage Clear() {
-		action = Clear;
-		screen = -1;
+	    return {CLEAR,-1};
 	}
 
-	int screen;
 	Action action;
+	int screen;
+	
 };
