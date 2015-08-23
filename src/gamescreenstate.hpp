@@ -1,6 +1,9 @@
 #pragma once
 
 #include "screenstate.hpp"
+#include "scene.hpp"
+#include "physicinstance.hpp"
+#include "collisionsolver.hpp"
 
 #include <vector>
 #include <SFML/Graphics.hpp>
@@ -20,5 +23,11 @@ class GameScreenState : public ScreenState {
 
 	private:
 	sf::View m_view;
+	Scene m_scene;
+	CollisionSolver m_collisionSolver;
+	PhysicInstance m_physicInstance;
+
+
 	void updateView(sf::RenderTarget& target);
+	void onCollision(PhysicBody& b1, PhysicBody& b2);
 };

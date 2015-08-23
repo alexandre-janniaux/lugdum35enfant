@@ -1,6 +1,7 @@
 #include "gamescreenstate.hpp"
 #include <algorithm>
 #include <SFML/Graphics.hpp>
+#include <functional>
 
 //const int TOP = 1;
 //const int BOTTOM = 2;
@@ -23,11 +24,26 @@ inline float clamp(float x, float min, float max) {
 	 return std::max(std::min(x, max), min);
 }
 
-GameScreenState::GameScreenState() {
+GameScreenState::GameScreenState() :
+	m_collisionSolver([this](PhysicBody& b1, PhysicBody& b2){this->onCollision(b1, b2);}),
+	m_physicInstance(m_collisionSolver)
+{
 
 }
 
 void GameScreenState::event(const sf::RenderTarget& target, const sf::Event& event) {
+	switch(event.type)
+	{
+		case sf::Event::KeyPressed:
+			break;
+
+		case sf::Event::KeyReleased:
+			break;
+
+		default:
+			break;
+	}
+
 }
 
 
@@ -40,13 +56,39 @@ void GameScreenState::updateView(sf::RenderTarget& target) {
 }
 
 void GameScreenState::render(sf::RenderTarget& target) {
-
+	target.draw(m_scene);
 }
 
 void GameScreenState::update(const sf::Time& time) {
-	
+	// TODO: Dynamic keyboard configuration
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+
+	}
+
+	m_physicInstance.update(time, sf::seconds(0.1f));
 }
 
 void GameScreenState::window_update(const sf::RenderWindow& window)
 {
+}
+
+void GameScreenState::onCollision(PhysicBody& b1, PhysicBody& b2)
+{
+
 }

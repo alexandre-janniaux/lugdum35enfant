@@ -18,6 +18,9 @@ SET(
     src/scenenode.cpp
     src/sousmenu.cpp
     src/spritescenenode.cpp
+    src/collisionsolver.cpp
+    src/physicinstance.cpp
+    src/physicbody.cpp
 )
 
 ADD_EXECUTABLE(
