@@ -12,12 +12,18 @@ SceneNode::SceneNode(int layer)
 
 void SceneNode::attachParent(SceneNode* ptrParent)
 {
+    ptrParent->m_children.push_back(this);
+    if(m_parent)
+        detachParent();
     m_parent = ptrParent;
-    ptrParent->m_children.push_back(detachParent());
+    invalidate();
 }
 
-SceneNode* SceneNode::detachParent()
+void SceneNode::detachParent()
 {
+    if (!m_parent)
+        return;
+
     auto _found = std::find_if(m_parent->m_children.begin(), m_parent->m_children.end(), [&] (SceneNode* p) -> bool { return p == this; });
 
     assert(_found != m_parent->m_children.end());
@@ -25,10 +31,11 @@ SceneNode* SceneNode::detachParent()
     SceneNode* _pointer = *_found;
     m_children.erase(_found);
     m_parent = nullptr;
-    return _pointer;
+
+    invalidate();
 };
 
-void SceneNode::compute() const//std::multimap<int,SceneNode*>& renderQueue,bool force)
+void SceneNode::compute() const
 {
     if (!m_computed)
     {
