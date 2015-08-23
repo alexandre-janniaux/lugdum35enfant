@@ -19,6 +19,9 @@ SET(
     src/scenenode.cpp
     src/sousmenu.cpp
     src/spritescenenode.cpp
+    src/lamp.cpp
+    src/lighthandler.cpp
+    src/geometry.cpp
 )
 
 ADD_EXECUTABLE(
