@@ -11,11 +11,23 @@ SceneNode::SceneNode(int layer)
 {
 }
 
+SceneNode::SceneNode(SceneNode & parent, int layer)
+: m_children()
+, m_parent()
+, m_transform()
+, m_absoluteTransform()
+, m_layer(layer)
+, m_computed(false)
+{
+    attacheParent(parent);
+}
+
 SceneNode::~SceneNode()
 {
     detachParent();
 }
-void SceneNode::attachParent(SceneNode* ptrParent)
+
+void SceneNode::attachParent(SceneNode& ptrParent)
 {
     ptrParent->m_children.push_back(this);
     if(m_parent)
