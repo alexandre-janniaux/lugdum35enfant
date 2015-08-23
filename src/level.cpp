@@ -42,7 +42,7 @@ Floor::Floor (Json::Value const floor):
     Json::Value const meubles = floor["meubles"];
     for (unsigned int i = 0 ; i < meubles.size() ; i++)
     {
-        std::string str = meubles[i]["Sprite"].asString();
+        std::string str = meubles[i]["sprite"].asString();
         // TODO: ici, utiliser les resourcesManager
         if (m_txMeubles.find(str) == m_txMeubles.end())
         {
@@ -63,9 +63,8 @@ Floor::Floor (Json::Value const floor):
 
         if (str == "tapis")
         {
-            Json::Value hB = meubles[i]["tapisHitBox"];
             m_meubles.push_back(new Tapis(sprite, hitBox,
-                        tof(meubles[i]["hitBox"])));
+                        tof(meubles[i]["tapishitBox"])));
         }
 
         else if (str == "bruit")
@@ -87,7 +86,7 @@ Floor::Floor (Json::Value const floor):
     }
 
     /* Parser les murs */
-    Json::Value murs = floor["mur"];
+    Json::Value murs = floor["murs"];
     for (unsigned int i = 0 ; i < murs.size() ; i++)
         m_murs.push_back(tof(murs[i]));
 
