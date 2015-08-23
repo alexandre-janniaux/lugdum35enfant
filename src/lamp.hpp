@@ -6,7 +6,7 @@
 
 namespace Math
 {
-    const float PI=3.14159265358979f;
+	constexpr const float PI=3.14159265358979f;
 }
 
 class Lamp : public SceneNode
