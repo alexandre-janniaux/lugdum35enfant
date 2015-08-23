@@ -21,6 +21,7 @@ SET(
     src/collisionsolver.cpp
     src/physicinstance.cpp
     src/physicbody.cpp
+    src/messagestack.cpp
 )
 
 ADD_EXECUTABLE(

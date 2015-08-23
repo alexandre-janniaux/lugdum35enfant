@@ -47,5 +47,5 @@ void MessageBusDispatcher::removeProxy(const MessageBusProxy<MessageType>&proxy)
 
 void MessageBusDispatcher::processQueue()
 {
-	//TODO
+	MessageStack::instance()->dispatch(m_
 }
