@@ -27,7 +27,7 @@ class SceneNode: public sf::Drawable
         void compute() const;
         void invalidate() const;
 
-    private:
+    protected:
         std::vector<SceneNode*> m_children;
         SceneNode* m_parent;
         sf::Transformable m_transform;
