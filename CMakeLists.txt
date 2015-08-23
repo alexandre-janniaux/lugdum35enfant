@@ -22,6 +22,7 @@ SET(
     src/physicinstance.cpp
     src/physicbody.cpp
     src/messagestack.cpp
+    src/messagebusqueue.cpp
 )
 
 ADD_EXECUTABLE(
