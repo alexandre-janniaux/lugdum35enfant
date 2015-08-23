@@ -39,7 +39,6 @@ public:
     void addParticle();
     void apply(Particle<T>*);
     void effect(Particle<T>*);
-	void setNumberOfParticlesMax(float);
 private:
     std::vector<Particle<T>*> m_particles;
     float m_Frequency;
