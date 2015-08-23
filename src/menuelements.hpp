@@ -10,7 +10,7 @@ class MenuElement
 public:
     MenuElement();
     virtual ~MenuElement();
-    void setPosition(sf::Vector2f position);
+    virtual void setPosition(sf::Vector2f position);
     virtual void event(const sf::Event & event)=0;
     virtual void render(sf::RenderTarget& target)=0;
     virtual void update(sf::Time time)=0;
@@ -19,9 +19,8 @@ public:
     void unselect();
     
 protected:
-    sf::Text* m_displayLabel;
+    sf::Text m_displayLabel;
     bool m_selected;
-    sf::Vector2f m_position;
 };
 
 
@@ -32,10 +31,12 @@ public:
     void event(const sf::Event & event);
     void render(sf::RenderTarget & target);
     void update(sf::Time time);
+    void check();
+    void uncheck();
+    void setPosition(sf::Vector2f position) override;
     
 private:
-    sf::Text m_label;
-    sf::Sprite m_checkbox;
+    sf::Sprite m_checkboxSprite;
     bool m_state;
     std::function<void(bool)> m_callback;
 };
@@ -50,20 +51,27 @@ public:
     void update(sf::Time time);
     
 private:
-    sf::Text m_label;
     std::function<void()> m_callback;
 };
 
 class MultiChoice : public MenuElement
 {
 public:
-    MultiChoice(int state, std::function<void(int)> callback);
+    MultiChoice(std::function<void(int)> callback, int state, std::vector<sf::String> entries);
+    virtual ~MultiChoice();
     void event(const sf::Event & event);
     void render(sf::RenderTarget & target);
-    void update(sf::Time time);  
+    void update(sf::Time time);
+    void setPosition(sf::Vector2f position);
+    void selectPrevious();
+    void selectNext();
+    void updateSprites();
     
 private:
-    std::vector<sf::Text> m_labels;
+    sf::Sprite m_leftSprite;
+    sf::Sprite m_rightSprite;
+    std::vector<sf::String> m_labels;
+    int m_stateNumber;
     int m_state;
     std::function<void(int)> m_callback;
 };
