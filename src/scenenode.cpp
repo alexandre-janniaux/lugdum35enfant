@@ -3,11 +3,11 @@
 SceneNode::SceneNode(int layer)
 : m_children()
 , m_parent()
+, m_transform()
 , m_absoluteTransform()
+, m_layer(layer)
 , m_computed(false)
-, m_layer(0)
 {
-
 }
 
 void SceneNode::attachParent(SceneNode* ptrParent)
@@ -28,12 +28,51 @@ void SceneNode::detachParent()
 
     assert(_found != m_parent->m_children.end());
 
-    SceneNode* _pointer = *_found;
+//    SceneNode* _pointer = *_found;
     m_children.erase(_found);
     m_parent = nullptr;
 
     invalidate();
 };
+
+
+const sf::Transform& SceneNode::getAbsoluteTransform() const
+{
+    compute();
+    return m_absoluteTransform;
+}
+
+const sf::Transform& SceneNode::getTransform() const
+{
+    return m_transform.getTransform();
+}
+
+const sf::Vector2f& SceneNode::getPosition() const
+{
+    return m_transform.getPosition();
+}
+
+int SceneNode::getLayer() const
+{
+    return m_layer;
+}
+
+std::vector<SceneNode*> const& SceneNode::getChildren() const
+{
+    return m_children;
+}
+
+void SceneNode::setPosition(sf::Vector2f const& pos)
+{
+    m_transform.setPosition(pos);
+    invalidate();
+}
+
+void SceneNode::move(sf::Vector2f const& mv)
+{
+    m_transform.move(mv);
+    invalidate();
+}
 
 void SceneNode::compute() const
 {
@@ -50,7 +89,7 @@ void SceneNode::compute() const
     m_computed=true;
 }
 
-void SceneNode::invalidate()
+void SceneNode::invalidate() const
 {
     m_computed=false;
     for (auto& it : m_children)
@@ -63,8 +102,3 @@ void SceneNode::draw(sf::RenderTarget& target,sf::RenderStates states) const
 {
 }
 
-const sf::Transform& SceneNode::getAbsoluteTransform() const
-{
-    compute();
-    return m_absoluteTransform;
-}
