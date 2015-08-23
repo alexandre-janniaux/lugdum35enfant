@@ -39,6 +39,7 @@ public:
     void addParticle();
     void apply(Particle<T>*);
     void effect(Particle<T>*);
+	void setNumberOfParticlesMax(float);
 private:
     std::vector<Particle<T>*> m_particles;
     float m_Frequency;
@@ -82,7 +83,12 @@ void ParticleEmitter<T>::setNumberOfParticles(float number)
 template<typename T>
 void ParticleEmitter<T>::setNumberOfParticlesMax(float number)
 {
+<<<<<<< HEAD
     m_NumberOfParticlesMax = number;
+=======
+	m_NumberOfParticlesMax = number;
+
+>>>>>>> origin/scenenode
 }
 
 template<typename T>

@@ -11,13 +11,21 @@ int main()
 
     Scene scene;
 
+	sf::Font font;
+	font.loadFromFile("menu_font.ttf");
+
     sf::Text text;
     text.setPosition({50.f,90.f});
+	text.setFont(font);
 
     ParticleEmitter<SmokeShape> p(shape_ref, scene.getRootNode());
     p.setFrequency(60);
     p.setNumberOfParticles(60);
+<<<<<<< HEAD
     p.setNumberOfParticlesMax(100);
+=======
+	p.setNumberOfParticlesMax(100);
+>>>>>>> origin/scenenode
     p.setPosition({400.f, 300.f});
     sf::RenderWindow window({800,600}, "toto");
 
