@@ -1,47 +1,109 @@
+#include <iostream>
 #include "scenenode.hpp"
 
 SceneNode::SceneNode(int layer)
 : m_children()
 , m_parent()
+, m_transform()
 , m_absoluteTransform()
+, m_layer(layer)
 , m_computed(false)
-, m_layer(0)
 {
-
 }
 
+SceneNode::~SceneNode()
+{
+    detachParent();
+}
 void SceneNode::attachParent(SceneNode* ptrParent)
 {
+    ptrParent->m_children.push_back(this);
+    if(m_parent)
+        detachParent();
     m_parent = ptrParent;
-    ptrParent->m_children.push_back(detachParent());
+    invalidate();
 }
 
-std::unique_ptr<SceneNode> SceneNode::detachParent()
+void SceneNode::detachParent()
 {
-    auto _found = std::find_if(m_parent->m_children.begin(), m_parent->m_children.end(), [&] (std::unique_ptr<SceneNode>& p) -> bool { return p.get() == this; });
+    if (!m_parent)
+        return;
+
+    auto _found = std::find_if(m_parent->m_children.begin(), m_parent->m_children.end(), [&] (SceneNode* p) -> bool { return p == this; });
 
     assert(_found != m_parent->m_children.end());
 
-    std::unique_ptr<SceneNode> _pointer = std::move(*_found);
-    m_children.erase(_found);
+//    SceneNode* _pointer = *_found;
+    m_parent->m_children.erase(_found);
     m_parent = nullptr;
-    return _pointer;
+
+    invalidate();
 };
 
-void SceneNode::compute(std::multimap<int,SceneNode*>& renderQueue,bool force)
+
+const sf::Transform& SceneNode::getAbsoluteTransform() const
 {
-    if (!m_computed || force) {
-        m_absoluteTransform = (m_parent == nullptr) ? getTransform() : m_parent->m_absoluteTransform * getTransform();
-    }
+    compute();
+    return m_absoluteTransform;
+}
 
-    for (auto& it : m_children) {
-        it->compute(renderQueue,!m_computed || force);
-    }
+const sf::Transform& SceneNode::getTransform() const
+{
+    return m_transform.getTransform();
+}
 
-    m_computed = true;
-    renderQueue.insert(std::pair<int,SceneNode*>(m_layer,this));
+const sf::Vector2f& SceneNode::getPosition() const
+{
+    return m_transform.getPosition();
+}
+
+int SceneNode::getLayer() const
+{
+    return m_layer;
+}
+
+std::vector<SceneNode*> const& SceneNode::getChildren() const
+{
+    return m_children;
+}
+
+void SceneNode::setPosition(sf::Vector2f const& pos)
+{
+    m_transform.setPosition(pos);
+    invalidate();
+}
+
+void SceneNode::move(sf::Vector2f const& mv)
+{
+    m_transform.move(mv);
+    invalidate();
+}
+
+void SceneNode::compute() const
+{
+    if (!m_computed)
+    {
+        if (m_parent != nullptr)
+        {
+            m_absoluteTransform = m_parent->getAbsoluteTransform() * getTransform();
+        }
+        else
+            m_absoluteTransform = getTransform();
+
+    }
+    m_computed=true;
+}
+
+void SceneNode::invalidate() const
+{
+    m_computed=false;
+    for (auto& it : m_children)
+    {
+        it->invalidate();
+    }
 }
 
 void SceneNode::draw(sf::RenderTarget& target,sf::RenderStates states) const
 {
 }
+

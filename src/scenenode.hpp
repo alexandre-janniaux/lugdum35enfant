@@ -8,22 +8,31 @@
 
 class Scene;
 
-class SceneNode: public sf::Transformable, public sf::Drawable
+class SceneNode: public sf::Drawable
 {
-
     public:
         SceneNode(int layer=0);
-        std::unique_ptr<SceneNode> detachParent();
+        ~SceneNode();
+        void detachParent();
         void attachParent(SceneNode*);
-        void compute(std::multimap<int,SceneNode*>&,bool);
+        const sf::Transform& getAbsoluteTransform() const;
+        const sf::Transform& getTransform() const;
+        const sf::Vector2f& getPosition() const;
+        int getLayer() const;
+        std::vector<SceneNode*> const& getChildren() const;
+        void setPosition(sf::Vector2f const& pos);
+        void move(sf::Vector2f const& mv);
 
     private:
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+        void compute() const;
+        void invalidate() const;
 
     private:
-        std::vector<std::unique_ptr<SceneNode> > m_children;
+        std::vector<SceneNode*> m_children;
         SceneNode* m_parent;
-        sf::Transform m_absoluteTransform;
-        bool m_computed;
+        sf::Transformable m_transform;
+        mutable sf::Transform m_absoluteTransform;
         int m_layer;
+        mutable bool m_computed;
 };
