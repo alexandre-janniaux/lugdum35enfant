@@ -2,13 +2,32 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+
 #include "gamescreenstate.hpp"
 #include "menuscreenstate.hpp"
 #include "screenstack.hpp"
 #include "resourcemanager.hpp"
 #include "scene.hpp"
 #include "lamp.hpp"
+/*
+#include <sstream>
+int main()
+{
+    SmokeShape shape_ref;
+    shape_ref.m_Shape.setRadius(10.f);
 
+    Scene scene;
+
+    sf::Text text;
+    text.setPosition({50.f,90.f});
+
+    ParticleEmitter<SmokeShape> p(shape_ref, scene.getRootNode());
+    p.setFrequency(60);
+    p.setNumberOfParticles(60);
+    p.setNumberOfParticlesMax(100);
+    p.setPosition({400.f, 300.f});
+    sf::RenderWindow window({800,600}, "toto");
+*/
 
 int main(int argc, char** argv)
 {
