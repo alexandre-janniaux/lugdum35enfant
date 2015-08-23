@@ -16,13 +16,13 @@ void SceneNode::attachParent(SceneNode* ptrParent)
     ptrParent->m_children.push_back(detachParent());
 }
 
-std::unique_ptr<SceneNode> SceneNode::detachParent()
+SceneNode* SceneNode::detachParent()
 {
-    auto _found = std::find_if(m_parent->m_children.begin(), m_parent->m_children.end(), [&] (std::unique_ptr<SceneNode>& p) -> bool { return p.get() == this; });
+    auto _found = std::find_if(m_parent->m_children.begin(), m_parent->m_children.end(), [&] (SceneNode* p) -> bool { return p == this; });
 
     assert(_found != m_parent->m_children.end());
 
-    std::unique_ptr<SceneNode> _pointer = std::move(*_found);
+    SceneNode* _pointer = *_found;
     m_children.erase(_found);
     m_parent = nullptr;
     return _pointer;
@@ -44,4 +44,8 @@ void SceneNode::compute(std::multimap<int,SceneNode*>& renderQueue,bool force)
 
 void SceneNode::draw(sf::RenderTarget& target,sf::RenderStates states) const
 {
+}
+
+const sf::Transform& SceneNode::getAbsoluteTransform() const {
+    return m_absoluteTransform;
 }

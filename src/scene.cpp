@@ -1,4 +1,9 @@
 #include "scene.hpp"
+#include "cpp_std_11.hpp"
+
+Scene::Scene() {
+    m_sceneNode = make_unique<SceneNode>();
+}
 
 void Scene::draw(sf::RenderTarget& target,sf::RenderStates states) const
 {
@@ -7,4 +12,8 @@ void Scene::draw(sf::RenderTarget& target,sf::RenderStates states) const
 
     for (auto& it : _renderQueue)
         target.draw(*it.second);
+}
+
+SceneNode* Scene::getRootNode() {
+    return m_sceneNode.get();
 }
