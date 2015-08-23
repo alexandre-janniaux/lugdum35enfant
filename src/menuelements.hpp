@@ -18,6 +18,8 @@ public:
     void select();
     void unselect();
     
+    sf::FloatRect getRect();
+    
 protected:
     sf::Text m_displayLabel;
     bool m_selected;
@@ -66,6 +68,7 @@ public:
     void selectPrevious();
     void selectNext();
     void updateSprites();
+    bool cointainsMouse();
     
 private:
     sf::Sprite m_leftSprite;
