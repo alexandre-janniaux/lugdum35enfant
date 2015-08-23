@@ -8,7 +8,7 @@ MenuScreenState::MenuScreenState()
     m_sousmenu.addElement(new PushButton([](){}, "Play"));
     m_sousmenu.addElement(new PushButton([](){}, "Levels"));
     m_sousmenu.addElement(new PushButton([](){
-	MessageBus<ScreenMessage>::getBus()->push(ScreenMessage::Push(ScreenState::Quit));
+	MessageBus<QuitMessage>::getBus()->push(QuitMessage());
     }, "Quit"));
     m_sousmenu.addElement(new Checkbox([](bool){}, true, "Quit"));
     m_sousmenu.addElement(new MultiChoice([](int){}, 0, {"Test1", "Test2"}));

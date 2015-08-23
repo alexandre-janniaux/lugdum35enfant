@@ -1,5 +1,7 @@
 #pragma once
 
+struct QuitMessage {};
+
 struct ScreenMessage {
 	enum Action {PUSH, POP, CLEAR};
 
@@ -17,5 +19,4 @@ struct ScreenMessage {
 
 	Action action;
 	int screen;
-	
 };
