@@ -1,7 +1,6 @@
 #pragma once
 
 #include <deque>
-#include <queue>
 #include <memory>
 #include <iostream>
 #include <map>
@@ -24,12 +23,12 @@ class MessageBus {
 
 		void push(const MessageType& message);
 
-		static std::shared_ptr<MessageBus>&& getBus();
+		static MessageBus<MessageType>* getBus();
 
 		MessageType* next(MessageBusProxy<MessageType>* proxy);
 
 	private:
-		using MessageQueue = std::deque<std::pair<Cursor, MessageType>>;
+		using MessageQueue = std::deque<MessageType>;
 		friend class MessageBusProxy<MessageType>;
 
 		void registerProxy(MessageBusProxy<MessageType>* proxy);
@@ -38,7 +37,7 @@ class MessageBus {
 		MessageQueue m_messages;
 		std::map<MessageBusProxy<MessageType>*, typename MessageQueue::iterator> m_proxys;
 
-		static std::weak_ptr<MessageBus<MessageType>> m_bus;
+		static std::unique_ptr<MessageBus<MessageType>> m_bus;
 };
 
 template <typename MessageType>
@@ -47,25 +46,26 @@ void MessageBus<MessageType>::push(const MessageType& message)
 	if (m_proxys.size() == 0)
 		return;
 	Cursor message_id = MessageStack::instance()->push<MessageType>();
-	m_messages.push_back(std::pair<Cursor, MessageType>(message_id, message));
+	m_messages.push_back(message);
 }
 
 template <typename MessageType>
-std::shared_ptr<MessageBus<MessageType>>&& MessageBus<MessageType>::getBus()
+MessageBus<MessageType>* MessageBus<MessageType>::getBus()
 {
-	if (m_bus.expired())
+	if (m_bus == nullptr)
 	{
 		std::cout << "bus expired"<< std::endl;
-		auto ptr = std::make_shared<MessageBus<MessageType>>();
-		m_bus = std::weak_ptr<MessageBus<MessageType>>(ptr);
-		return std::move(ptr);
+		m_bus.reset(new MessageBus<MessageType>());
 	}
-	return std::move(m_bus.lock());
+	return m_bus.get();
 }
 
 template <typename MessageType>
 void MessageBus<MessageType>::registerProxy(MessageBusProxy<MessageType>* proxy) {
-	m_proxys.insert(std::make_pair(proxy, --m_messages.end()));
+	auto cursor = m_messages.begin();
+	if (m_messages.size() > 0)
+		std::advance(cursor, m_messages.size()-1);
+	m_proxys.emplace(proxy, cursor);
 }
 
 template <typename MessageType>
@@ -79,7 +79,8 @@ void MessageBus<MessageType>::unregisterProxy(MessageBusProxy<MessageType>* prox
 template <typename MessageType>
 MessageType* MessageBus<MessageType>::next(MessageBusProxy<MessageType>* proxy) {
 	// TODO : implement next function
+	return nullptr;
 }
 
 template <typename MessageType>
-std::weak_ptr<MessageBus<MessageType>> MessageBus<MessageType>::m_bus;
+std::unique_ptr<MessageBus<MessageType>> MessageBus<MessageType>::m_bus = nullptr;
