@@ -8,7 +8,6 @@
 
 class FamilyMember
 {
-    
 };
 
 class Floor
@@ -19,6 +18,7 @@ public:
     void update();
 
 // private:
+    std::vector<Lampe> m_lampes;
     std::vector<Meuble*> m_meubles;
     std::vector<FamilyMember> m_family_members;
     std::vector<sf::FloatRect> m_murs;
@@ -37,8 +37,5 @@ private:
     sf::Vector2f m_checkPoint;
     std::vector<Floor> m_floors;
 };
-
-
-
 
 #endif // LEVEL_H_INCLUDED

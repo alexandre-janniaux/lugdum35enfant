@@ -9,19 +9,6 @@
 #include "meuble.hpp"
 
 
-/* Lampe */
-
-bool Lampe::isLighting(sf::Vector2f point) const
-{
-    sf::Vector2f d = point - m_origin;
-    return m_isOn && (d.x * d.x + d.y * d.y <= m_rayon * m_rayon);
-}
-
-void Lampe::switcher()
-{
-    m_isOn = !m_isOn;
-}
-
 /* Meuble */
 
 bool Meuble::canInteract(sf::Vector2f point) const

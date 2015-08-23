@@ -2,16 +2,31 @@
 #include "jsoncpp-src-0.5.0/include/json/json.h"
 #include "jsoncpp-src-0.5.0/include/json/value.h"
 #include "level.hpp"
+#include "resourcemanager.hpp"
 
 Level::Level (int id, sf::Vector2f cp, std::vector<Floor> floors) : m_id_floor(id), m_checkPoint(cp), m_floors(floors) {};
 
 Floor::Floor (std::vector<Meuble*> meubles, std::vector<sf::FloatRect> murs, std::vector<FamilyMember> family_members, sf::Vector2f size) : m_meubles(meubles), m_family_members(family_members), m_murs(murs), m_size(size) {};
 
-sf::FloatRect tof(Json::Value v)
+sf::Vector2f toVect(Json::Value v)
+{
+    return sf::Vector2f(v["x"].asDouble(), v["y"].asDouble());
+}
+
+sf::FloatRect toRect(Json::Value v)
 {
     return sf::FloatRect(v["x"].asDouble(), v["y"].asDouble(),
             v["x"].asDouble(), v["y"].asDouble());
 }
+
+sf::Color toC(Json::Value v)
+{
+    if (v == Json::Value::null)
+        return sf::Color::White;
+    else
+        return sf::Color(v["r"].asInt(), v["g"].asInt(), v["b"].asInt(), v.get("a", 255).asInt());
+}
+
 
 Level::Level(std::istream &is)
 {
@@ -38,33 +53,33 @@ Level::Level(std::istream &is)
 Floor::Floor (Json::Value const floor):
     m_size(floor["size"]["x"].asDouble(), floor["size"]["y"].asDouble())
 {
+    /* initialisation du resourceManager */
+    auto tManager = TextureManager::instance();
+
+    /* Parsing Lampes */
+    Json::Value lampes = floor["lampes"];
+    for (unsigned int i = 0 ; i < lampes.size() ; i++)
+    {
+        Json::Value lampe = lampes[i];
+        sf::Sprite sprite(tManager->get(lampe["sprite"].asString()));
+        m_lampes.push_back(Lampe(sprite, toC(lampe["color"]), toVect(lampe["position"]), lampe["r"].asDouble(), lampe["angleStart"].asDouble(), lampe["angleEnd"].asDouble(), lampe["isOn"].asBool()));
+    }
+
     /* Parsing Meubles */
     Json::Value const meubles = floor["meubles"];
     for (unsigned int i = 0 ; i < meubles.size() ; i++)
     {
-        std::string str = meubles[i]["sprite"].asString();
-        // TODO: ici, utiliser les resourcesManager
-        if (m_txMeubles.find(str) == m_txMeubles.end())
-        {
-            sf::Texture texture;
-            if (!texture.loadFromFile(str))
-            {
-                std::cout << "Error while reading sprite file.\n";
-                return;
-            }
-            m_txMeubles[str] = texture;
-        }
-        sf::Sprite sprite(m_txMeubles[str]);
+        sf::Sprite sprite(tManager->get(meubles[i]["sprite"].asString()));
 
-        sf::FloatRect hitBox(tof(meubles[i]["hitBox"]));
+        sf::FloatRect hitBox(toRect(meubles[i]["hitBox"]));
 
         /* Discrimination des types de meubles */
-        str = meubles[i]["type"].asString();
+        std::string str = meubles[i]["type"].asString();
 
         if (str == "tapis")
         {
             m_meubles.push_back(new Tapis(sprite, hitBox,
-                        tof(meubles[i]["tapishitBox"])));
+                        toRect(meubles[i]["tapishitBox"])));
         }
 
         else if (str == "bruit")
@@ -88,7 +103,7 @@ Floor::Floor (Json::Value const floor):
     /* Parser les murs */
     Json::Value murs = floor["murs"];
     for (unsigned int i = 0 ; i < murs.size() ; i++)
-        m_murs.push_back(tof(murs[i]));
+        m_murs.push_back(toRect(murs[i]));
 
     /* Parser les family member */
     // TODO
