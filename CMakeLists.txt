@@ -24,6 +24,9 @@ SET(
     src/messagestack.cpp
     src/messagebusqueue.cpp
     src/jsoncpp.cpp
+    src/collisionsolver.cpp
+    src/physicinstance.cpp
+    src/physicbody.cpp
 )
 
 ADD_EXECUTABLE(
