@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <iostream>
 
 template <typename T>
 class MessageBusProxy;
@@ -26,6 +27,8 @@ class MessageBus {
 template <typename MessageType>
 void MessageBus<MessageType>::push(const MessageType& message)
 {
+	if (m_proxys.empty())
+		return;
 	m_messages.push_back(message);
 	// TODO: stack
 }
@@ -35,9 +38,12 @@ std::shared_ptr<MessageBus<MessageType>>&& MessageBus<MessageType>::getBus()
 {
 	if (m_bus.expired())
 	{
+		std::cout << "bus expired"<< std::endl;
 		auto ptr = std::make_shared<MessageBus<MessageType>>();
-
+		m_bus = std::weak_ptr<MessageBus<MessageType>>(ptr);
+		return std::move(ptr);
 	}
+	return std::move(m_bus.lock());
 }
 
 template <typename MessageType>
