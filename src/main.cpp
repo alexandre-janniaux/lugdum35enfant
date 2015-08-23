@@ -21,11 +21,7 @@ int main()
     ParticleEmitter<SmokeShape> p(shape_ref, scene.getRootNode());
     p.setFrequency(60);
     p.setNumberOfParticles(60);
-<<<<<<< HEAD
-    p.setNumberOfParticlesMax(100);
-=======
 	p.setNumberOfParticlesMax(100);
->>>>>>> origin/scenenode
     p.setPosition({400.f, 300.f});
     sf::RenderWindow window({800,600}, "toto");
 
