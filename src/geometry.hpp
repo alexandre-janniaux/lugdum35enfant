@@ -17,11 +17,11 @@ inline sf::Vector2f interp(const sf::Vector2f p1, const sf::Vector2f p2, float t
 	return (1.f - t) * p1 + t * p2;
 }
 
-struct segment {
+struct Segment {
 	sf::Vector2f p1, p2;
-	segment();
-	segment(sf::Vector2f p1_, sf::Vector2f p2_);
-	const sf::Vector2f intersection_time(const segment &other) const;
-	const sf::Vector2f intersection(const segment &other) const;
-	void intersection_triangle(const sf::Vector2f lumiere, const segment &tri, std::vector<segment> &result);
-}
+	Segment();
+	Segment(sf::Vector2f, sf::Vector2f);
+	const sf::Vector2f intersection_time(const Segment &other) const;
+	const sf::Vector2f intersection(const Segment &other) const;
+	void intersection_triangle(const sf::Vector2f lumiere, const Segment &tri, std::vector<Segment> &result);
+};

@@ -34,22 +34,22 @@ void Lamp::createRay(float angleStart, float angleEnd)
 {
     sf::Vector2f _pointA(cos(angleStart)*m_radius,sin(angleStart)*m_radius);
     sf::Vector2f _pointB(cos(angleEnd)*m_radius,sin(angleEnd)*m_radius);
-    m_lightSegmentList.push_back(segment(_pointA,_pointB));
+    m_lightSegmentList.push_back(Segment(_pointA,_pointB));
 }
 
-std::vector<segment> Lamp::rectangleToSegments(sf::Rect<float> const& rectangle)
+std::vector<Segment> Lamp::rectangleToSegments(sf::Rect<float> const& rectangle)
 {
-    std::vector<segment> result;
-    result.push_back(segment(sf::Vector2f(rectangle.left,rectangle.top),sf::Vector2f(rectangle.left,rectangle.top+rectangle.height)));
-    result.push_back(segment(sf::Vector2f(rectangle.left,rectangle.top+rectangle.height),sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height)));
-    result.push_back(segment(sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height),sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height)));
-    result.push_back(segment(sf::Vector2f(rectangle.left+rectangle.width,rectangle.top),sf::Vector2f(rectangle.left,rectangle.top)));
+    std::vector<Segment> result;
+    result.push_back(Segment(sf::Vector2f(rectangle.left,rectangle.top),sf::Vector2f(rectangle.left,rectangle.top+rectangle.height)));
+    result.push_back(Segment(sf::Vector2f(rectangle.left,rectangle.top+rectangle.height),sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height)));
+    result.push_back(Segment(sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height),sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height)));
+    result.push_back(Segment(sf::Vector2f(rectangle.left+rectangle.width,rectangle.top),sf::Vector2f(rectangle.left,rectangle.top)));
     return result;
 }
 
-std::vector<segment> Lamp::splitRay(segment lightRay,segment obstacle)
+std::vector<Segment> Lamp::splitRay(Segment lightRay,Segment obstacle)
 {
-    std::vector<segment> _newRays;
+    std::vector<Segment> _newRays;
     _newRays.push_back(lightRay);
     return _newRays;
 }
@@ -58,8 +58,8 @@ void Lamp::computeLight(std::vector<sf::Rect<float>> const& obstacles)
 {
     m_lightSegmentList.clear();
     Lamp::generateBaseRay();
-    std::vector<segment> _newRays;
-    std::vector<segment> obstacleSegments;
+    std::vector<Segment> _newRays;
+    std::vector<Segment> obstacleSegments;
     for (auto& obstacleRectangle : obstacles)
     {
         obstacleSegments = rectangleToSegments(obstacleRectangle);

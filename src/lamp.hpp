@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "scenenode.hpp"
-#include "geometry.cpp"
+#include "geometry.hpp"
 #include <cmath>
 
 namespace Math
@@ -18,15 +18,15 @@ class Lamp : public SceneNode
     private:
         void generateBaseRay();
         void createRay(float, float);
-        std::vector<segment> splitRay(segment,segment);
-        std::vector<segment> rectangleToSegments(sf::Rect<float> const&);
+        std::vector<Segment> splitRay(Segment,Segment);
+        std::vector<Segment> rectangleToSegments(sf::Rect<float> const&);
         void buildRays();
 
     private:
         bool m_computedLight;
         //static float distance(sf::Vector2f);
         std::vector<sf::ConvexShape> m_light;
-        std::vector<segment> m_lightSegmentList;
+        std::vector<Segment> m_lightSegmentList;
         sf::Color m_color;
         float m_radius;
         float m_angleStart; //m_angleStart < m_angleEnd in radian

@@ -31,6 +31,7 @@ ADD_EXECUTABLE(
 
 ADD_DEFINITIONS(
     --std=c++11
+    -g
 )
 
 INCLUDE_DIRECTORIES(
