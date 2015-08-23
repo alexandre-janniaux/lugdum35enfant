@@ -18,9 +18,11 @@ int main()
     text.setPosition({50.f,90.f});
 	text.setFont(font);
 
-    ParticleEmitter<SmokeShape> p(shape_ref, scene.getRootNode(), 100);
+	SceneNode &node1 =scene.getRootNode();
+
+    ParticleEmitter<SmokeShape> p(shape_ref, node1, 1000);
     p.setFrequency(60);
-    p.setPosition({400.f, 300.f});
+//    p.setPosition({400.f, 300.f});
     sf::RenderWindow window({800,600}, "toto");
 
     sf::Clock clock;
@@ -34,6 +36,8 @@ int main()
         std::ostringstream stream;
         stream << p.getNumberOfParticles();
         text.setString("Particules : " + stream.str());
+
+        node1.setPosition(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
 
         p.update(clock.getElapsedTime());
         clock.restart();

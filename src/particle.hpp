@@ -20,7 +20,7 @@ struct SmokeShape : public SceneNode
     sf::CircleShape m_Shape;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const {
         states.transform *= getAbsoluteTransform();
-        target.draw(m_Shape);
+        target.draw(m_Shape, states);
     }
 };
 
@@ -52,10 +52,12 @@ ParticleEmitter<T>::ParticleEmitter(T copy, SceneNode& node, int number)
 , m_particles()
 , m_node(node)
 {
+//    setPosition({400.f,300.f});
     for (int i=0; i<m_NumberOfParticles; i++)
     {
         float angle(rand());
-        m_particles.push_back(new Particle<T> {m_node.getPosition(), sf::Vector2f (cos(angle),sin(angle)), 2.f, (1.f+(rand()%100)/100.f), T() });
+        float life(0.5+(rand()%100)/100.f);
+        m_particles.push_back(new Particle<T> {getPosition(), (40.f+rand()%100)*(sf::Vector2f (cos(angle),sin(angle))), life, life, T() });
         m_particles.back()->node.attachParent(&m_node);
     }
 }
@@ -84,6 +86,8 @@ void ParticleEmitter<T>::setNumberOfParticles(int number)
 template<typename T>
 void ParticleEmitter<T>::update(sf::Time time)
 {
+    auto t = getAbsoluteTransform();
+    auto tt = getTransform();
     for (int i=0;i<m_particles.size(); i++)
     {
         m_particles[i]->lifetime-=time.asSeconds();
@@ -114,8 +118,9 @@ void ParticleEmitter<SmokeShape>::apply(Particle<SmokeShape>* particle)
 template<>
 void ParticleEmitter<SmokeShape>::effect(Particle<SmokeShape>* particle)
 {
-    sf::Color color(255,255,255,255*particle->lifetime/particle->lifetime_max);
+    sf::Color color(0,0,0,255*particle->lifetime/particle->lifetime_max);
     particle->node.m_Shape.setFillColor(color);
+    particle->node.m_Shape.setRadius(5);
 }
 
 template<typename T>
@@ -127,7 +132,8 @@ template<typename T>
 void ParticleEmitter<T>::addParticle(int num)
 {
     float angle(rand());
-    m_particles[num] = new Particle<T> {m_node.getPosition(), sf::Vector2f (cos(angle),sin(angle)), 2.f, 1.f+(rand()%100)/100.f, T() };
+    float life(1.f+(rand()%100)/100.f);
+    m_particles[num] = new Particle<T> {getPosition(), (40.f+rand()%100)*(sf::Vector2f (cos(angle),sin(angle))), life, life, T() };
     m_particles[num]->node.attachParent(&m_node);
 }
 

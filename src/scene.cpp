@@ -1,5 +1,6 @@
 #include "scene.hpp"
 #include "cpp_std_11.hpp"
+#include <iostream>
 
 Scene::Scene() {
     m_sceneNode = make_unique<SceneNode>();
