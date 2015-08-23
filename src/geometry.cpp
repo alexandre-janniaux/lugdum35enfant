@@ -1,19 +1,4 @@
-#include <SFML/Graphics.hpp>
-#include <vector>
-
-const float epsilon = 1e-3f;
-
-inline bool check(const float &x) {
-	return -epsilon <= x && x <= 1.f + epsilon;
-}
-
-inline bool check_strict(const float &x) {
-	return epsilon <= x && x <= 1.f - epsilon;
-}
-
-inline sf::Vector2f interp(const sf::Vector2f p1, const sf::Vector2f p2, float t) {
-	return (1.f - t) * p1 + t * p2;
-}
+#include "geometry.hpp"
 
 struct segment {
 	sf::Vector2f p1, p2;
