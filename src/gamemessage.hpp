@@ -1,7 +1,7 @@
 #pragma once
 
 struct ScreenMessage {
-	enum Action {Push, Pop, Clear}
+	enum Action {Push, Pop, Clear};
 
 	static ScreenMessage Push(int id) {
 		action = Push;
