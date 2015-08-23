@@ -18,6 +18,19 @@ void SousMenu::setPosition(sf::Vector2f position)
 
 void SousMenu::event(sf::Event event)
 {
+    if(event.type == sf::Event::MouseMoved)
+    {
+	for(unsigned int i = 0; i < m_elements.size(); i++)
+	{
+	    if(m_elements[i]->getRect().contains({(float)event.mouseMove.x, (float)event.mouseMove.y}))
+	    {
+		m_elements[m_cursor]->unselect();
+		m_elements[i]->select();
+		m_cursor = i;
+	    }
+	}
+    }
+    
     if(!m_elements.empty())
 	m_elements[m_cursor]->event(event);
     

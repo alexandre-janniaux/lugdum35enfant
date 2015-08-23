@@ -16,12 +16,14 @@ MenuElement::~MenuElement()
 void MenuElement::select()
 {
     m_displayLabel.setStyle(sf::Text::Bold);
+    m_displayLabel.setColor(sf::Color::Red);
     m_selected = true;
 }
 
 void MenuElement::unselect()
 {
     m_displayLabel.setStyle(sf::Text::Regular);
+    m_displayLabel.setColor(sf::Color::White);
     m_selected = false;
 }
 
@@ -29,6 +31,12 @@ void MenuElement::setPosition(sf::Vector2f position)
 {
     m_displayLabel.setPosition(position);
 }
+
+sf::FloatRect MenuElement::getRect()
+{
+    return m_displayLabel.getGlobalBounds();
+}
+
 
 Checkbox::Checkbox(std::function< void(bool) > callback, bool state, sf::String texte) : m_state(state), m_callback(callback)
 {
@@ -53,6 +61,16 @@ void Checkbox::event(const sf::Event& event)
 	m_state ? check() : uncheck();
 	m_callback(m_state);
     }
+    
+    if(event.type == sf::Event::MouseButtonPressed)
+    {
+	if(m_displayLabel.getGlobalBounds().contains({(float)event.mouseButton.x, (float)event.mouseButton.y}))
+	{
+	    m_state = !m_state;
+	    m_state ? check() : uncheck();
+	    m_callback(m_state);
+	}
+    }
 }
 
 void Checkbox::render(sf::RenderTarget& target)
@@ -74,8 +92,8 @@ void Checkbox::check()
 
 void Checkbox::setPosition(sf::Vector2f position)
 {
-    m_checkboxSprite.setPosition(position);
-    m_displayLabel.setPosition(position + sf::Vector2f(40, 0));
+    m_checkboxSprite.setPosition(position + sf::Vector2f(-35, 5));
+    m_displayLabel.setPosition(position);
 }
 
 void Checkbox::uncheck()
@@ -151,6 +169,14 @@ void MultiChoice::event(const sf::Event& event)
     if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Left) {
 	selectPrevious();
     }
+    
+    if(event.type == sf::Event::MouseButtonPressed)
+    {
+	if(m_displayLabel.getGlobalBounds().contains({(float)event.mouseButton.x, (float)event.mouseButton.y}))
+	{
+	    selectNext();
+	}
+    }
 }
 
 void MultiChoice::render(sf::RenderTarget& target)
@@ -186,6 +212,15 @@ void PushButton::event(const sf::Event& event)
 {
     if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
 	m_callback();
+    
+    
+    if(event.type == sf::Event::MouseButtonPressed)
+    {
+	if(m_displayLabel.getGlobalBounds().contains({(float)event.mouseButton.x, (float)event.mouseButton.y}))
+	{
+	    m_callback();
+	}
+    }
 }
 
 void PushButton::render(sf::RenderTarget& target)
