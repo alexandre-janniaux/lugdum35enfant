@@ -172,4 +172,3 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
         }
     }
 };
-
