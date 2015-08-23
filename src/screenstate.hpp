@@ -11,7 +11,6 @@ class ScreenState {
     public:
 	
 	enum ScreenStateType {
-		Quit,
 		Menu,
 		Game,
 		PauseGame
