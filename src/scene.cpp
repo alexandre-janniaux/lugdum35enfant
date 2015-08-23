@@ -8,7 +8,7 @@ Scene::Scene() {
 void Scene::draw(sf::RenderTarget& target,sf::RenderStates states) const
 {
     std::multimap<int,SceneNode*> _renderQueue;
-    m_sceneNode->compute(_renderQueue,false);
+    m_sceneNode->compute();
 
     for (auto& it : _renderQueue)
         target.draw(*it.second);
