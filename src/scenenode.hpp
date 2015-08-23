@@ -15,17 +15,19 @@ class SceneNode: public sf::Transformable, public sf::Drawable
         SceneNode(int layer=0);
         SceneNode* detachParent();
         void attachParent(SceneNode*);
-        void compute(std::multimap<int,SceneNode*>&,bool);
-
         const sf::Transform& getAbsoluteTransform() const;
+
+    public:
+        void compute() const;
 
     private:
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+        void invalidate();
 
     private:
         std::vector<SceneNode*> m_children;
         SceneNode* m_parent;
-        sf::Transform m_absoluteTransform;
-        bool m_computed;
+        mutable sf::Transform m_absoluteTransform;
+        mutable bool m_computed;
         int m_layer;
 };
