@@ -22,7 +22,6 @@ public:
     void setFrequency(float);
     void setNumberOfParticles(float);
     int getNumberOfParticles() { return m_particles.size(); }
-    void onCreate(Particle<T>);
     void update(sf::Time);
     void addParticle();
     void apply(Particles<T>*);
@@ -62,10 +61,6 @@ void ParticleEmitter::setNumberOfParticles(float number)
     m_NumberOfParticles = number;
 }
 
-void ParticleEmitter::onCreate(Particle<T> particle)
-{
-
-}
 
 void ParticleEmitter::update(sf::Time time)
 {
