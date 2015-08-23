@@ -11,7 +11,6 @@ SET(
     SRCS
     src/main.cpp
     src/menuelements.cpp
-    src/level.cpp
     src/screenstack.cpp
     src/gamescreenstate.cpp
     src/menuscreenstate.cpp
