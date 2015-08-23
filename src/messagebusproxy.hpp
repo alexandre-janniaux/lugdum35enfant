@@ -8,8 +8,10 @@ class MessageBus;
 
 class MessageBusProxyAbstract {
 	private:
-		friend class MessageStack;
+		friend class MessageBusQueue;
 		virtual bool readOne()=0;
+		virtual void* const getBusAddress() const=0;
+
 };
 
 
@@ -24,6 +26,7 @@ class MessageBusProxy : public MessageBusProxyAbstract {
 		bool readOne() override;
 
 	private:
+		void* const getBusAddress() const override;
 		MessageBus<MessageType>* m_bus;
 		Callback m_callback;
 };
@@ -42,6 +45,12 @@ template <typename MessageType>
 MessageBusProxy<MessageType>::~MessageBusProxy()
 {
 	m_bus->unregisterProxy(this);
+}
+
+template <typename MessageType>
+void* const MessageBusProxy<MessageType>::getBusAddress() const
+{
+	return static_cast<void*>(m_bus);
 }
 
 template <typename MessageType>

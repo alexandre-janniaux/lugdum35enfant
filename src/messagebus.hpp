@@ -5,7 +5,6 @@
 #include <iostream>
 #include <map>
 #include <utility>
-#include "messagestack.hpp"
 
 template <typename T>
 class MessageBusProxy;
@@ -40,6 +39,7 @@ class MessageBus {
 		static std::unique_ptr<MessageBus<MessageType>> m_bus;
 };
 
+#include "messagebusqueue.hpp"
 #include "messagebusproxy.hpp"
 
 template <typename MessageType>
@@ -47,7 +47,7 @@ void MessageBus<MessageType>::push(const MessageType& message)
 {
 	if (m_proxys.size() == 0)
 		return;
-	Cursor message_id = MessageStack::instance()->push<MessageType>();
+	MessageBusQueue::instance()->push<MessageType>();
 	m_messages.push_back(message);
 }
 
