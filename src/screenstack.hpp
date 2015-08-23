@@ -7,6 +7,9 @@
 
 #include <SFML/System.hpp>
 
+#include "messagebusproxy.hpp"
+#include "gamemessage.hpp"
+
 namespace sf {
 	struct Event;
 	class RenderTarget;
@@ -17,7 +20,8 @@ class ScreenState;
 class ScreenStack
 {
 	public:
-		
+		ScreenStack();
+
 		void clearStack();
 		
 		void onEvent(const sf::RenderTarget& target, const sf::Event& event);
@@ -31,7 +35,11 @@ class ScreenStack
 		
 	private:
 		
+		void onScreenMessage(const ScreenMessage& message);
+
 		std::map<int, std::unique_ptr<ScreenState>> m_states;
 		std::vector<int> m_stack;
+		MessageBusProxy<ScreenMessage> m_bus;
+
 	
 };
