@@ -18,7 +18,6 @@ int main(int argc, char** argv)
 	window.setFramerateLimit(60);
 	
 	
-	
 	ScreenStack screenStack;
 	screenStack.registerState(ScreenState::Menu, make_unique<MenuScreenState>());
 //	screenStack.registerState(ScreenState::Game, make_unique<GameScreenState>());

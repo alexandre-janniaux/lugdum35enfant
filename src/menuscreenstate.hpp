@@ -5,6 +5,8 @@
 #include <iostream>
 
 #include "screenstate.hpp"
+#include "sousmenu.hpp"
+#include "menuelements.hpp"
 
 class MenuScreenState : public ScreenState
 {
@@ -23,9 +25,8 @@ private:
 
     sf::View m_view;
 
-    sf::Font m_font;
-    std::vector< sf::Text > m_menus;
-
+    SousMenu m_sousmenu;
+    
     sf::Texture m_background_texture;
     sf::Sprite m_background;
     
