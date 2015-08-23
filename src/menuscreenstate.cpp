@@ -1,11 +1,15 @@
 #include "menuscreenstate.hpp"
+#include "messagebus.hpp"
+#include "gamemessage.hpp"
 
 MenuScreenState::MenuScreenState()
 {
     m_sousmenu.setPosition(sf::Vector2f(50, 50));
     m_sousmenu.addElement(new PushButton([](){}, "Play"));
     m_sousmenu.addElement(new PushButton([](){}, "Levels"));
-    m_sousmenu.addElement(new PushButton([](){}, "Quit"));
+    m_sousmenu.addElement(new PushButton([](){
+	MessageBus<ScreenMessage>::getBus()->push(ScreenMessage::Push(ScreenState::Quit));
+    }, "Quit"));
     m_sousmenu.addElement(new Checkbox([](bool){}, true, "Quit"));
     m_sousmenu.addElement(new MultiChoice([](int){}, 0, {"Test1", "Test2"}));
     
