@@ -13,7 +13,7 @@ class SceneNode: public sf::Transformable, public sf::Drawable
 
     public:
         SceneNode(int layer=0);
-        SceneNode* detachParent();
+        void detachParent();
         void attachParent(SceneNode*);
         const sf::Transform& getAbsoluteTransform() const;
 
