@@ -24,4 +24,4 @@ struct segment {
 	const sf::Vector2f intersection_time(const segment &other) const;
 	const sf::Vector2f intersection(const segment &other) const;
 	void intersection_triangle(const sf::Vector2f lumiere, const segment &tri, std::vector<segment> &result);
-}
+};
