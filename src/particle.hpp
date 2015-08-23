@@ -52,7 +52,7 @@ ParticleEmitter<T>::ParticleEmitter(T copy, SceneNode& node, int number)
 , m_particles()
 , m_node(node)
 {
-//    setPosition({400.f,300.f});
+    setPosition({400.f,300.f});
     for (int i=0; i<m_NumberOfParticles; i++)
     {
         float angle(rand());
@@ -111,8 +111,8 @@ void ParticleEmitter<T>::update(sf::Time time)
 template<>
 void ParticleEmitter<SmokeShape>::apply(Particle<SmokeShape>* particle)
 {
-    sf::Vector2f gravity(0,0.01);
-    particle->vel+=gravity;
+    float gravity(particle->lifetime/particle->lifetime_max);
+    particle->vel*=gravity;
 }
 
 template<>
