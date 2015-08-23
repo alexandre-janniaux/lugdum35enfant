@@ -11,10 +11,11 @@ class Scene;
 class SceneNode: public sf::Drawable
 {
     public:
-        SceneNode(int layer=0);
+        SceneNode(int layer = 0);
+        SceneNode(SceneNode & parent, int layer = 0);
         ~SceneNode();
         void detachParent();
-        void attachParent(SceneNode*);
+        void attachParent(SceneNode&);
         const sf::Transform& getAbsoluteTransform() const;
         const sf::Transform& getTransform() const;
         const sf::Vector2f& getPosition() const;

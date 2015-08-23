@@ -18,6 +18,7 @@ SET(
     src/scenenode.cpp
     src/sousmenu.cpp
     src/spritescenenode.cpp
+    src/messagebusqueue.cpp
 )
 
 ADD_EXECUTABLE(

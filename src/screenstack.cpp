@@ -1,6 +1,16 @@
 #include "screenstack.hpp"
 #include "screenstate.hpp"
 
+#include <functional>
+
+using namespace std::placeholders;
+
+ScreenStack::ScreenStack() :
+	m_bus(std::bind(&ScreenStack::onScreenMessage, this, _1))
+{
+
+}
+
 
 void ScreenStack::clearStack()
 {
@@ -21,10 +31,34 @@ void ScreenStack::onEvent(const sf::RenderTarget& target, const sf::Event& event
 	}
 }
 
+void ScreenStack::onScreenMessage(const ScreenMessage& message)
+{
+	switch (message.action)
+	{
+		case ScreenMessage::PUSH:
+			pushState(message.screen);
+			break;
+
+		case ScreenMessage::POP:
+			popState();
+			break;
+
+		case ScreenMessage::CLEAR:
+			clearStack();
+			break;
+
+		default:
+			break;
+	}
+}
+
+
 void ScreenStack::onUpdate(sf::Time time)
 {
 	for(int id : m_stack)
 		m_states.at(id)->update(time);
+
+	m_bus.readAll();
 }
 
 void ScreenStack::popState()

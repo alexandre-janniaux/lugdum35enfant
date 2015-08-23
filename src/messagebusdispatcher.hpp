@@ -1,51 +1,48 @@
 #pragma once
 
 #include <algorithm>
+#include <string>
+#include <map>
 #include <bits/stl_pair.h>
 #include "messagebus.hpp"
-
-namespace {
-	using ProxyPair = std::pair<void*,void*>;
-}
 
 class MessageBusDispatcher
 {
 	public:
 		template<typename MessageType>
-		void addProxy(const MessageBusProxy<MessageType>& proxy);
+		void listen(const std::string& name, std::function<void(MessageType&)> callback);
 
 		template<typename MessageType>
-		void removeProxy(const MessageBusProxy<MessageType>& proxy);
+		void remove(const std::string& name);
 
 		void processQueue();
 
 	private:
-		std::vector<std::pair<void*, void*>> m_proxys;
+		std::map<std::string, std::unique_ptr<MessageBusProxyAbstract>> m_proxys;
 };
 
 template<typename MessageType>
-void MessageBusDispatcher::addProxy(const MessageBusProxy<MessageType>& proxy)
+void MessageBusDispatcher::listen(const std::string& name, std::function<void(MessageType&)> callback)
 {
-	auto search = std::find_if(m_proxys.begin(), m_proxys.end(),
-		[] (const ProxyPair& proxy) { return proxy.first == &proxy; });
+	auto search = m_proxys.find(name);
 
-	if (search != m_proxys.end()) return;
+	if (search == m_proxys.end())
+		m_proxys[name].reset(new MessageBusProxy<MessageType>(callback);
 
-	m_proxys.push_back(ProxyPair(&proxy, &MessageBus<MessageType>::getBus()));
+	m_proxys.emplace(name, new MessageBusProxy<MessageType>(callback));
 }
 
 template<typename MessageType>
-void MessageBusDispatcher::removeProxy(const MessageBusProxy<MessageType>&proxy)
+void MessageBusDispatcher::remove(const std::string& name)
 {
-	auto search = std::find_if(m_proxys.begin(), m_proxys.end(),
-		[] (const ProxyPair& proxy) { return proxy.first == &proxy; });
+	auto search = m_proxys.find(name);
 
-	if (search != m_proxys.end()) return;
+	if (search == m_proxys.end()) return;
 
 	m_proxys.erase(search);
 }
 
 void MessageBusDispatcher::processQueue()
 {
-	//TODO
+	MessageBusQueue::instance()->dispatch(m_proxys);
 }
