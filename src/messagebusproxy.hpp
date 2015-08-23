@@ -24,7 +24,7 @@ class MessageBusProxy : public MessageBusProxyAbstract {
 		bool readOne() override;
 
 	private:
-		std::shared_ptr<MessageBus<MessageType>> m_bus;
+		MessageBus<MessageType>* m_bus;
 		Callback m_callback;
 };
 
