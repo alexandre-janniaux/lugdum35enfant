@@ -7,7 +7,7 @@
 int main()
 {
     SmokeShape shape_ref;
-    shape_ref.m_Shape.setRadius(50.f);
+    shape_ref.m_Shape.setRadius(10.f);
 
     Scene scene;
 
