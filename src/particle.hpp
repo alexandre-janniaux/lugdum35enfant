@@ -33,6 +33,7 @@ public:
     //~ParticleEmitter();
     void setFrequency(float);
     void setNumberOfParticles(float);
+    void setNumberOfParticlesMax(float);
     int getNumberOfParticles() { return m_particles.size(); }
     void update(sf::Time);
     void addParticle();
@@ -82,8 +83,7 @@ void ParticleEmitter<T>::setNumberOfParticles(float number)
 template<typename T>
 void ParticleEmitter<T>::setNumberOfParticlesMax(float number)
 {
-	m_NumberOfParticlesMax = number;
-
+    m_NumberOfParticlesMax = number;
 }
 
 template<typename T>
