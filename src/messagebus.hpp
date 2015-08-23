@@ -40,6 +40,8 @@ class MessageBus {
 		static std::unique_ptr<MessageBus<MessageType>> m_bus;
 };
 
+#include "messagebusproxy.hpp"
+
 template <typename MessageType>
 void MessageBus<MessageType>::push(const MessageType& message)
 {
@@ -74,12 +76,18 @@ void MessageBus<MessageType>::unregisterProxy(MessageBusProxy<MessageType>* prox
 	if (_search == m_proxys.end())
 		return;
 	m_proxys.erase(_search);
+
+	if (m_proxys.size() == 0)
+		delete m_bus.release();
 }
 
 template <typename MessageType>
 MessageType* MessageBus<MessageType>::next(MessageBusProxy<MessageType>* proxy) {
 	// TODO : implement next function
-	return nullptr;
+	auto& iterator = m_proxys.at(proxy);
+	if (iterator == m_messages.end())
+		return nullptr;
+	return &*(++iterator);
 }
 
 template <typename MessageType>
