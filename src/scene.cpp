@@ -7,13 +7,24 @@ Scene::Scene() {
 
 void Scene::draw(sf::RenderTarget& target,sf::RenderStates states) const
 {
-    std::multimap<int,SceneNode*> _renderQueue;
-    m_sceneNode->compute();
+    std::multimap<int,SceneNode const*> _renderQueue;
+    getRenderQueue(getRootNode(), _renderQueue);
+    m_sceneNode->getAbsoluteTransform();
+
 
     for (auto& it : _renderQueue)
-        target.draw(*it.second);
+        target.draw(*it.second, states);
 }
 
-SceneNode* Scene::getRootNode() {
-    return m_sceneNode.get();
+SceneNode& Scene::getRootNode() const
+{
+    return *m_sceneNode.get();
+}
+
+void getRenderQueue(SceneNode const& sn, std::multimap<int, SceneNode const*>& queue)
+{
+    queue.insert(std::pair<int,SceneNode const*>(sn.getLayer(), &sn));
+    std::vector<SceneNode*> const &children = sn.getChildren();
+    for (auto& it : children)
+        getRenderQueue(*it, queue);
 }
