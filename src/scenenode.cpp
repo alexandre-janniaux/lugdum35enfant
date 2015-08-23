@@ -28,24 +28,36 @@ SceneNode* SceneNode::detachParent()
     return _pointer;
 };
 
-void SceneNode::compute(std::multimap<int,SceneNode*>& renderQueue,bool force)
+void SceneNode::compute() const//std::multimap<int,SceneNode*>& renderQueue,bool force)
 {
-    if (!m_computed || force) {
-        m_absoluteTransform = (m_parent == nullptr) ? getTransform() : m_parent->m_absoluteTransform * getTransform();
-    }
+    if (!m_computed)
+    {
+        if (m_parent != nullptr)
+        {
+            m_absoluteTransform = m_parent->getAbsoluteTransform() * getTransform();
+        }
+        else
+            m_absoluteTransform = getTransform();
 
-    for (auto& it : m_children) {
-        it->compute(renderQueue,!m_computed || force);
     }
+    m_computed=true;
+}
 
-    m_computed = true;
-    renderQueue.insert(std::pair<int,SceneNode*>(m_layer,this));
+void SceneNode::invalidate()
+{
+    m_computed=false;
+    for (auto& it : m_children)
+    {
+        it->invalidate();
+    }
 }
 
 void SceneNode::draw(sf::RenderTarget& target,sf::RenderStates states) const
 {
 }
 
-const sf::Transform& SceneNode::getAbsoluteTransform() const {
+const sf::Transform& SceneNode::getAbsoluteTransform() const
+{
+    compute();
     return m_absoluteTransform;
 }
