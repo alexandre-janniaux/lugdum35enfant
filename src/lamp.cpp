@@ -58,23 +58,18 @@ void Lamp::computeLight(std::vector<sf::Rect<float>> const& obstacles)
         obstacleSegments = rectangleToSegments(obstacleRectangle);
         for (auto& obstacleSegment : obstacleSegments)
         {
-            auto it=m_lightSegmentList.begin();
-            while (it!=m_lightSegmentList.end())
-            {
+            for (auto it=m_lightSegmentList.begin(); it!=m_lightSegmentList.end(); it++) {
                 std::cout << "na";
                 getPosition();
                 std::cout << "th";
                 obstacleSegment.intersection_triangle(getPosition(),*it,_newRays);
                 std::cout << "ou : " << m_lightSegmentList.size() << std::endl;
-                *it=_newRays.back();
-                _newRays.pop_back();
-                while (!_newRays.empty())
-                {
-                    m_lightSegmentList.push_back(_newRays.back());
-                    _newRays.pop_back();
-                }
-                it++;
             }
+            m_lightSegmentList.clear();
+            for (auto it=_newRays.begin(); it!=_newRays.end(); it++) {
+                m_lightSegmentList.push_back(*it);
+            }
+            _newRays.clear();
         }
     }
     std::cout << "t : E" << std::endl;
