@@ -12,6 +12,8 @@ class SpriteSceneNode : public SceneNode
         inline SpriteSceneNode(SceneNode& father, sf::Vector2f pos, int layer, sf::Sprite const& sprite) :
             SceneNode(father, pos, layer), m_sprite(sprite) {}
         void setTexture(const sf::Texture& texture);
+		void setSprite(const sf::Sprite& sprite);
+		const sf::Sprite& getSprite() const;
 
     protected:
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

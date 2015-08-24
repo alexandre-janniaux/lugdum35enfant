@@ -7,9 +7,30 @@
 //
 
 #include "meuble.hpp"
-
+#include "gameworld.hpp"
+#include "entitypool.hpp"
+#include "physicinstance.hpp"
+#include "entityscene.hpp"
 
 /* Meuble */
+
+Meuble::Meuble(sf::Sprite &sprite, sf::Vector2f pos, sf::FloatRect hitBox, sf::FloatRect interactBox, GameContext& context) :
+	m_sn(10),
+	m_hitBox(hitBox),
+	m_interactBox(interactBox)
+{
+	m_entity = context.entityPool->createEntity();
+	auto node = context.scene->bindEntity(m_entity);
+	auto body = context.physic->bindEntity(m_entity);
+
+	body->setNode(node);
+	body->setHitbox(hitBox);
+
+	node->setAbsolutePosition(pos);
+
+	m_sn.attachParent(*node);
+	m_sn.setSprite(sprite);
+}
 
 bool Meuble::canInteract(sf::Vector2f point) const
 {

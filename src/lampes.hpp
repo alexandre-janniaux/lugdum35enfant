@@ -4,13 +4,15 @@
 #include <SFML/Graphics.hpp>
 #include "spritescenenode.hpp"
 
+class GameContext;
+
 // TODO Utiliser sceneNode
 /* classe pour les lampes. */
 
 class Lampe
 {
 public:
-    Lampe(SceneNode &father, sf::Sprite& sprite, sf::Vector2f pos, sf::Color color, sf::Vector2f origin, float r, float angleStart, float angleEnd, bool on);
+    Lampe(sf::Sprite& sprite, sf::Vector2f pos, sf::Color color, sf::Vector2f origin, float r, float angleStart, float angleEnd, bool on, GameContext& context);
     bool isLighting(sf::Vector2f point) const;
     void switcher();
 private:

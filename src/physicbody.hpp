@@ -3,6 +3,8 @@
 #include "physicparticle.hpp"
 #include "entitypool.hpp"
 
+#include <SFML/Graphics.hpp>
+
 #include <vector>
 #include <memory>
 
@@ -33,6 +35,9 @@ class PhysicBody
 		void setPosition(const sf::Vector2f& position);
 		sf::Vector2f getPosition() const;
 
+		void setHitbox(const sf::FloatRect& rect);
+		const sf::FloatRect& getHitbox() const;
+
 		Entity getRelatedEntity();
 	private:
 		friend class PhysicInstance;
@@ -40,7 +45,7 @@ class PhysicBody
 
 		Entity m_entity;
 		SceneNode* m_node;
-		std::unique_ptr<PhysicGeom> m_geoms;
+		sf::FloatRect m_hitBox;
 		std::size_t m_type;
 		sf::Vector2f m_speed;
 		bool m_freeze;

@@ -12,6 +12,18 @@ void SpriteSceneNode::setTexture(const sf::Texture& texture)
     m_sprite.setTexture(texture);
 }
 
+void SpriteSceneNode::setSprite(const sf::Sprite& sprite)
+{
+	m_sprite = sprite;
+}
+
+const sf::Sprite& SpriteSceneNode::getSprite() const
+{
+	return m_sprite;
+}
+
+
+
 void SpriteSceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getAbsoluteTransform();

@@ -1,15 +1,21 @@
 #include "wallscenenode.hpp"
+#include "entityscene.hpp"
+#include "physicinstance.hpp"
+#include "gameworld.hpp"
 
+WallSceneNode::WallSceneNode(SceneNode& father, sf::FloatRect rect, GameContext& context) :  m_size(rect.width, rect.height) {
 
-void WallSceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    sf::RectangleShape m_shape(m_size);
-    m_shape.setFillColor(sf::Color::White);
-    states.transform *= getAbsoluteTransform();
-    target.draw(m_shape, states);
+	m_entity = context.entityPool->createEntity();
+	auto node = context.scene->bindEntity(m_entity);
+	auto body = context.physic->bindEntity(m_entity);
+	body->setNode(node);
+	//body->setHitbox(hitBox);
+
+	//node->setAbsolutePosition(pos);
+
 }
 
 sf::FloatRect WallSceneNode::getRect()
 {
-    return sf::FloatRect(getPosition(), getSize());
+    //return sf::FloatRect(getPosition(), getSize());
 }
