@@ -12,7 +12,7 @@
 	"hitBox":{"x":20,"y":500,"w":80,"h":60}},
 	{"type":"bruit",
 	"sprite":{"file":"shelf2.png"},
-	"hitBox":{"x":450,"y":500,"w":80,"h":60},
+	"hitBox":{"x":400,"y":500,"w":80,"h":60},
 	"bruitTemps":3},
 	{"type":"bruit",
 	"sprite":{"file":"shelf2.png"},
