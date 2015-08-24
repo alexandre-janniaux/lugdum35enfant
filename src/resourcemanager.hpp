@@ -11,28 +11,16 @@
 #endif
 
 #include "cpp_std_11.hpp"
+#include "singleton.hpp"
 
 template <typename T>
-class ResourceManager
+class ResourceManager : public Singleton<ResourceManager<T>>
 {
 	public:
-		static ResourceManager* instance()
-		{
-			if(m_instance == nullptr)
-			{
-				m_instance.reset(new ResourceManager<T>());
-			}
-			return m_instance.get();
-		}
-
 		T& get(const std::string& nom_fichier);
 
 		~ResourceManager() = default;
 	private:
-		ResourceManager() = default;
-		using Ptr = std::unique_ptr<ResourceManager<T>>;
-
-	    static Ptr m_instance;
 
     	std::map<std::string, T*> m_resources;
 };
@@ -53,10 +41,6 @@ T& ResourceManager<T>::get(const std::string& nom_fichier)
 	}
 	return *m_resources.at(filename);
 }
-
-
-template <typename T>
-typename ResourceManager<T>::Ptr ResourceManager<T>::m_instance = nullptr;
 
 using FontManager = ResourceManager<sf::Font>;
 using TextureManager = ResourceManager<sf::Texture>;
