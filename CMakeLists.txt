@@ -30,6 +30,7 @@ SET(
     src/physicinstance.cpp
     src/physicbody.cpp
     src/physicgeom.cpp
+    src/resourcemanager.cpp
     src/scene.cpp
     src/scenenode.cpp
     src/screenstack.cpp

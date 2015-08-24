@@ -5,6 +5,7 @@
 #include <memory>
 #include <map>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #if __APPLE__
 #include "ResourcePath.hpp"
@@ -20,12 +21,8 @@ std::unique_ptr<T>&& ResourceProvider(const std::string& filename) {
 	return std::move(ptr);
 }
 
-template <sf::Music>
-std::unique_ptr<sf::Music>&& ResourceProvider(const std::string& filename) {
-	auto ptr = make_unique<T>();
-	ptr->openFromFile(filenmae);
-	return std::move(ptr);
-}
+template <>
+std::unique_ptr<sf::Music>&& ResourceProvider(const std::string& filename);
 
 template <typename T>
 class ResourceManager : public Singleton<ResourceManager<T>>
