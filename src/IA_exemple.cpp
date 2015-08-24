@@ -118,9 +118,10 @@ void IA_exemple(GameWorld &gw)
         cachette = std::make_pair(meuble->m_hitBox, hb_ext);
         cachettes.push_back(cachette);
     }
+    auto lampes = std::vector<std::pair<sf::Vector2f, float>> {};
+    auto interrupteurs = std::vector<std::pair<sf::Vector2f, sf::Vector2f>> {};
     
-    
-    FamilyMember papa (sf::Vector2f (carte.width, carte.height), obstacles, std::vector<sf::Vector2f> {}, MEUBLE, sf::Vector2f (100, 100), cachettes, std::vector<std::pair<sf::Vector2f, float>> {}, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> {});
+    FamilyMember papa (sf::Vector2f (carte.width, carte.height), obstacles, std::vector<sf::Vector2f> {}, MEUBLE, sf::Vector2f (100, 100), cachettes, lampes, interrupteurs);
 
     
     reseau = papa.creer_reseau_meuble(cachettes, obstacles);

@@ -27,12 +27,12 @@ public:
     
     // CONSTANTES
     sf::Vector2f m_taille;
-    std::vector<sf::FloatRect> m_obstacles;
+    std::vector<sf::FloatRect> &m_obstacles;
     std::vector<sf::Vector2f> m_reseau;
     std::vector<sf::Vector2f> m_chemin_global;
     IA_Type m_type; // 1 : IA meuble, 2 : IA zone
-    std::vector<std::pair<sf::Vector2f, float>> m_lampes;
-    std::vector<std::pair<sf::Vector2f, sf::Vector2f>> m_interrupteurs;
+    std::vector<std::pair<sf::Vector2f, float>> &m_lampes;
+    std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &m_interrupteurs;
 
     sf::Vector2f m_vit;
     sf::Vector2f m_pos;

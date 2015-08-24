@@ -28,9 +28,10 @@ sf::Vector2f FamilyMember::point_centre(sf::FloatRect hb_int, sf::FloatRect hb_e
     
     for (auto point: points_candidats)
     {
-        if (dansAucunObstacle(point, obstacles) && point.x >= 0 && point.x <= m_taille.x && point.y >= 0 && point.y <= m_taille.y)
+        auto new_point = normaliser(point);
+        if (dansAucunObstacle(new_point, obstacles) && new_point.x >= 0 && new_point.x <= m_taille.x && new_point.y >= 0 && new_point.y <= m_taille.y)
         {
-            return point;
+            return new_point;
         };
     }
     std::cout << "ERREUR DANS POINT CENTRE FAMILY MEMBER";
@@ -62,12 +63,14 @@ std::vector<sf::Vector2f> FamilyMember::creer_reseau_meuble(std::vector<std::pai
     return normalise_reseau(reseau);
 }
 
-FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> &obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> &cachettes, std::vector<std::pair<sf::Vector2f, float>> &lampes, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &interrupteurs)
+FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> &obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> &cachettes, std::vector<std::pair<sf::Vector2f, float>> &lampes, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &interrupteurs):
+m_interrupteurs(interrupteurs),
+m_obstacles(obstacles),
+m_lampes(lampes)
 {
     std::cout << "Taille de cachettes" << cachettes.size();
     // CONSTANTES
     m_taille = taille;
-    m_obstacles = obstacles;
     if (type == ZONE)
     {
         m_reseau = normalise_reseau(reseau);
@@ -81,8 +84,6 @@ FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> &obst
     }
     m_chemin_global = generateRonde(sf::FloatRect (0, 0, taille.x, taille.y), obstacles, m_reseau, m_pas);
     m_type = type;
-    m_lampes = lampes;
-    m_interrupteurs = interrupteurs;
 
     m_vit = sf::Vector2f (0, 0);
     m_pos = pos;
