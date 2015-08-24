@@ -10,7 +10,7 @@ bool Furniture::loadFromTextureFile(std::string filename, sf::Vector2f pos, int 
     mNoiseTime = 0.0f;
     mPos = pos;
     mHitbox[0] = sf::Vector2f(pos.x, pos.y);
-    mHitbox[1] = sf::Vector2f(pos.x + mTex.getSize().x, pos.x + mTex.getSize().y);
+    mHitbox[1] = sf::Vector2f(pos.x + mTex.getSize().x, pos.y + mTex.getSize().y);
     mRugHitbox[0] = sf::Vector2f(pos.x, pos.y);
     mRugHitbox[1] = sf::Vector2f(pos.x, pos.y);
     mLayer = layer;

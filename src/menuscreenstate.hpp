@@ -28,6 +28,6 @@ private:
 
     sf::Texture m_background_texture;
     sf::Sprite m_background;
-    
+
     sf::Music m_music;
 };
