@@ -39,6 +39,7 @@ GameScreenState::GameScreenState(sf::RenderWindow* window) :
 	m_world.reset(new GameWorld(m_context, "test.txt", m_context.scene->getRootNode()));
 
 	m_hero = Hero::createHero(m_context);
+	m_hero->setPosition({300,300});
 }
 
 void GameScreenState::event(const sf::RenderTarget& target, const sf::Event& event) {
@@ -85,7 +86,7 @@ void GameScreenState::update(const sf::Time& time) {
 		direction |= Hero::BOTTOM;
 
 	m_hero->move(direction);
-
+	
 	m_physicInstance.update(time, sf::seconds(0.1f));
 }
 

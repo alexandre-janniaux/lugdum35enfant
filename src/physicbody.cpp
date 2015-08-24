@@ -61,8 +61,19 @@ void PhysicBody::setSpeed(const sf::Vector2f& speed)
 
 void PhysicBody::setPosition(const sf::Vector2f& position)
 {
-	if (m_node)
+	if (m_node) {
 		m_node->setAbsolutePosition(position);
+	} else{
+		std::cout << "Not assigned node" << std::endl;
+	}
+}
+
+sf::Vector2f PhysicBody::getPosition() const
+{
+	if (m_node)
+		return m_node->getAbsolutePosition();
+	std::cout << "No node assigned" << std::endl;
+	return sf::Vector2f(0,0);
 }
 
 Entity PhysicBody::getRelatedEntity()

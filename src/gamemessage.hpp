@@ -23,7 +23,12 @@ struct ScreenMessage {
 	int screen;
 };
 
-struct SetEntitySpeedMessge{
+struct SetEntitySpeedMessage {
 	Entity entity;
 	sf::Vector2f speed;
+};
+
+struct SetEntityPositionMessage {
+	Entity entity;
+	sf::Vector2f position;
 };

@@ -19,15 +19,11 @@ struct GameContext
 {
     //GameContext(sf::RenderWindow & window, SceneNode & father);
 
-<<<<<<< HEAD
     sf::RenderWindow* window;
     EntityScene* scene;
 	EntityPool* entityPool;
 	PhysicInstance* physic;
-=======
-    sf::RenderWindow & window;
-    SceneNode& sceneNode;
->>>>>>> tilemapmanager
+
 };
 
 class GameWorld

@@ -10,6 +10,7 @@ class GameContext;
 class Hero
 {
 	public:
+		~Hero();
 
 		enum Direction {
 			NONE = 		0,
@@ -23,6 +24,9 @@ class Hero
 
 		void move(int direction);
 
+		void setPosition(const sf::Vector2f& position);
+
+		
 	private:
 		Hero();
 		float m_speed;

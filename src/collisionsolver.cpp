@@ -13,43 +13,34 @@ CollisionSolver::CollisionSolver(std::function< void(PhysicBody&,PhysicBody&) > 
 std::vector<bool> CollisionSolver::checkCollision(const std::vector< PhysicBody* >& bodies, const std::vector< sf::Vector2f>& newParticles)
 {
 	assert(bodies.size() == newParticles.size());
-	auto body = bodies.begin();
-	auto particle = newParticles.begin();
 
 
 	std::vector<bool> collisions;
-	collisions.resize(bodies.size(), false);
-	auto collision = collisions.begin();
 
-	while (body != bodies.end())
+	for (int i=0; i < bodies.size()-1; ++i)
 	{
-		auto body2 = body + 1;
-		auto particle2 = particle + 1;
-		auto collision2 = collision + 1;
-
-		while (body2 != bodies.end())
+		for(int j=i+1; j < bodies.size(); ++j)
 		{
-			float r1 = (*body)->getCirconscritRadius();
-			float r2 = (*body2)->getCirconscritRadius();
+			auto& body = *bodies[i];
+			auto& body2 = *bodies[j];
+			auto& particle = newParticles[i];
+			auto& particle2 = newParticles[j];
 
-			auto vec = (*particle) - (*particle2);
+			float r1 = body.getCirconscritRadius();
+			float r2 = body2.getCirconscritRadius();
+
+			auto vec = particle - particle2;
 			auto d = vec.x*vec.x + vec.y*vec.y;
 			if (d < (r1+r2)*(r1+r2)) {
 
-				if (((*body)->getType() & (*body2)->getType()) != 0) {
-					*collision = *collision2 = true;
+				if ((body.getType() & body2.getType()) != 0) {
+					collisions[i] = collisions[j] = true;
 				}
 				// TODO test SAT
-				m_callbackCollision(**body, **body2);
+				m_callbackCollision(body, body2);
 
 			}
-			++body2;
-			++particle2;
-			++collision2;
 		}
-		++body;
-		++particle;
-		++collision;
 	}
 	return collisions;
 }

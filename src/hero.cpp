@@ -16,6 +16,10 @@ Hero::Hero() :
 	m_speed = 10.f;
 }
 
+Hero::~Hero() {
+	m_entity.pool->kill(m_entity);
+}
+
 
 Hero* Hero::createHero(GameContext& context)
 {
@@ -29,21 +33,30 @@ Hero* Hero::createHero(GameContext& context)
 	auto& body = context.physic->bindEntity(hero->m_entity);
 	body.setNode(&node);
 
-	//hero->m_sprite->attachParent(node);
+	hero->m_sprite->attachParent(node);
 	return hero;
 }
 
 void Hero::move(int direction)
 {
-	sf::Vector2f speed;
-	if (direction & Hero::TOP) speed += {0.f, -1.f};
-	if (direction & Hero::BOTTOM) speed += {0.f, 1.f};
-	if (direction & Hero::LEFT) speed += {-1.f, 0.f};
-	if (direction & Hero::RIGHT) speed += {1.f, 0.f};
+	sf::Vector2f speed {0.f, 0.f};
+	if (! direction & Hero::TOP & Hero::BOTTOM) {
+		if (direction & Hero::TOP) speed += {0.f, -1.f};
+		else if (direction & Hero::BOTTOM) speed += {0.f, 1.f};
+	}
+	if (! direction & Hero::LEFT & Hero::RIGHT) {
+		if (direction & Hero::LEFT) speed += {-1.f, 0.f};
+		else if (direction & Hero::RIGHT) speed += {1.f, 0.f};
+	}
 
-	speed /= std::sqrt(speed.x*speed.x + speed.y*speed.y);
-	speed *= m_speed;
-
-	//SendMessage(SetEntitySpeedMessge({m_entity, }));
+	if (speed != sf::Vector2f(0.f, 0.f)) {
+		speed /= std::sqrt(speed.x*speed.x + speed.y*speed.y);
+		speed *= m_speed;
+		SendMessage(SetEntitySpeedMessage({m_entity, speed}));
+	}
 }
 
+void Hero::setPosition(const sf::Vector2f& position)
+{
+	SendMessage(SetEntityPositionMessage({m_entity, position}));
+}

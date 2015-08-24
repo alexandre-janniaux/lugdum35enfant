@@ -31,6 +31,7 @@ class PhysicBody
 		void setSpeed(const sf::Vector2f& speed);
 
 		void setPosition(const sf::Vector2f& position);
+		sf::Vector2f getPosition() const;
 
 		Entity getRelatedEntity();
 	private:

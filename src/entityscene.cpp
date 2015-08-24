@@ -10,8 +10,10 @@ SceneNode& EntityScene::bindEntity(const Entity& entity)
 		return *search->second.get();
 
 	registerEntity(entity);
-	m_nodesOwned.emplace(entity,make_unique<SceneNode>(getRootNode()));
-	return *m_nodesOwned.at(entity);
+	m_nodesOwned.emplace(entity,make_unique<SceneNode>());
+	auto& node = *m_nodesOwned.at(entity);
+	node.attachParent(getRootNode());
+	return node;
 }
 
 void EntityScene::unbindEntity(const Entity& entity)
