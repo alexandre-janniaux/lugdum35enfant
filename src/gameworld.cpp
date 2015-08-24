@@ -75,13 +75,11 @@ GameWorld::GameWorld(GameContext& context, std::string const& fileName, SceneNod
         return;
     }
 
-    std::cerr << 0 << std::endl;
 
     /* Parsing the initial position and size */
     m_size = toVect(root["size"]);
     m_checkPoint = toVect(root["initialPos"]);
 
-    std::cerr << 2 << std::endl;
 
     /* Parsing Lampes */
     Json::Value lampes = root["lampes"];
@@ -94,7 +92,6 @@ GameWorld::GameWorld(GameContext& context, std::string const& fileName, SceneNod
     }
     m_interrupteurs.resize(m_lampesThibault.size());
 
-    std::cerr << 3 << std::endl;
 
     /* Parsing Meubles */
     Json::Value meubles = root["meubles"];
@@ -103,6 +100,7 @@ GameWorld::GameWorld(GameContext& context, std::string const& fileName, SceneNod
         Json::Value meuble = meubles[i];
         sf::Sprite sprite(toSprite(meuble["sprite"]));
         sf::FloatRect hitBox(toRect(meuble["hitBox"]));
+        sf::FloatRect interactBox(toRect(meuble["interactBox"]));
         sf::Vector2f pos(toVect(meuble["hitBox"]));
 
         /* Discrimination des types de meubles */
@@ -110,41 +108,39 @@ GameWorld::GameWorld(GameContext& context, std::string const& fileName, SceneNod
 
         if (str == "tapis")
         {
-            m_meubles.push_back(M_ptr (new Tapis(sprite, pos, father, hitBox, toRect(meuble["tapishitBox"]))));
-            m_cachettes.push_back(std::pair<sf::FloatRect, sf::FloatRect>(toRect(meuble["tapishitBox"]), hitBox));
+            m_meubles.push_back(M_ptr (new Tapis(sprite, pos, father, hitBox, interactBox)));
+            m_cachettes.push_back(std::pair<sf::FloatRect, sf::FloatRect>(interactBox, hitBox));
         }
 
         else if (str == "bruit")
         {
             float tmp = meuble["bruitTemps"].asDouble();
-            m_meubles.push_back(M_ptr (new MeubleBruit(sprite, pos, father ,hitBox, sf::seconds(tmp))));
-            m_obstacles.push_back(sf::FloatRect(sprite.getPosition(), sf::Vector2f(sprite.getTextureRect().left, sprite.getTextureRect().top)));
+            m_meubles.push_back(M_ptr (new MeubleBruit(sprite, pos, father ,hitBox, interactBox, sf::seconds(tmp))));
+            m_obstacles.push_back(hitBox);
         }
 
         else if (str == "lit")
         {
-            m_meubles.push_back(M_ptr (new Lit(sprite, pos, father, hitBox)));
-            m_obstacles.push_back(sf::FloatRect(sprite.getPosition(), sf::Vector2f(sprite.getTextureRect().left, sprite.getTextureRect().top)));
+            m_meubles.push_back(M_ptr (new Lit(sprite, pos, father, hitBox, interactBox)));
+            m_obstacles.push_back(hitBox);
         }
 
 
         else if (str == "interrupteur")
         {
-            m_meubles.push_back(M_ptr (new Interrupteur(sprite, pos, father, hitBox, *m_lampes[meuble["lumiere"].asInt()])));
-            m_obstacles.push_back(sf::FloatRect(sprite.getPosition(), sf::Vector2f(sprite.getTextureRect().left, sprite.getTextureRect().top)));
-            m_interrupteurs[meuble["lumiere"].asInt()] = std::pair<sf::FloatRect, sf::FloatRect>(sf::FloatRect(hitBox.left, hitBox.top, 0, 0), hitBox); 
+            m_meubles.push_back(M_ptr (new Interrupteur(sprite, pos, father, hitBox, interactBox, *m_lampes[meuble["lumiere"].asInt()])));
+            m_obstacles.push_back(hitBox);
+            m_interrupteurs[meuble["lumiere"].asInt()] = std::pair<sf::FloatRect, sf::FloatRect>(interactBox, hitBox); 
         }
 
         else if (str == "cachette")
         {
             auto interactBox = hitBox; // TODO TODO interactBox
-            m_meubles.push_back(M_ptr (new Cachette(sprite, pos, father, hitBox)));
-            m_obstacles.push_back(sf::FloatRect(sprite.getPosition(), sf::Vector2f(sprite.getTextureRect().left, sprite.getTextureRect().top)));
+            m_meubles.push_back(M_ptr (new Cachette(sprite, pos, father, hitBox, interactBox)));
+            m_obstacles.push_back(hitBox);
             m_cachettes.push_back(std::pair<sf::FloatRect, sf::FloatRect>(interactBox, hitBox));
         }
     }
-
-    std::cerr << 4 << std::endl;
 
     /* Parser la Tilemap */
 
@@ -155,12 +151,7 @@ GameWorld::GameWorld(GameContext& context, std::string const& fileName, SceneNod
         m_obstacles.push_back(toRect(murs[i]));
     }
     
-
-    std::cerr << 5 << std::endl;
-
     getTileMap(root["tilemap"], father);
-
-    std::cerr << 6 << std::endl;
 
     /* Parser les family member */
     getFamilyMember(root["family"], father);

@@ -36,6 +36,14 @@ SET(
     src/sousmenu.cpp
     src/spritescenenode.cpp
     src/wallscenenode.cpp
+    src/IA_familymember.cpp
+    src/IA_generate_ronde.cpp
+    src/IA_astar_grille.cpp
+    src/IA_trouver_reseau.cpp
+    src/IA_printer.cpp
+    src/IA_astar_reseau.cpp
+    src/IA_geometry.cpp
+
 )
 
 ADD_EXECUTABLE(

@@ -64,7 +64,7 @@ Cachette::~Cachette()
 
 bool Tapis::canInteract(sf::Vector2f point) const
 {
-    return Meuble::canInteract(point) && !m_intHitBox.contains(point);
+    return Meuble::canInteract(point) && !m_hitBox.contains(point);
 }
 
 Action Tapis::interact(Monster &me)
