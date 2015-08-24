@@ -15,6 +15,8 @@
 #include <list>
 #include <cmath>
 #include <ctime>
+#include <utility>
+#include <functional>
 
 struct SegmentIA {
     sf::Vector2f p1, p2;

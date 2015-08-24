@@ -11,7 +11,7 @@
 std::vector<sf::Vector2f> trouverReseau(sf::FloatRect carte, std::vector<sf::FloatRect> obstacles, int pas)
 {    
     // On se déplace sur les cases (5,5)
-    int init = 5;
+    int init = 0;
     
     std::vector<sf::Vector2f> reseau;
     std::list<sf::Vector2f> pas_couvert = {};

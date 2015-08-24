@@ -18,11 +18,43 @@ std::vector<sf::Vector2f> FamilyMember::normalise_reseau(std::vector<sf::Vector2
     return new_reseau;
 }
 
-FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos):m_taille(taille),m_obstacles(obstacles), m_reseau(reseau), m_type(type), m_chemin_global(generateRonde(sf::FloatRect (0, 0, taille.x, taille.y), obstacles, reseau, m_pas))
+std::vector<sf::Vector2f> FamilyMember::creer_reseau_meuble(std::pair<sf::Vector2f,sf::Vector2f> cachettes, std::vector<sf::FloatRect> obstacles)
 {
+    std::vector<sf::Vector2f> reseau {};
+    
+    
+    
+    // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+    // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+    // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+    
+    
+    
+    return reseau;
+}
+
+FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::pair<sf::Vector2f, sf::Vector2f> cachettes, std::pair<sf::Vector2f, float> lampes, std::pair<sf::Vector2f, sf::Vector2f> interrupteurs)
+{
+    // CONSTANTES
+    m_taille = taille;
+    m_obstacles = obstacles;
+    if (type == ZONE)
+    {
+        m_reseau = normalise_reseau(reseau);
+    }
+    else if (type == ZONE)
+    {
+        m_reseau = creer_reseau_meuble(cachettes, obstacles);
+    }
+    m_chemin_global = generateRonde(sf::FloatRect (0, 0, taille.x, taille.y), obstacles, reseau, m_pas);
+    m_type = type;
+    m_lampes = lampes;
+    m_interrupteurs = interrupteurs;
+
     m_vit = sf::Vector2f (0, 0);
     m_pos = pos;
     m_is_enlighted = true;
+
     m_point_cible = pos;    
     retour();
 }
@@ -92,6 +124,19 @@ void FamilyMember::bruitEntendu(sf::Vector2f pos)
     {
         rotater();
     }
+}
+
+void FamilyMember::lumiereEteinte()
+{
+    
+    
+    
+    // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+    // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+    // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+    
+    
+    
 }
 
 void FamilyMember::rentrerDansLeRang()
@@ -177,6 +222,13 @@ void FamilyMember::agir()
         else
         {
             // Continuer !
+            
+            
+            // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+            // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+            // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+            
+            
         }
     }
 }

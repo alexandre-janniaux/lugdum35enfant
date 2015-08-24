@@ -84,6 +84,7 @@ void IA_exemple(GameWorld &gw)
     //reseau.push_back(sf::Vector2f (100, 100));
     //reseau.push_back(sf::Vector2f (700, 100));
     
+    /*
     reseau.push_back(sf::Vector2f (64,49));
     reseau.push_back(sf::Vector2f (67,260));
     reseau.push_back(sf::Vector2f (266,211));
@@ -96,7 +97,7 @@ void IA_exemple(GameWorld &gw)
     reseau.push_back(sf::Vector2f (621,326));
     reseau.push_back(sf::Vector2f (682,135));
     reseau.push_back(sf::Vector2f (528,161));
-    
+     
     for (int k {0}; k < reseau.size(); k++)
     {
         auto point = reseau[k];
@@ -105,8 +106,9 @@ void IA_exemple(GameWorld &gw)
         reseau[k] = sf::Vector2f (x * 10, y * 10);
     }
     printer(reseau);
-    
-    //reseau = trouverReseau(carte, obstacles, 50);
+     */
+  
+    reseau = trouverReseau(carte, obstacles, 50);
     //printer(AStar(0, 1, reseau, obstacles));
     
     
