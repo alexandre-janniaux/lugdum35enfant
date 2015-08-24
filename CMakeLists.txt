@@ -34,6 +34,10 @@ SET(
     src/physicbody.cpp
     src/physicgeom.cpp
     src/hero.cpp
+    src/lamp.cpp
+    src/lighthandler.cpp
+    src/geometry.cpp
+    src/lightray.cpp
 )
 
 ADD_EXECUTABLE(
@@ -43,6 +47,7 @@ ADD_EXECUTABLE(
 
 ADD_DEFINITIONS(
     --std=c++11
+    -g
 )
 
 INCLUDE_DIRECTORIES(
