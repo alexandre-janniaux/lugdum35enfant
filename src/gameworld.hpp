@@ -5,7 +5,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-// #include "familymember.hpp"
+#include "IA_familymember.hpp"
 #include "meuble.hpp"
 #include "wallscenenode.hpp"
 #include "json/json.h"
@@ -31,6 +31,7 @@ class GameWorld
 public:
     GameWorld(GameContext& context, std::string const& fileName, SceneNode& father);
     void getTileMap(Json::Value v, SceneNode& father);
+    void getFamilyMember(Json::Value v, SceneNode& father);
 
 //private:
     typedef std::unique_ptr<Meuble> M_ptr;
@@ -41,9 +42,14 @@ public:
     sf::Vector2f m_checkPoint;
     std::vector<L_ptr> m_lampes;
     std::vector<M_ptr> m_meubles;
-    //std::vector<FamilyMember> m_family_members;
     std::vector<WallSceneNode> m_murs;
     std::vector<SpriteSceneNode> m_tiles;
+    std::vector<FamilyMember> m_family;
+
+    std::vector<sf::FloatRect> m_obstacles;
+    std::vector<std::pair<sf::FloatRect, sf::FloatRect>> m_cachettes;
+    std::vector<std::pair<sf::Vector2f, float>> m_lampesThibault;
+    std::vector<std::pair<sf::FloatRect, sf::FloatRect>> m_interrupteurs;
 };
 
 #endif // GAMEWORLD_H_INCLUDED

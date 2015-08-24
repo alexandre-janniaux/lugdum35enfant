@@ -8,7 +8,8 @@
 //  Copyright 2015 Thibault Dardinier. All rights reserved.
 //
 
-#include "IA_exemple.hpp"
+//#include "IA_exemple.hpp"
+#include "IA_generate_ronde.hpp"
 
 enum IA_Mode {NORMAL, BRUIT, LUMIERE, RETOUR};
 enum IA_Type {ZONE, MEUBLE};
