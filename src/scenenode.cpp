@@ -23,9 +23,31 @@ SceneNode::SceneNode(SceneNode & parent, sf::Vector2f pos, int layer)
     setPosition(pos);
 }
 
+SceneNode::SceneNode(SceneNode &&other)
+: m_children((other.m_children))
+, m_parent(other.m_parent)
+, m_transform(other.m_transform)
+, m_absoluteTransform(other.m_absoluteTransform)
+, m_layer(other.m_layer)
+, m_computed(other.m_computed)
+{
+    if (m_parent)
+    {
+        auto _found = std::find_if(m_parent->m_children.begin(), m_parent->m_children.end(), [&] (SceneNode* p) -> bool { return p == &other; });
+        assert(_found != m_parent->m_children.end());
+
+        *(_found) = this;
+    }
+
+    for (auto it : m_children)
+        it->m_parent = this;
+}
+
 SceneNode::~SceneNode()
 {
     detachParent();
+    for (auto it : m_children)
+        it->m_parent = nullptr;
 }
 
 void SceneNode::attachParent(SceneNode& ptrParent)
