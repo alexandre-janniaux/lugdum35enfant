@@ -35,6 +35,7 @@ SET(
     src/scenenode.cpp
     src/screenstack.cpp
     src/sousmenu.cpp
+    src/soundservice.cpp
     src/spritescenenode.cpp
     src/wallscenenode.cpp
     src/IA_familymember.cpp

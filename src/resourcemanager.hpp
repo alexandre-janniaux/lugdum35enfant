@@ -34,7 +34,7 @@ public:
 		}
 		return m_instance.get();
     }
-    
+
     T& get(const std::string& nom_fichier)
     {
         std::string filename = nom_fichier;
@@ -49,7 +49,7 @@ public:
 	}
 	return *m_resources.at(filename);
     }
-    
+
     ~ResourceManager() {
 		std::cout << "Delete loader" << std::endl;
 		for (auto res : m_resources)
@@ -58,9 +58,9 @@ public:
 private:
     ResourceManager() { std::cout << "Create loader" << std::endl; }
     using Ptr = std::unique_ptr<ResourceManager<T>>;
-    
+
     //friend make_unique<ResourceManager<T>>();
-    
+
     static Ptr m_instance;
     std::map<std::string, T*> m_resources;
 };
@@ -70,3 +70,5 @@ typename ResourceManager<T>::Ptr ResourceManager<T>::m_instance = nullptr;
 
 using FontManager = ResourceManager<sf::Font>;
 using TextureManager = ResourceManager<sf::Texture>;
+using BufferManager = ResourceManager<sf::SoundBuffer>;
+using MusicManager = ResourceManager<sf::Music>;

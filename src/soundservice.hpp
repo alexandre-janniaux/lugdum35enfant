@@ -1,17 +1,18 @@
-#pragme once
+#pragma once
 #include <SFML/Audio.hpp>
 #include <string>
 #include "resourcemanager.hpp"
+#include "singleton.hpp"
 
-class SoundService
+class SoundService : public Singleton<SoundService>
 {
     public:
         void setVolume(float);
         float getVolume();
 
         void playSound(std::string& soundName);
-        void loadMusics(std::string& lightMusicName,std::string& darkMusicName=std::string(""));
-        void deleteFinished();
+        void loadMusics(const std::string& lightMusicName,const std::string& darkMusicName=std::string(""));
+        void update();
         void clearSounds();
 
         void playMusic(bool const& isLight=true);
@@ -23,9 +24,9 @@ class SoundService
         void stopSounds();
 
     private:
-        std::vector<sf::Sound> m_sounds;
-        sf::Music* m_musicLight;
-        sf::Music* m_musicDark;
-        bool m_two;
+        std::vector<std::unique_ptr<sf::Sound>> m_sounds;
+        sf::Music* m_lightMusic;
+        sf::Music* m_darkMusic;
+        bool m_two=false;
         float m_volume;
 };

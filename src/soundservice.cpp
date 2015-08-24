@@ -8,7 +8,7 @@ void SoundService::playSound(std::string& soundName)
     m_sounds.back()->play();
 }
 
-void SoundService::loadMusics(std::string& lightMusicName,std::string& darkMusicName)
+void SoundService::loadMusics(const std::string& lightMusicName,const std::string& darkMusicName)
 {
     auto musics = MusicManager::instance();
     sf::Music& _lightMusic = musics->get(lightMusicName);
@@ -25,7 +25,7 @@ void SoundService::loadMusics(std::string& lightMusicName,std::string& darkMusic
     else
     {
         if (m_two)
-            m_darkMusic.stop();
+            m_darkMusic->stop();
         m_two=false;
     }
     playMusic(true);
@@ -65,26 +65,26 @@ void SoundService::playMusic(bool const& isLight)
     }
 }
 
-void SoundService::pauseMusic();
+void SoundService::pauseMusic()
 {
     m_lightMusic->pause();
     if (m_two)
         m_darkMusic->pause();
 }
 
-void SoundService::stopMusic();
+void SoundService::stopMusic()
 {
     m_lightMusic->stop();
     if (m_two)
         m_darkMusic->stop();
 }
 
-void SoundService::deleteFinished()
+void SoundService::update()
 {
     for (auto& it : m_sounds)
     {
         if (it->getStatus()==sf::SoundSource::Stopped)
-            m_sounds.erase(it);
+            delete it.release();
     }
 }
 
@@ -92,7 +92,7 @@ void SoundService::playSounds()
 {
     for (auto& it : m_sounds)
     {
-        m_sounds->play();
+        it->play();
     }
 }
 
@@ -100,7 +100,7 @@ void SoundService::pauseSounds()
 {
     for (auto& it : m_sounds)
     {
-        m_sounds->pause();
+        it->pause();
     }
 }
 
@@ -108,7 +108,7 @@ void SoundService::stopSounds()
 {
     for (auto& it : m_sounds)
     {
-        m_sounds->stop();
+        it->stop();
     }
 }
 
@@ -116,6 +116,6 @@ void SoundService::clearSounds()
 {
     for (auto& it : m_sounds)
     {
-        m_sounds.erase(it);
+        delete it.release();
     }
 }

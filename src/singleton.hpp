@@ -18,4 +18,4 @@ class Singleton
 };
 
 template <typename T>
-std::unique_ptr<T> Singleton<T>::m_instance = nullptr;
+std::unique_ptr<T> Singleton<T>::m_instance(new T);
