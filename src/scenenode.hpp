@@ -13,7 +13,7 @@ class SceneNode: public sf::Drawable
     public:
 
         SceneNode(int layer = 0);
-        SceneNode(SceneNode & parent, int layer = 0);
+        SceneNode(SceneNode & parent, sf::Vector2f pos, int layer = 0);
         ~SceneNode();
         void detachParent();
         void attachParent(SceneNode&);
