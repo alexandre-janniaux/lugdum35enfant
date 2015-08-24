@@ -8,6 +8,35 @@
 
 #include "IA_familymember.hpp"
 
+sf::Vector2f FamilyMember::point_centre(sf::FloatRect hb_int, sf::FloatRect hb_ext, std::vector<sf::FloatRect> obstacles)
+{
+    std::vector<sf::Vector2f> points_candidats;
+    sf::Vector2f A (hb_ext.left + (hb_ext.width / 2), hb_ext.top);
+    sf::Vector2f D (hb_ext.left, hb_ext.top + hb_ext.height / 2);
+    sf::Vector2f C (hb_ext.left + (hb_ext.width / 2), hb_ext.top + hb_ext.height);
+    sf::Vector2f B (hb_ext.left + hb_ext.width, hb_ext.top + (hb_ext.height / 2));
+    
+    sf::Vector2f a (hb_int.left + (hb_int.width / 2), hb_int.top);
+    sf::Vector2f d (hb_int.left, hb_int.top + hb_int.height / 2);
+    sf::Vector2f c (hb_int.left + (hb_int.width / 2), hb_int.top + hb_int.height);
+    sf::Vector2f b (hb_int.left + hb_int.width, hb_int.top + (hb_int.height / 2));
+    
+    points_candidats.push_back(0.5f * (a + A));
+    points_candidats.push_back(0.5f * (b + B));
+    points_candidats.push_back(0.5f * (c + C));
+    points_candidats.push_back(0.5f * (d + D));
+    
+    for (auto point: points_candidats)
+    {
+        if (dansAucunObstacle(point, obstacles))
+        {
+            return point;
+        };
+    }
+    std::cout << "ERREUR DANS POINT CENTRE FAMILY MEMBER";
+    return sf::Vector2f (-1, -1);
+}
+
 std::vector<sf::Vector2f> FamilyMember::normalise_reseau(std::vector<sf::Vector2f> reseau)
 {
     std::vector<sf::Vector2f> new_reseau {};
@@ -18,22 +47,21 @@ std::vector<sf::Vector2f> FamilyMember::normalise_reseau(std::vector<sf::Vector2
     return new_reseau;
 }
 
-std::vector<sf::Vector2f> FamilyMember::creer_reseau_meuble(std::pair<sf::Vector2f,sf::Vector2f> cachettes, std::vector<sf::FloatRect> obstacles)
+std::vector<sf::Vector2f> FamilyMember::creer_reseau_meuble(std::vector<std::pair<sf::FloatRect,sf::FloatRect>> cachettes, std::vector<sf::FloatRect> obstacles)
 {
     std::vector<sf::Vector2f> reseau {};
-    
-    
-    
-    // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-    // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-    // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-    
-    
-    
+    for (auto meuble: cachettes)
+    {
+        auto point = point_centre(meuble.first, meuble.second, obstacles);
+        if (point != sf::Vector2f(-1, -1))
+        {
+            reseau.push_back(point);
+        }
+    }
     return reseau;
 }
 
-FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::pair<sf::Vector2f, sf::Vector2f> cachettes, std::pair<sf::Vector2f, float> lampes, std::pair<sf::Vector2f, sf::Vector2f> interrupteurs)
+FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> cachettes, std::vector<std::pair<sf::Vector2f, float>> lampes, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> interrupteurs)
 {
     // CONSTANTES
     m_taille = taille;
