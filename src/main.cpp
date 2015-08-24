@@ -29,6 +29,7 @@ int main()
     sf::RenderWindow window({800,600}, "toto");
 */
 
+/*
 void drawSegment(sf::RenderWindow& win,Segment seg)
 {
     sf::ConvexShape sh(4);
@@ -39,7 +40,7 @@ void drawSegment(sf::RenderWindow& win,Segment seg)
     sh.setPoint(3,seg.p1+sf::Vector2f(1.f,1.f));
     sh.setPoint(2,seg.p2+sf::Vector2f(1.f,1.f));
     win.draw(sh);
-}
+}*/
 
 int main(int argc, char** argv)
 {
