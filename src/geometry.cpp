@@ -83,15 +83,19 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
         }
         sf::Vector2f inter1 = tri.intersection_droites(Segment(lumiere, pp1));
         sf::Vector2f inter2 = tri.intersection_droites(Segment(lumiere, pp2));
-        if (-epsilon <= u && v < 1.f + epsilon) {
+        if (-epsilon > u && v > 1.f + epsilon) {
             // Completement a l'interieur
             result.push_back(Segment(tri.p1, inter1));
             result.push_back(Segment(pp1, pp2));
             result.push_back(Segment(inter2, tri.p2));
             return;
         }
+		if (check(it1.x) && check(it2.x)) {
+			// On intersecte les deux cotes
+			result.push_back(Segment(si1, si2));
+			return;
         // On intersecte un seul cote
-        if (check(it1.x)) {
+        } else if (check(it1.x)) {
             // On intersecte cote 1
             result.push_back(Segment(si1, pp2));
             result.push_back(Segment(inter2, tri.p2));
@@ -120,15 +124,20 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
         }
         sf::Vector2f inter1 = tri.intersection_droites(Segment(lumiere, pp1));
         sf::Vector2f inter2 = tri.intersection_droites(Segment(lumiere, pp2));
-        if (-epsilon <= u && v < 1.f + epsilon) {
+        if (-epsilon > u && v > 1.f + epsilon) {
             // Completement a l'interieur
             result.push_back(Segment(tri.p1, inter1));
             result.push_back(Segment(pp1, pp2));
             result.push_back(Segment(inter2, tri.p2));
             return;
         }
+		if (check(it2.x) && check(it3.x)) {
+			// On intersecte les deux cotes
+			result.push_back(Segment(tri.p1, si3));
+			result.push_back(Segment(si3, si2));
+			return;
         // On intersecte un seul cote
-        if (check(it3.x)) {
+        } else if (check(it3.x)) {
             // On intersecte le bout
             result.push_back(Segment(tri.p1, si3));
             result.push_back(Segment(si3, pp2));
@@ -156,15 +165,20 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
         }
         sf::Vector2f inter1 = tri.intersection_droites(Segment(lumiere, pp1));
         sf::Vector2f inter2 = tri.intersection_droites(Segment(lumiere, pp2));
-        if (-epsilon <= u && v < 1.f + epsilon) {
+        if (-epsilon > u && v > 1.f + epsilon) {
             // Completement a l'interieur
             result.push_back(Segment(tri.p1, inter1));
             result.push_back(Segment(pp1, pp2));
             result.push_back(Segment(inter2, tri.p2));
             return;
         }
+		if (check(it3.x) && check(it1.x)) {
+			// On intersecte les deux cotes
+			result.push_back(Segment(si1, si3));
+			result.push_back(Segment(si3, tri.p2));
+			return;
         // On intersecte un seul cote
-        if (check(it3.x)) {
+        } else if (check(it3.x)) {
             // On intersecte le bout
             result.push_back(Segment(tri.p1, inter1));
             result.push_back(Segment(pp1, si3));
