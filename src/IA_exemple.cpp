@@ -18,10 +18,11 @@ void ligner(sf::Vector2f point_a, sf::Vector2f point_b, sf::RenderWindow &window
     window.draw(line, 3, sf::Lines);
 }
 
-void IA_exemple()
+void IA_exemple(GameWorld &gw)
 {
     std::cout << "HELLO WORLD!" << std::endl;
-    int hauteur = 400;
+    
+    /*int hauteur = 400;
     int largeur = 400;
     sf::FloatRect carte (0, 0, largeur, hauteur);
     std::vector<sf::FloatRect> obstacles {};
@@ -43,7 +44,7 @@ void IA_exemple()
     
     //obstacles.push_back(sf::FloatRect(190, 50, 20, 300));
     
-    /* Mesure les perfs
+    Mesure les perfs
      // Pas = sqrt(hauteur * largeur / 2500) pour temps <= 1 s
      using namespace std::chrono;
      milliseconds time0 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
@@ -54,8 +55,30 @@ void IA_exemple()
      std::cout << "Premier : " << (time1 - time0).count() << ", deuxième : " << (time2 - time1).count() << std::endl;
      */
     
+    std::vector<sf::FloatRect> obstacles {};
+
+    sf::FloatRect carte (sf::FloatRect(0, 0, gw.m_size.x - 200, gw.m_size.y));
+    for (auto &meuble: gw.m_meubles)
+    {
+        if (meuble->isObstacle())
+        {
+            obstacles.push_back(meuble->m_hitBox);
+        }
+    }
+    for (auto &mur: gw.m_murs)
+    {
+        obstacles.push_back(mur->getRect());
+    }
+    
     float pas = 10;
-    std::vector<sf::Vector2f> reseau = trouverReseau(carte, obstacles, 10);
+    std::vector<sf::Vector2f> reseau {};
+    reseau.push_back(sf::Vector2f (100, 50));
+    reseau.push_back(sf::Vector2f (400, 50));
+    reseau.push_back(sf::Vector2f (150, 400));
+    reseau.push_back(sf::Vector2f (200, 700));
+    reseau.push_back(sf::Vector2f (650, 350));
+
+    //reseau = trouverReseau(carte, obstacles, 30);
     //printer(AStar(0, 1, reseau, obstacles));
     
     
@@ -91,7 +114,7 @@ void IA_exemple()
      */
     using namespace std::chrono;
     milliseconds time0 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-    auto chemin_global = generateRonde(carte, obstacles, pas);
+    auto chemin_global = generateRonde(carte, obstacles, reseau, pas);
     milliseconds time1 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
     std::cout << "Exécution : " << ((float) (time1 - time0).count()) / 1000. << std::endl;
     std::cout << "Taille : " << chemin_global.size() << std::endl;
@@ -99,7 +122,7 @@ void IA_exemple()
     
     
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(400, 400), "SFML window");
+    sf::RenderWindow window(sf::VideoMode(carte.width, carte.height), "SFML window");
     
     // Start the game loop
     while (window.isOpen())
@@ -186,8 +209,8 @@ void IA_exemple()
              */
             
             // Rond
-            sf::CircleShape rond(3);
-            rond.setOrigin(3, 3);
+            sf::CircleShape rond(5);
+            rond.setOrigin(5, 5);
             rond.setPosition(reseau[k]);
             window.draw(rond);
         }

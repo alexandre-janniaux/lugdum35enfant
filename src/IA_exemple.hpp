@@ -1,3 +1,5 @@
+#pragma once
+
 //
 //  IA_exemple.h
 //  Reseau
@@ -7,7 +9,8 @@
 //
 
 #include "IA_generate_ronde.hpp"
+#include "gameworld.hpp"
 
 void ligner(sf::Vector2f point_a, sf::Vector2f point_b, sf::RenderWindow &window);
 
-void IA_exemple();
+void IA_exemple(GameWorld &gw);

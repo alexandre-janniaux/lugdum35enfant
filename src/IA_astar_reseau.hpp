@@ -1,3 +1,5 @@
+#pragma once
+
 //
 //  IA_astar_reseau.h
 //  Reseau

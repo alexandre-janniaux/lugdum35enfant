@@ -49,9 +49,8 @@ std::vector<int> getOrdreCommerce(int depart, std::vector<sf::Vector2f> reseau, 
     return chemin;
 }
 
-std::vector<sf::Vector2f> generateRonde(sf::FloatRect carte, std::vector<sf::FloatRect> obstacles, float pas)
+std::vector<sf::Vector2f> generateRonde(sf::FloatRect carte, std::vector<sf::FloatRect> obstacles, std::vector<sf::Vector2f> reseau, float pas)
 {
-    std::vector<sf::Vector2f> reseau = trouverReseau(carte, obstacles, 10);
     // On part du dernier
     int depart = reseau.size() - 1;
     std::vector<int> chemin_commerce = getOrdreCommerce(depart, reseau, obstacles);

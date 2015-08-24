@@ -1,3 +1,5 @@
+#pragma once
+
 //
 //  IA_geometry.h
 //  Reseau
@@ -14,19 +16,19 @@
 #include <cmath>
 #include <ctime>
 
-struct Segment {
+struct SegmentIA {
     sf::Vector2f p1, p2;
-    Segment() {};
-    Segment(sf::Vector2f p1_, sf::Vector2f p2_)
+    SegmentIA() {};
+    SegmentIA(sf::Vector2f p1_, sf::Vector2f p2_)
     {
         p1 = p1_; p2 = p2_;
     };
-    bool intersection(const Segment &other) const;
+    bool intersection(const SegmentIA &other) const;
 };
 
-bool intersection(const Segment &other);
+bool intersection(const SegmentIA &other);
 
-bool intersection(Segment mySegment, sf::FloatRect myRect);
+bool intersection(SegmentIA mySegment, sf::FloatRect myRect);
 
 bool contientPlus(sf::FloatRect rect, sf::Vector2f point);
 

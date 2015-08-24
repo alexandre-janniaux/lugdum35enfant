@@ -1,3 +1,5 @@
+#pragma once
+
 //
 //  IA_trouver_reseau.h
 //  Reseau

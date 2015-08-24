@@ -1,3 +1,5 @@
+#pragma once
+
 //
 //  IA_printer.h
 //  Reseau
@@ -10,7 +12,7 @@
 
 void printer(sf::Vector2f point);
 
-void printer(Segment mySegment);
+void printer(SegmentIA mySegment);
 
 void printer(std::list<sf::Vector2f> myList);
 

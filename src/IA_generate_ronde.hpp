@@ -1,3 +1,5 @@
+#pragma once
+
 //
 //  IA_generate_ronde.h
 //  Reseau
@@ -10,4 +12,4 @@
 
 std::vector<int> getOrdreCommerce(int depart, std::vector<sf::Vector2f> reseau, std::vector<sf::FloatRect> obstacles);
 
-std::vector<sf::Vector2f> generateRonde(sf::FloatRect carte, std::vector<sf::FloatRect> obstacles, float pas);
+std::vector<sf::Vector2f> generateRonde(sf::FloatRect carte, std::vector<sf::FloatRect> obstacles, std::vector<sf::Vector2f> reseau, float pas);

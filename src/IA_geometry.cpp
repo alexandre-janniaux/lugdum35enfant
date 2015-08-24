@@ -10,7 +10,7 @@
 
 const float epsilon = 1e-3f;
 
-bool Segment::intersection(const Segment &other) const {
+bool SegmentIA::intersection(const SegmentIA &other) const {
         
     sf::Vector2f dir1 = p2 - p1;
     sf::Vector2f dir2 = other.p2 - other.p1;
@@ -37,9 +37,9 @@ bool Segment::intersection(const Segment &other) const {
     return false;
 };
 
-bool intersection(Segment mySegment, sf::FloatRect myRect)
+bool intersection(SegmentIA mySegment, sf::FloatRect myRect)
 {
-    Segment s1, s2, s3, s4;
+    SegmentIA s1, s2, s3, s4;
     s1.p1 = sf::Vector2f (myRect.left, myRect.top);
     s1.p2 = sf::Vector2f (myRect.left, myRect.top + myRect.height);
     
@@ -66,7 +66,7 @@ bool isVisible(sf::Vector2f point_a, sf::Vector2f point_b, std::vector<sf::Float
     bool visible {true};
     for (auto rect: obstacles)
     {
-        Segment mySegment (point_a, point_b);
+        SegmentIA mySegment (point_a, point_b);
         visible = visible && !(intersection(mySegment, rect));
     }
     return visible;
