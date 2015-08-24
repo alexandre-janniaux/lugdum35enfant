@@ -154,7 +154,7 @@ GameWorld::GameWorld(GameContext& context, std::string const& fileName, SceneNod
     getTileMap(root["tilemap"], father);
 
     /* Parser les family member */
-    getFamilyMember(root["family"], father);
+    //getFamilyMember(root["family"], father);
 }
 
 void GameWorld::getFamilyMember(Json::Value v, SceneNode& father)
@@ -171,10 +171,14 @@ void GameWorld::getFamilyMember(Json::Value v, SceneNode& father)
 
         Json::Value jreseau = v[i]["reseau"];
         std::vector<sf::Vector2f> reseau;
-        for (i ; i < jreseau.size() ; i++)
-            reseau.push_back(toVect(jreseau[i]));
+        for (unsigned int k ; k < jreseau.size() ; k++)
+            reseau.push_back(toVect(jreseau[k]));
 
-        m_family.push_back(FamilyMember(m_size, m_obstacles, reseau, t, toVect(v[i]["pos"]), m_cachettes, m_lampesThibault, m_interrupteurs));
+        std::cerr << toVect(v[i]["pos"]).x << std::endl;
+        std::cerr << toVect(v[i]["pos"]).y << std::endl;
+
+
+        m_family.push_back(FamilyMember(m_size, m_obstacles, reseau, t, sf::Vector2f(100 ,100 ), m_cachettes, m_lampesThibault, m_interrupteurs));
     }
 }
 
