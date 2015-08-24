@@ -22,6 +22,7 @@ struct Segment {
 	Segment();
 	Segment(sf::Vector2f, sf::Vector2f);
 	const sf::Vector2f intersection_time(const Segment &other) const;
+	const sf::Vector2f intersection_droites(const Segment &other) const;
 	const sf::Vector2f intersection(const Segment &other) const;
 	void intersection_triangle(const sf::Vector2f lumiere, const Segment &tri, std::vector<Segment> &result);
 };

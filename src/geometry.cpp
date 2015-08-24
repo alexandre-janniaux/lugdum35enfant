@@ -29,7 +29,7 @@ const sf::Vector2f Segment::intersection_time(const Segment &other) const
         return sf::Vector2f(-42, -42); // Segments are parallel
     }
     float e = other.p1.x - p1.x;
-    float f = other.p1.y - p1.x;
+    float f = other.p1.y - p1.y;
     float t1 = (d * e - b * f) / det;
     float t2 = (-c * e + a * f) / det;
     return sf::Vector2f(t1, t2);
@@ -42,6 +42,12 @@ const sf::Vector2f Segment::intersection(const Segment &other) const {
         return interp(p1, p2, it.x);
     }
     return sf::Vector2f(-42, -42);
+};
+
+const sf::Vector2f Segment::intersection_droites(const Segment &other) const
+{
+    sf::Vector2f it = intersection_time(other);
+    return interp(p1, p2, it.x);
 };
 
 void Segment::intersection_triangle(const sf::Vector2f lumiere,
@@ -75,8 +81,8 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
             result.push_back(tri);
             return;
         }
-        sf::Vector2f inter1 = tri.intersection(Segment(lumiere, pp1));
-        sf::Vector2f inter2 = tri.intersection(Segment(lumiere, pp2));
+        sf::Vector2f inter1 = tri.intersection_droites(Segment(lumiere, pp1));
+        sf::Vector2f inter2 = tri.intersection_droites(Segment(lumiere, pp2));
         if (-epsilon <= u && v < 1.f + epsilon) {
             // Completement a l'interieur
             result.push_back(Segment(tri.p1, inter1));
@@ -112,8 +118,8 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
             result.push_back(tri);
             return;
         }
-        sf::Vector2f inter1 = tri.intersection(Segment(lumiere, pp1));
-        sf::Vector2f inter2 = tri.intersection(Segment(lumiere, pp2));
+        sf::Vector2f inter1 = tri.intersection_droites(Segment(lumiere, pp1));
+        sf::Vector2f inter2 = tri.intersection_droites(Segment(lumiere, pp2));
         if (-epsilon <= u && v < 1.f + epsilon) {
             // Completement a l'interieur
             result.push_back(Segment(tri.p1, inter1));
@@ -148,8 +154,8 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
             result.push_back(tri);
             return;
         }
-        sf::Vector2f inter1 = tri.intersection(Segment(lumiere, pp1));
-        sf::Vector2f inter2 = tri.intersection(Segment(lumiere, pp2));
+        sf::Vector2f inter1 = tri.intersection_droites(Segment(lumiere, pp1));
+        sf::Vector2f inter2 = tri.intersection_droites(Segment(lumiere, pp2));
         if (-epsilon <= u && v < 1.f + epsilon) {
             // Completement a l'interieur
             result.push_back(Segment(tri.p1, inter1));

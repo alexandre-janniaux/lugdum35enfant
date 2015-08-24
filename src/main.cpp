@@ -50,9 +50,19 @@ int main(int argc, char** argv)
 	Lamp lamp(sf::Color::Blue,200.f,0.f,6.f);
 	lamp.setPosition(sf::Vector2f(250.f,350.f));
 	lamp.attachParent(&scene.getRootNode());
+
+	sf::RectangleShape shape1(sf::Vector2f(20.f,20.f));
+	shape1.setFillColor(sf::Color::Red);
+	shape1.setPosition(sf::Vector2f(200.f,300.f));
+
+	sf::RectangleShape shape2(sf::Vector2f(20.f,50.f));
+	shape2.setFillColor(sf::Color::Red);
+	shape2.setPosition(sf::Vector2f(300.f,380.f));
+
 	std::vector<sf::Rect<float>> obs;
 	obs.clear();
 	obs.push_back(sf::Rect<float>(200.f,300.f,20.f,20.f));
+	obs.push_back(sf::Rect<float>(300.f,380.f,20.f,50.f));
 	lamp.computeLight(obs);
     std::cout << "ghjkl" << std::endl;
 	sf::Event event;
@@ -71,6 +81,8 @@ int main(int argc, char** argv)
 	    screenStack.onDraw(window);
 		//menu_screen_state.render(window);
 	    window.draw(scene);
+        window.draw(shape1);
+        window.draw(shape2);
 	    window.display();
 		//screenStack.window_update(window);
 		screenStack.onUpdate(clock.getElapsedTime());
