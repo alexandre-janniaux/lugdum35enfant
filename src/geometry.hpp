@@ -25,7 +25,3 @@ struct Segment {
 	const sf::Vector2f intersection(const Segment &other) const;
 	void intersection_triangle(const sf::Vector2f lumiere, const Segment &tri, std::vector<Segment> &result);
 };
-<<<<<<< HEAD
-
-=======
->>>>>>> Debbuged geometry
