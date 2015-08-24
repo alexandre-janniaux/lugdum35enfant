@@ -14,6 +14,20 @@
 #include "singleton.hpp"
 
 template <typename T>
+std::unique_ptr<T>&& ResourceProvider(const std::string& filename) {
+	auto ptr = make_unique<T>();
+	ptr->loadFromFile(filename);
+	return std::move(ptr);
+}
+
+template <sf::Music>
+std::unique_ptr<sf::Music>&& ResourceProvider(const std::string& filename) {
+	auto ptr = make_unique<T>();
+	ptr->openFromFile(filenmae);
+	return std::move(ptr);
+}
+
+template <typename T>
 class ResourceManager : public Singleton<ResourceManager<T>>
 {
 	public:
@@ -22,7 +36,7 @@ class ResourceManager : public Singleton<ResourceManager<T>>
 		~ResourceManager() = default;
 	private:
 
-    	std::map<std::string, T*> m_resources;
+    	std::map<std::string, std::unique_ptr<T>> m_resources;
 };
 
 template <typename T>
@@ -35,9 +49,8 @@ T& ResourceManager<T>::get(const std::string& nom_fichier)
 
 	if(m_resources.find(filename) == m_resources.end())
 	{
-		std::cout << "chargement de " << filename << std::endl;
-		m_resources.insert(std::pair<std::string, T*>(filename, new T));
-		m_resources[filename]->loadFromFile(filename);
+		std::cout << "[ResourceManager] Chargement de " << filename << std::endl;
+		m_resources.emplace(filename, ResourceProvider<T>(filename));
 	}
 	return *m_resources.at(filename);
 }
