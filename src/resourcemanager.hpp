@@ -47,7 +47,7 @@ T& ResourceManager<T>::get(const std::string& nom_fichier)
 	if(m_resources.find(filename) == m_resources.end())
 	{
 		std::cout << "[ResourceManager] Chargement de " << filename << std::endl;
-		m_resources.emplace(filename, ResourceProvider<T>(filename));
+		m_resources.insert(std::pair<std::string, std::unique_ptr<T>>(filename, ResourceProvider<T>(filename)));
 	}
 	return *m_resources.at(filename);
 }
