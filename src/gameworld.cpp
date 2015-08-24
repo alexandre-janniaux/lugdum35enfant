@@ -144,6 +144,8 @@ GameWorld::GameWorld(std::string const& fileName, sf::RenderWindow & window, Sce
 
     getTileMap(root["tilemap"], father);
 
+    std::cerr << 6 << std::endl;
+
     /* Parser les family member */
     // TODO
 }
@@ -155,7 +157,7 @@ void GameWorld::getTileMap(Json::Value v, SceneNode& father)
 
     struct TileType
     {
-        sf::Texture *texture;
+        Json::Value v;
         bool isMur;
     };
 
@@ -163,7 +165,7 @@ void GameWorld::getTileMap(Json::Value v, SceneNode& father)
     std::map<char, TileType> tileSet;
     Json::Value tiles = v["tileSet"];
     for (unsigned int i = 0 ; i < tiles.size() ; i++)
-        tileSet[tiles[i]["key"].asString()[0]] = TileType {toT(tiles[i]), tiles[i]["isMur"].asBool()};
+        tileSet[tiles[i]["key"].asString()[0]] = TileType {tiles[i], tiles[i]["isMur"].asBool()};
 
 
     /* On parse la tilemap */
@@ -171,7 +173,7 @@ void GameWorld::getTileMap(Json::Value v, SceneNode& father)
     /* Commençons par juste stocker les tilesType */
     std::vector<std::vector<TileType>> firstTilemap;
     firstTilemap.resize(size.y);
-    for (auto it : firstTilemap)
+    for (auto &it : firstTilemap)
         it.resize(size.x);
     Json::Value tilemap = v["tilemap"];
     if (size.y != tilemap.size())
@@ -182,7 +184,7 @@ void GameWorld::getTileMap(Json::Value v, SceneNode& father)
     {
         for (unsigned int i = 0 ; i < size.y ; i++)
         {
-            std::string str = v["tilemap"].asString();
+            std::string str = v["tilemap"][i].asString();
             if (size.x != str.size())
             {
                 std::cerr << "Pas le bon nombre de colonnes dans la tilemap\n";
@@ -207,18 +209,23 @@ void GameWorld::getTileMap(Json::Value v, SceneNode& father)
     {
         for (unsigned int j = 0 ; j < size.x ; j++)
         {
-            int flag = None;
-            if (j > 0 && firstTilemap[i][j - 1].isMur)
-                flag |= Gauche;
-            if (j < size.x - 1 && firstTilemap[i][j + 1].isMur)
-                flag |= Droite;
-            if (i < size.y - 1 && firstTilemap[i + 1][j].isMur)
-                flag |= Bas;
+            if (firstTilemap[i][j].isMur)
+            {
+                int flag = None;
+                if (j > 0 && firstTilemap[i][j - 1].isMur)
+                    flag |= Gauche;
+                if (j < size.x - 1 && firstTilemap[i][j + 1].isMur)
+                    flag |= Droite;
+                if (i < size.y - 1 && firstTilemap[i + 1][j].isMur)
+                    flag |= Bas;
 
 
-            sf::Sprite sprite(*firstTilemap[i][j].texture);
-            sprite.setTextureRect(sf::IntRect(TILE_WIDTH*flag, 0, TILE_WIDTH, TILE_HEIGHT));
-            m_tiles.push_back(SpriteSceneNode(father, sf::Vector2f(TILE_WIDTH * j, TILE_HEIGHT * i), 5, sprite));
+                sf::Sprite sprite = toSprite(firstTilemap[i][j].v);
+                sprite.setTextureRect(sf::IntRect(TILE_WIDTH*flag, 0, TILE_WIDTH, TILE_HEIGHT));
+                m_tiles.push_back(SpriteSceneNode(father, sf::Vector2f(TILE_WIDTH * j, TILE_HEIGHT * i), 5, sprite));
+            }
+            else
+                m_tiles.push_back(SpriteSceneNode(father, sf::Vector2f(TILE_WIDTH * j, TILE_HEIGHT * i), 5, toSprite(firstTilemap[i][j].v)));
         }
     }
 }

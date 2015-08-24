@@ -1,5 +1,6 @@
 #include <iostream>
 #include "scenenode.hpp"
+#include "spritescenenode.hpp"
 
 SceneNode::SceneNode(int layer)
 : m_children()
