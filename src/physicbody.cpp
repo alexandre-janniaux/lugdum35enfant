@@ -7,6 +7,7 @@ PhysicBody::PhysicBody(Entity entity)
 {
 	m_type = 1;
 	m_entity = entity;
+	m_node = nullptr;
 }
 
 

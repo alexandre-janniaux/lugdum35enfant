@@ -3,7 +3,7 @@
 #include <iostream>
 
 Scene::Scene() {
-    m_sceneNode = make_unique<SceneNode>(0);
+    m_sceneNode = std::move(make_unique<SceneNode>(0));
 }
 
 void Scene::draw(sf::RenderTarget& target,sf::RenderStates states) const

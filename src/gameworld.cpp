@@ -41,7 +41,7 @@ sf::Color toC(Json::Value v)
 } // end namespace
 
 
-GameWorld::GameWorld(std::string const& fileName, sf::RenderWindow & window, SceneNode & father) 
+GameWorld::GameWorld(GameContext& context, std::string const& fileName, SceneNode & father) : m_context(context)
 {
     std::ifstream file(fileName.c_str());
     if (!file)

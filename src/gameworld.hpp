@@ -27,12 +27,12 @@ struct GameContext
 class GameWorld
 {
 public:
-    GameWorld(std::string const& fileName, sf::RenderWindow& win ,SceneNode& father);
+    GameWorld(GameContext& context, std::string const& fileName, SceneNode& father);
 //private:
     typedef std::unique_ptr<Meuble> M_ptr;
     typedef std::unique_ptr<Lampe> L_ptr;
 
-    GameContext m_context;
+    GameContext& m_context;
     sf::Vector2f m_size;
     sf::Vector2f m_checkPoint;
     std::vector<L_ptr> m_lampes;

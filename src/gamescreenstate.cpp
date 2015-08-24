@@ -1,5 +1,6 @@
 #include "gamescreenstate.hpp"
 #include "hero.hpp"
+#include "messagebus.hpp"
 #include <algorithm>
 #include <SFML/Graphics.hpp>
 #include <functional>
@@ -25,11 +26,19 @@ inline float clamp(float x, float min, float max) {
 	 return std::max(std::min(x, max), min);
 }
 
-GameScreenState::GameScreenState() :
+GameScreenState::GameScreenState(sf::RenderWindow* window) :
 	m_collisionSolver([this](PhysicBody& b1, PhysicBody& b2){this->onCollision(b1, b2);}),
-	m_physicInstance(m_collisionSolver)
+	m_physicInstance(m_collisionSolver),
+	m_world(nullptr)
 {
+	m_context.entityPool = &m_entityPool;
+	m_context.physic = &m_physicInstance;
+	m_context.scene = &m_scene;
+	m_context.window = window;
 
+	m_world.reset(new GameWorld(m_context, "", m_context.scene->getRootNode()));
+
+	m_hero = Hero::createHero(m_context);
 }
 
 void GameScreenState::event(const sf::RenderTarget& target, const sf::Event& event) {
@@ -74,6 +83,8 @@ void GameScreenState::update(const sf::Time& time) {
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		direction |= Hero::BOTTOM;
+
+	m_hero->move(direction);
 
 	m_physicInstance.update(time, sf::seconds(0.1f));
 }

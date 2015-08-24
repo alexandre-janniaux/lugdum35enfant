@@ -11,6 +11,7 @@ SceneNode& EntityScene::bindEntity(const Entity& entity)
 
 	registerEntity(entity);
 	m_nodesOwned.emplace(entity,make_unique<SceneNode>(getRootNode()));
+	return *m_nodesOwned.at(entity);
 }
 
 void EntityScene::unbindEntity(const Entity& entity)

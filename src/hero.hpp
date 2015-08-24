@@ -19,14 +19,14 @@ class Hero
 			RIGHT = 	1 << 3
 		};
 
-		static std::unique_ptr<Hero> createHero(GameContext& context);
+		static Hero* createHero(GameContext& context);
 
-		void move(Direction direction);
+		void move(int direction);
 
 	private:
 		Hero();
 		float m_speed;
-		SpriteSceneNode m_sprite;
+		std::unique_ptr<SpriteSceneNode> m_sprite;
 		Entity m_entity;
 
 };

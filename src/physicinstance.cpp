@@ -17,9 +17,9 @@ PhysicBody& PhysicInstance::bindEntity(Entity entity)
 	auto search = m_bodiesOwned.find(entity);
 	if (search == m_bodiesOwned.end())
 	{
-		std::unique_ptr<PhysicBody> body (new PhysicBody(entity));
-		m_bodiesOwned.emplace(entity, std::move(body));
-		m_bodies.push_back(body.get());
+		m_bodiesOwned.emplace(entity, std::unique_ptr<PhysicBody>(new PhysicBody(entity)));
+		PhysicBody* body = m_bodiesOwned.at(entity).get();
+		m_bodies.push_back(body);
 		return *body;
 	}
 
@@ -43,13 +43,11 @@ void PhysicInstance::update(sf::Time time, sf::Time step)
 
 	std::vector<sf::Vector2f> particles;
 	particles.resize(m_bodies.size());
-	auto body = m_bodies.begin();
-	auto particle = particles.begin();
-	for (;body != m_bodies.end(); ++body, ++particle)
+	for (std::size_t i=0; i < m_bodies.size(); ++i)
 	{
-		*particle = (*body)->getNode()->getAbsolutePosition() + time.asSeconds()*(*body)->getSpeed();
+		particles[i] = m_bodies[i]->getNode()->getAbsolutePosition() /*+ time.asSeconds()*m_bodies[i]->getSpeed()*/;
 	}
-	std::vector<bool> collisions = m_collisionSolver->checkCollision(m_bodies, particles); // TODO: apply movement
+	const std::vector<bool>& collisions = m_collisionSolver->checkCollision(m_bodies, particles); // TODO: apply movement
 
 	for(int i=0; i<collisions.size(); ++i) {
 		if (!collisions[i])

@@ -1,9 +1,12 @@
 #pragma once
 
 #include "screenstate.hpp"
-#include "scene.hpp"
+#include "entityscene.hpp"
+#include "entitypool.hpp"
 #include "physicinstance.hpp"
 #include "collisionsolver.hpp"
+#include "gameworld.hpp"
+#include "hero.hpp"
 
 #include <vector>
 #include <SFML/Graphics.hpp>
@@ -13,7 +16,7 @@ class GameScreenState : public ScreenState {
     public:
 
     //GameScreenState()=default;
-	GameScreenState();
+	GameScreenState(sf::RenderWindow* window=nullptr);
     virtual ~GameScreenState()=default;
 
     void event(const sf::RenderTarget& target, const sf::Event& event) override;
@@ -23,10 +26,16 @@ class GameScreenState : public ScreenState {
 
 	private:
 	sf::View m_view;
-	Scene m_scene;
+	EntityScene m_scene;
 	CollisionSolver m_collisionSolver;
 	PhysicInstance m_physicInstance;
+	EntityPool m_entityPool;
 
+	GameContext m_context;
+
+	std::unique_ptr<GameWorld> m_world;
+
+	Hero* m_hero;
 
 	void updateView(sf::RenderTarget& target);
 	void onCollision(PhysicBody& b1, PhysicBody& b2);

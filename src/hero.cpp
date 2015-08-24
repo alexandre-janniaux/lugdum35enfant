@@ -8,29 +8,32 @@
 #include "resourcemanager.hpp"
 
 Hero::Hero() :
-	m_sprite(15)
+	m_sprite(make_unique<SpriteSceneNode>(15))
 {
-	m_sprite.setTexture(TextureManager::instance()->get("graphics/shelf1.png"));
+
+	m_sprite->setTexture(TextureManager::instance()->get("graphics/furniture/shelf1.png"));
 	//m_sprite.setPosition(m_sprite.);
 	m_speed = 10.f;
 }
 
 
-std::unique_ptr<Hero> Hero::createHero(GameContext& context)
+Hero* Hero::createHero(GameContext& context)
 {
 	assert(context.scene != nullptr);
 	assert(context.entityPool != nullptr);
 	assert(context.physic != nullptr);
 
-	auto hero = std::unique_ptr<Hero>(new Hero);
+	Hero* hero = new Hero;
 	hero->m_entity = context.entityPool->createEntity();
 	auto& node = context.scene->bindEntity(hero->m_entity);
 	auto& body = context.physic->bindEntity(hero->m_entity);
-	hero->m_sprite.attachParent(node);
+	body.setNode(&node);
+
+	//hero->m_sprite->attachParent(node);
 	return hero;
 }
 
-void Hero::move(Hero::Direction direction)
+void Hero::move(int direction)
 {
 	sf::Vector2f speed;
 	if (direction & Hero::TOP) speed += {0.f, -1.f};
@@ -41,6 +44,6 @@ void Hero::move(Hero::Direction direction)
 	speed /= std::sqrt(speed.x*speed.x + speed.y*speed.y);
 	speed *= m_speed;
 
-	SendMessage(SetEntitySpeedMessge({m_entity, }));
+	//SendMessage(SetEntitySpeedMessge({m_entity, }));
 }
 
