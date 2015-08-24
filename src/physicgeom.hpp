@@ -17,14 +17,14 @@ class PhysicGeom
 		PhysicGeom(std::initializer_list<sf::Vector2f> points);
 
 		std::size_t addPoint(const sf::Vector2f& point);
-		void removePoint(std::size_t id);
+		//void removePoint(std::size_t id);
 
 		const sf::Vector2f& getPoint(std::size_t id) const;
 		void setPoint(std::size_t id, const sf::Vector2f& point);
 
 		const PointList& getPoints() const;
 
-		std::size_t count();
+		std::size_t count() const;
 
 		void compute();
 

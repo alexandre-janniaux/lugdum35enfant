@@ -1,4 +1,5 @@
 #include "physicgeom.hpp"
+#include <algorithm>
 
 PhysicGeom::PhysicGeom(std::initializer_list< sf::Vector2f > points)
 {
@@ -26,7 +27,7 @@ bool PhysicGeom::contains(const sf::Vector2f& point) const
 }
 
 
-std::size_t PhysicGeom::count()
+std::size_t PhysicGeom::count() const
 {
 	return m_points.size();
 }
@@ -36,16 +37,11 @@ const sf::Vector2f& PhysicGeom::getPoint(std::size_t id) const
 	return m_points.at(id);
 }
 
-const PointList& PhysicGeom::getPoints() const
+const PhysicGeom::PointList& PhysicGeom::getPoints() const
 {
 	return m_points;
 }
 
-void PhysicGeom::removePoint(std::size_t id)
-{
-	m_points.erase(std::advance(m_points.begin(), id));
-	m_isComputed = false;
-}
 
 void PhysicGeom::setPoint(std::size_t id, const sf::Vector2f& point)
 {

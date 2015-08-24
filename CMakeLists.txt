@@ -32,6 +32,7 @@ SET(
     src/collisionsolver.cpp
     src/physicinstance.cpp
     src/physicbody.cpp
+    src/physicgeom.cpp
     src/hero.cpp
 )
 
