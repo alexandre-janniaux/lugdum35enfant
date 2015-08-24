@@ -2,9 +2,10 @@
 #include "physicgeom.hpp"
 #include "scenenode.hpp"
 
-PhysicBody::PhysicBody()
+PhysicBody::PhysicBody(Entity entity)
 {
 	m_type = 1;
+	m_entity = entity;
 }
 
 
@@ -60,4 +61,9 @@ void PhysicBody::setPosition(const sf::Vector2f& position)
 {
 	if (m_node)
 		m_node->setAbsolutePosition(position);
+}
+
+Entity PhysicBody::getRelatedEntity()
+{
+	return m_entity;
 }

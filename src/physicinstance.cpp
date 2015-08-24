@@ -3,13 +3,38 @@
 #include "physicbody.hpp"
 #include "collisionsolver.hpp"
 #include "scenenode.hpp"
-
+#include "cpp_std_11.hpp"
+#include <utility>
 
 PhysicInstance::PhysicInstance(CollisionSolver& collisionSolver) :
 	m_collisionSolver(&collisionSolver)
 {
-
 }
+
+PhysicBody& PhysicInstance::bindEntity(Entity entity)
+{
+	auto search = m_bodiesOwned.find(entity);
+	if (search == m_bodiesOwned.end())
+	{
+		auto body = new PhysicBody(entity);
+		m_bodiesOwned.emplace(entity, body);
+		m_bodies.push_back(body);
+		return *body;
+	}
+
+	return *search->second;
+}
+
+void PhysicInstance::unbindEntity(Entity entity)
+{
+	auto search = m_bodiesOwned.find(entity);
+	if (search != m_bodiesOwned.end())
+	{
+		m_bodies.erase(std::find(m_bodies.begin(), m_bodies.end(), search->second));
+		m_bodiesOwned.erase(search);
+	}
+}
+
 
 void PhysicInstance::update(sf::Time time, sf::Time step)
 {

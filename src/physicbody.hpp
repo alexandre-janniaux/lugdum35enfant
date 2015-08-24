@@ -1,17 +1,19 @@
 #pragma once
 
 #include "physicparticle.hpp"
+#include "entitypool.hpp"
 
 #include <vector>
 #include <memory>
 
 class PhysicGeom;
 class SceneNode;
+class PhysicInstance;
 
 class PhysicBody
 {
 	public:
-		PhysicBody();
+
 
 		float getCirconscritRadius();
 		void setFreeze(bool freeze);
@@ -28,8 +30,12 @@ class PhysicBody
 
 		void setPosition(const sf::Vector2f& position);
 
-		//const PhysicParticle& getParticle() const;
+		Entity getRelatedEntity();
 	private:
+		friend class PhysicInstance;
+		PhysicBody(Entity entity);
+
+		Entity m_entity;
 		SceneNode* m_node;
 		std::vector<std::unique_ptr<PhysicGeom>> m_geoms;
 		std::size_t m_type;
