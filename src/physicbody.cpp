@@ -1,6 +1,7 @@
 #include "physicbody.hpp"
 #include "physicgeom.hpp"
 #include "scenenode.hpp"
+#include "physicinstance.hpp"
 
 PhysicBody::PhysicBody(Entity entity)
 {

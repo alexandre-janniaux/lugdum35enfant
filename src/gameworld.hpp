@@ -9,12 +9,19 @@
 #include "meuble.hpp"
 #include "wallscenenode.hpp"
 
+class EntityScene;
+class EntityPool;
+class PhysicInstance;
+
+
 struct GameContext
 {
-    GameContext(sf::RenderWindow & window, SceneNode & father);
+    //GameContext(sf::RenderWindow & window, SceneNode & father);
 
-    sf::RenderWindow & window;
-    SceneNode sceneNode;
+    sf::RenderWindow* window;
+    EntityScene* scene;
+	EntityPool* entityPool;
+	PhysicInstance* physic;
 };
 
 class GameWorld

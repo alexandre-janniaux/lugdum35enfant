@@ -1,5 +1,11 @@
 #include "spritescenenode.hpp"
 
+SpriteSceneNode::SpriteSceneNode(int layer): SceneNode(layer)
+{
+
+}
+
+
 void SpriteSceneNode::setTexture(const sf::Texture& texture)
 {
     m_sprite.setTexture(texture);

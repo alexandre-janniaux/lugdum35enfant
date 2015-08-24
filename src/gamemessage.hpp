@@ -1,4 +1,6 @@
 #pragma once
+#include <SFML/System/Vector2.hpp>
+#include "entitypool.hpp"
 
 struct QuitMessage {};
 
@@ -19,4 +21,9 @@ struct ScreenMessage {
 
 	Action action;
 	int screen;
+};
+
+struct SetEntitySpeedMessge{
+	Entity entity;
+	sf::Vector2f speed;
 };

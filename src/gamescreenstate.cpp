@@ -1,4 +1,5 @@
 #include "gamescreenstate.hpp"
+#include "hero.hpp"
 #include <algorithm>
 #include <SFML/Graphics.hpp>
 #include <functional>
@@ -61,25 +62,18 @@ void GameScreenState::render(sf::RenderTarget& target) {
 
 void GameScreenState::update(const sf::Time& time) {
 	// TODO: Dynamic keyboard configuration
+	int direction;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-
-	}
+		direction |= Hero::LEFT;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-
-	}
+		direction |= Hero::RIGHT;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-
-	}
+		direction |= Hero::TOP;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-
-	}
+		direction |= Hero::BOTTOM;
 
 	m_physicInstance.update(time, sf::seconds(0.1f));
 }
