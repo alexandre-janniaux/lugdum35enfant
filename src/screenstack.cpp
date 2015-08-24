@@ -2,6 +2,7 @@
 #include "screenstate.hpp"
 
 #include <functional>
+#include <iostream>
 
 using namespace std::placeholders;
 
@@ -37,6 +38,7 @@ void ScreenStack::onScreenMessage(const ScreenMessage& message)
 	{
 		case ScreenMessage::PUSH:
 			pushState(message.screen);
+			std::cout << "Push screen [" << message.screen << "] request" << std::endl;
 			break;
 
 		case ScreenMessage::POP:
@@ -45,6 +47,7 @@ void ScreenStack::onScreenMessage(const ScreenMessage& message)
 
 		case ScreenMessage::CLEAR:
 			clearStack();
+			std::cout << "Clear screen stack request" << std::endl;
 			break;
 
 		default:
