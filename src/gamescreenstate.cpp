@@ -36,7 +36,7 @@ GameScreenState::GameScreenState(sf::RenderWindow* window) :
 	m_context.scene = &m_scene;
 	m_context.window = window;
 
-	m_world.reset(new GameWorld(m_context, "", m_context.scene->getRootNode()));
+	m_world.reset(new GameWorld(m_context, "test.txt", m_context.scene->getRootNode()));
 
 	m_hero = Hero::createHero(m_context);
 }
