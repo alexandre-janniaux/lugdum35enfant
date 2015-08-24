@@ -2,8 +2,9 @@
 "size": {"x":1000,"y":1000},
 "meubles":[
 	{"type":"cachette",
-	"sprite":{"file":"furniture/table_nap1.png"},
-	"hitBox":{"x":100,"y":510,"w":240,"h":180}},
+    "sprite":{"file":"furniture/table_nap1.png"},
+    "hitBox":{"x":100,"y":510,"w":240,"h":180},
+    "interactBox":{"x":100,"y":510,"w":240,"h":180}},
 	{"type":"lit",
 	"sprite":{"file":"furniture/bed1R.png"},
 	"hitBox":{"x":640,"y":50,"w":160,"h":90}},
@@ -102,5 +103,7 @@
 		   "msssssssm",
 		   "mmmmmmmmm"]
 	},
-"initialPos":{"x":30,"y":30}
+"initialPos":{"x":30,"y":30},
+"family":[
+{"type":"zone", "pos":{"x":20,"y":20}, "reseau":[{"x":50, "y":50}, {"x":200, "y":200}]]
 }
