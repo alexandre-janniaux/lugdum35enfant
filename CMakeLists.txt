@@ -27,6 +27,11 @@ SET(
     src/entitypool.cpp
     src/entityscene.cpp
     src/entitysystem.cpp
+    src/messagebusqueue.cpp
+    src/jsoncpp.cpp
+    src/collisionsolver.cpp
+    src/physicinstance.cpp
+    src/physicbody.cpp
 )
 
 ADD_EXECUTABLE(
