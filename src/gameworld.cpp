@@ -165,7 +165,7 @@ void GameWorld::getTileMap(Json::Value v, SceneNode& father)
     std::map<char, TileType> tileSet;
     Json::Value tiles = v["tileSet"];
     for (unsigned int i = 0 ; i < tiles.size() ; i++)
-        tileSet[tiles[i]["key"].asString()[0]] = TileType {tiles[i], tiles[i]["isMur"].asBool()};
+        tileSet[tiles[i]["key"].asString()[0]] = TileType {tiles[i]["sprite"], tiles[i]["isMur"].asBool()};
 
 
     /* On parse la tilemap */
