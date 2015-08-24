@@ -9,7 +9,7 @@
 class EntityScene : public EntitySystem, public Scene
 {
 	public:
-		SceneNode& bindEntity(const Entity& entity);
+		SceneNode* bindEntity(const Entity& entity);
 		void unbindEntity(const Entity& entity);
 
 	private:

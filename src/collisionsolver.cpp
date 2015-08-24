@@ -1,5 +1,6 @@
 #include "collisionsolver.hpp"
 #include <assert.h>
+#include <iostream>
 
 #include "physicbody.hpp"
 
@@ -14,8 +15,8 @@ std::vector<bool> CollisionSolver::checkCollision(const std::vector< PhysicBody*
 {
 	assert(bodies.size() == newParticles.size());
 
-
 	std::vector<bool> collisions;
+	collisions.resize(bodies.size(), false);
 
 	for (int i=0; i < bodies.size()-1; ++i)
 	{

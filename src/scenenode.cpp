@@ -127,7 +127,10 @@ void SceneNode::setPosition(sf::Vector2f const& pos)
 
 void SceneNode::setAbsolutePosition(const sf::Vector2f& pos)
 {
-	m_transform.setPosition(getAbsoluteTransform().getInverse().transformPoint(pos));
+	if (m_parent)
+		m_transform.setPosition(m_parent->m_absoluteTransform.getInverse().transformPoint(pos));
+	else
+		setPosition(pos);
 }
 
 void SceneNode::move(sf::Vector2f const& mv)

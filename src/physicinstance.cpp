@@ -16,7 +16,7 @@ PhysicInstance::PhysicInstance(CollisionSolver& collisionSolver) :
 {
 }
 
-PhysicBody& PhysicInstance::bindEntity(Entity entity)
+PhysicBody* PhysicInstance::bindEntity(Entity entity)
 {
 	auto search = m_bodiesOwned.find(entity);
 	if (search == m_bodiesOwned.end())
@@ -24,10 +24,10 @@ PhysicBody& PhysicInstance::bindEntity(Entity entity)
 		m_bodiesOwned.emplace(entity, std::unique_ptr<PhysicBody>(new PhysicBody(entity)));
 		PhysicBody* body = m_bodiesOwned.at(entity).get();
 		m_bodies.push_back(body);
-		return *body;
+		return body;
 	}
 
-	return *search->second;
+	return search->second.get();
 }
 
 void PhysicInstance::unbindEntity(Entity entity)
@@ -47,19 +47,22 @@ void PhysicInstance::update(sf::Time time, sf::Time step)
 
 	std::vector<sf::Vector2f> particles;
 	particles.resize(m_bodies.size());
+
 	for (std::size_t i=0; i < m_bodies.size(); ++i)
 	{
-		std::cout << "Position : " << m_bodies[i]->getPosition().x << "/" << m_bodies[i]->getPosition().y << std::endl;
-		particles[i] = m_bodies[i]->getNode()->getAbsolutePosition() + time.asSeconds()*m_bodies[i]->getSpeed();
+		std::cout << "speed : " << m_bodies[i]->getSpeed().x << "/" << m_bodies[i]->getSpeed().y << std::endl;
+		particles[i] = m_bodies[i]->getPosition() + time.asSeconds()*m_bodies[i]->getSpeed();
+		//std::cout << "Position : " << particles[i].x << "/" << particles[i].y << std::endl;
 	}
 	const std::vector<bool>& collisions = m_collisionSolver->checkCollision(m_bodies, particles); // TODO: apply movement
 
-	for(int i=0; i<collisions.size(); ++i) {
+	for(int i=0; i<m_bodies.size(); ++i) {
 		if (!collisions[i])
 			m_bodies[i]->setPosition(particles[i]);
 	}
 
 	m_entitySpeedMessage.readAll();
+	m_entityPositionMessage.readAll();
 }
 
 void PhysicInstance::onSetEntitySpeedMessage(const SetEntitySpeedMessage& message)
@@ -70,19 +73,23 @@ void PhysicInstance::onSetEntitySpeedMessage(const SetEntitySpeedMessage& messag
 	auto search = m_bodiesOwned.find(message.entity);
 	if (search != m_bodiesOwned.end()) {
 		auto& body = *search->second;
-		std::cout << "Position : " << body.getPosition().x << "/" << body.getPosition().y << std::endl;
-		std::cout << "Speed : " << body.getSpeed().x << "/" << body.getSpeed().y << std::endl;
+		//std::cout << "Position : " << body.getPosition().x << "/" << body.getPosition().y << std::endl;
+		//std::cout << "Speed : " << body.getSpeed().x << "/" << body.getSpeed().y << std::endl;
 		search->second->setSpeed(message.speed);
 	}
 }
 
 void PhysicInstance::onSetEntityPositionMessage(const SetEntityPositionMessage& message)
 {
+	std::cout << "message : " << message.position.x << "/" << message.position.y << std::endl;
 	auto search = m_bodiesOwned.find(message.entity);
 	if (search != m_bodiesOwned.end()) {
+
 		auto& body = *search->second;
-		std::cout << "Position : " << body.getPosition().x << "/" << body.getPosition().y << std::endl;
-		std::cout << "Speed : " << body.getSpeed().x << "/" << body.getSpeed().y << std::endl;
-		search->second->setPosition(message.position);
+		body.setPosition(message.position);
+		std::cout << "node address message :" << body.m_node << std::endl;
+		//std::cout << "Position : " << body.getPosition().x << "/" << body.getPosition().y << std::endl;
+		//std::cout << "Speed : " << body.getSpeed().x << "/" << body.getSpeed().y << std::endl;
+
 	}
 }

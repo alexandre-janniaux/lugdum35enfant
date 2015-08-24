@@ -19,7 +19,7 @@ class PhysicInstance : public EntitySystem
 	public:
 		PhysicInstance(CollisionSolver& collisionSolver);
 
-		PhysicBody& bindEntity(Entity entity);
+		PhysicBody* bindEntity(Entity entity);
 		void unbindEntity(Entity entity);
 
 		void update(sf::Time time, sf::Time step);

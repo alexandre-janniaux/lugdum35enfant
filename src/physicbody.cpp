@@ -55,6 +55,7 @@ const sf::Vector2f& PhysicBody::getSpeed() const
 
 void PhysicBody::setSpeed(const sf::Vector2f& speed)
 {
+	std::cout << "set speed = " << speed.x << "/" << speed.y << std::endl;
 	m_speed = speed;
 }
 
@@ -62,7 +63,7 @@ void PhysicBody::setSpeed(const sf::Vector2f& speed)
 void PhysicBody::setPosition(const sf::Vector2f& position)
 {
 	if (m_node) {
-		m_node->setAbsolutePosition(position);
+		m_node->setPosition(position);//setAbsolutePosition(position);
 	} else{
 		std::cout << "Not assigned node" << std::endl;
 	}
