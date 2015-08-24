@@ -17,11 +17,13 @@ class SceneNode: public sf::Drawable
         void detachParent();
         void attachParent(SceneNode&);
         const sf::Transform& getAbsoluteTransform() const;
+		sf::Vector2f getAbsolutePosition() const;
         const sf::Transform& getTransform() const;
         const sf::Vector2f& getPosition() const;
         int getLayer() const;
         std::vector<SceneNode*> const& getChildren() const;
         void setPosition(sf::Vector2f const& pos);
+		void setAbsolutePosition(sf::Vector2f const& pos);
         void move(sf::Vector2f const& mv);
 
     private:

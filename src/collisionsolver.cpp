@@ -10,7 +10,7 @@ CollisionSolver::CollisionSolver(std::function< void(PhysicBody&,PhysicBody&) > 
 }
 
 
-std::vector<bool> CollisionSolver::checkCollision(const std::vector< PhysicBody* >& bodies, const std::vector< PhysicParticle >& newParticles)
+std::vector<bool> CollisionSolver::checkCollision(const std::vector< PhysicBody* >& bodies, const std::vector< sf::Vector2f>& newParticles)
 {
 	assert(bodies.size() == newParticles.size());
 	auto body = bodies.begin();
@@ -32,7 +32,7 @@ std::vector<bool> CollisionSolver::checkCollision(const std::vector< PhysicBody*
 			float r1 = (*body)->getCirconscritRadius();
 			float r2 = (*body2)->getCirconscritRadius();
 
-			auto vec = particle->position - particle2->position;
+			auto vec = (*particle) - (*particle2);
 			auto d = vec.x*vec.x + vec.y*vec.y;
 			if (d < (r1+r2)*(r1+r2)) {
 
