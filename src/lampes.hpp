@@ -10,7 +10,7 @@
 class Lampe
 {
 public:
-    Lampe(SceneNode &father, sf::Sprite& sprite, sf::Color color, sf::Vector2f origin, float r, float angleStart, float angleEnd, bool on);
+    Lampe(SceneNode &father, sf::Sprite& sprite, sf::Vector2f pos, sf::Color color, sf::Vector2f origin, float r, float angleStart, float angleEnd, bool on);
     bool isLighting(sf::Vector2f point) const;
     void switcher();
 private:

@@ -1,16 +1,6 @@
 #include <iostream>
 #include "scenenode.hpp"
 
-/* SceneNode::SceneNode(SceneNode s) :
-: m_children(s.m_children)
-, m_parent(s.m_parent)
-, m_transform(s.m_transform)
-, m_absoluteTransform(s.m_absoluteTransform)
-, m_layer(s.m_layer)
-, m_computed(s.m_computed)
-{}
-*/
-
 SceneNode::SceneNode(int layer)
 : m_children()
 , m_parent()
@@ -21,7 +11,7 @@ SceneNode::SceneNode(int layer)
 {
 }
 
-SceneNode::SceneNode(SceneNode & parent, int layer)
+SceneNode::SceneNode(SceneNode & parent, sf::Vector2f pos, int layer)
 : m_children()
 , m_parent()
 , m_transform()
@@ -30,6 +20,7 @@ SceneNode::SceneNode(SceneNode & parent, int layer)
 , m_computed(false)
 {
     attachParent(parent);
+    setPosition(pos);
 }
 
 SceneNode::~SceneNode()

@@ -8,8 +8,8 @@
 class SpriteSceneNode : public SceneNode
 {
     public:
-        inline SpriteSceneNode(SceneNode& father, int layer, sf::Sprite const& sprite) :
-            SceneNode(father, layer), m_sprite(sprite) {}
+        inline SpriteSceneNode(SceneNode& father, sf::Vector2f pos, int layer, sf::Sprite const& sprite) :
+            SceneNode(father, pos, layer), m_sprite(sprite) {}
         void setTexture(const sf::Texture& texture);
 
     protected:

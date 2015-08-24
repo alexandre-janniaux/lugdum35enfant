@@ -22,7 +22,7 @@ enum Action {CACHER, ALLUMER, BRUITER, FINIR};
 class Meuble
 {
 public:
-    inline Meuble(sf::Sprite &sprite, SceneNode& father, sf::FloatRect hitBox) : m_sn(father, 10, sprite), m_hitBox(hitBox) {};
+    inline Meuble(sf::Sprite &sprite, sf::Vector2f pos, SceneNode& father, sf::FloatRect hitBox) : m_sn(father, pos, 10, sprite), m_hitBox(hitBox) {};
         
     virtual bool canInteract(sf::Vector2f point) const;
     virtual Action interact(Monster &me);
@@ -35,7 +35,7 @@ private:
 class Lit: public Meuble
 {
 public:
-    inline Lit(sf::Sprite &sprite, SceneNode& father, sf::FloatRect hitBox) : Meuble(sprite, father, hitBox) {};
+    inline Lit(sf::Sprite &sprite, sf::Vector2f pos, SceneNode& father, sf::FloatRect hitBox) : Meuble(sprite, pos, father, hitBox) {};
         
     virtual Action interact(Monster &me);
     virtual ~Lit();
@@ -44,7 +44,7 @@ public:
 class Cachette: public Meuble
 {
 public:
-    inline Cachette(sf::Sprite &sprite, SceneNode& father, sf::FloatRect hitBox) : Meuble(sprite, father, hitBox), m_used(false) {};
+    inline Cachette(sf::Sprite &sprite, sf::Vector2f pos, SceneNode& father, sf::FloatRect hitBox) : Meuble(sprite, pos, father, hitBox), m_used(false) {};
 
     virtual Action interact(Monster &me);
     virtual ~Cachette();
@@ -55,7 +55,7 @@ private:
 class Tapis: public Meuble
 {
 public:
-    inline Tapis(sf::Sprite &sprite, SceneNode& father, sf::FloatRect hitBox, sf::FloatRect intHitBox) : Meuble(sprite, father, hitBox), m_intHitBox(intHitBox), m_used(false) {};
+    inline Tapis(sf::Sprite &sprite, sf::Vector2f pos, SceneNode& father, sf::FloatRect hitBox, sf::FloatRect intHitBox) : Meuble(sprite, pos, father, hitBox), m_intHitBox(intHitBox), m_used(false) {};
 
     virtual bool canInteract(sf::Vector2f point) const;
     virtual Action interact(Monster &me);
@@ -68,7 +68,7 @@ private:
 class MeubleBruit: public Meuble
 {
 public:
-    inline MeubleBruit(sf::Sprite &sprite, SceneNode& father, sf::FloatRect hitBox, sf::Time time) : Meuble(sprite, father, hitBox), m_temps(time) {};
+    inline MeubleBruit(sf::Sprite &sprite, sf::Vector2f pos, SceneNode& father, sf::FloatRect hitBox, sf::Time time) : Meuble(sprite, pos, father, hitBox), m_temps(time) {};
 
     virtual Action interact(Monster &me);
     virtual ~MeubleBruit();
@@ -79,7 +79,7 @@ private:
 class Interrupteur: public Meuble
 {
 public:
-    inline Interrupteur(sf::Sprite &sprite, SceneNode& father, sf::FloatRect hitBox, Lampe &light) : Meuble(sprite, father, hitBox), m_light(&light) {};
+    inline Interrupteur(sf::Sprite &sprite, sf::Vector2f pos, SceneNode& father, sf::FloatRect hitBox, Lampe &light) : Meuble(sprite, pos, father, hitBox), m_light(&light) {};
 
     virtual Action interact(Monster &me);
     virtual ~Interrupteur();

@@ -7,5 +7,6 @@ void SpriteSceneNode::setTexture(const sf::Texture& texture)
 
 void SpriteSceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(m_sprite);
+    states.transform *= getAbsoluteTransform();
+    target.draw(m_sprite, states);
 }

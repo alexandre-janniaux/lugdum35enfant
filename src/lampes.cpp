@@ -1,7 +1,7 @@
 #include "lampes.hpp"
 
-Lampe::Lampe(SceneNode &father, sf::Sprite& sprite, sf::Color color, sf::Vector2f origin, float r, float angleStart, float angleEnd, bool on) :
-     m_sn(father, 100, sprite), m_color(color), m_origin(origin), m_rayon(r), m_angleStart(angleStart), m_angleEnd(angleEnd), m_isOn(on)
+Lampe::Lampe(SceneNode &father, sf::Sprite& sprite, sf::Vector2f pos, sf::Color color, sf::Vector2f origin, float r, float angleStart, float angleEnd, bool on) :
+     m_sn(father, pos, 100, sprite), m_color(color), m_origin(origin), m_rayon(r), m_angleStart(angleStart), m_angleEnd(angleEnd), m_isOn(on)
 {}
 
 bool Lampe::isLighting(sf::Vector2f point) const

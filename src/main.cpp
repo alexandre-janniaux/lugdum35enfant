@@ -7,6 +7,8 @@
 #include "screenstack.hpp"
 #include "resourcemanager.hpp"
 #include "messagebusproxy.hpp"
+#include "gameworld.hpp" 
+#include "scene.hpp" 
 
 
 int main(int argc, char** argv)
@@ -16,9 +18,14 @@ int main(int argc, char** argv)
 	sf::String window_title = "Ludum Dare 35";
 	sf::VideoMode window_mode (800,600);
 
+
 	window.create(window_mode, window_title);
 	window.setFramerateLimit(60);
+        Scene scene;
 	
+// Pour afficher le niveau, décomenter ça et commenter screenStack.onDraw(scene); dans la boucle principale.
+//        GameWorld gw("test.txt", window, scene.getRootNode());
+
 	
 	ScreenStack screenStack;
 	screenStack.registerState(ScreenState::Menu, make_unique<MenuScreenState>());
@@ -41,7 +48,9 @@ int main(int argc, char** argv)
         }
         
         window.clear();
+        // Pour afficher le menu, décomenter ça et commenter GameWorld... avant la boucle principale;
         screenStack.onDraw(window);
+        window.draw(scene);
         window.display();
         screenStack.onUpdate(clock.getElapsedTime());
         clock.restart();

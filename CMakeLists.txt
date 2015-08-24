@@ -17,8 +17,8 @@ SET(
     src/scene.cpp
     src/scenenode.cpp
     src/spritescenenode.cpp
+    src/wallscenenode.cpp
     src/sousmenu.cpp
-    src/spritescenenode.cpp
     src/messagebusqueue.cpp
     src/jsoncpp.cpp
     src/gameworld.cpp

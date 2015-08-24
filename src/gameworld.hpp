@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 // #include "familymember.hpp"
 #include "meuble.hpp"
+#include "wallscenenode.hpp"
 
 class FamilyMember
 {};
@@ -31,7 +32,7 @@ private:
     std::vector<L_ptr> m_lampes;
     std::vector<M_ptr> m_meubles;
     std::vector<FamilyMember> m_family_members;
-    std::vector<sf::FloatRect> m_murs;
+    std::vector<WallSceneNode::uPtr> m_murs;
 };
 
 #endif // GAMEWORLD_H_INCLUDED
