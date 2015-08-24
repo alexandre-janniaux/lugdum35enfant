@@ -22,6 +22,11 @@ void PhysicInstance::update(sf::Time time, sf::Time step)
 	{
 		particle->position = (*body)->getParticle().position + time.asSeconds()*(*body)->getParticle().speed;
 	}
-	m_collisionSolver->checkCollision(m_bodies, particles); // TODO: apply movement
+	std::vector<bool> collisions = m_collisionSolver->checkCollision(m_bodies, particles); // TODO: apply movement
+
+	for(int i=0; i<collisions.size(); ++i) {
+		if (!collisions[i])
+			m_bodies[i]->setPosition(particles[i].position);
+	}
 }
 

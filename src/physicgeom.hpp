@@ -10,6 +10,8 @@ using Triangle = std::array<sf::Vector2f, 3>;
 
 class PhysicGeom
 {
+	using PointList = std::vector<sf::Vector2f>;
+	
 	public:
 		PhysicGeom()=default;
 		PhysicGeom(std::initializer_list<sf::Vector2f> points);
@@ -30,7 +32,7 @@ class PhysicGeom
 
 		using Ptr = std::unique_ptr<PhysicGeom>;
 	private:
-		using PointList = std::vector<sf::Vector2f>;
+
 
 		bool m_isComputed;
 
