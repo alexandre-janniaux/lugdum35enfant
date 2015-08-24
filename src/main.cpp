@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 	screenStack.pushState(ScreenState::Menu);
 
 	Scene scene;
-	Lamp lamp(sf::Color::Blue,200.f,0.f,6.f);
+	Lamp lamp(sf::Color::Yellow,200.f,0.f,2 * Math::PI);
 	lamp.setPosition(sf::Vector2f(250.f,350.f));
 	lamp.attachParent(&scene.getRootNode());
 
@@ -80,6 +80,8 @@ int main(int argc, char** argv)
 	sf::Event event;
 	sf::Clock clock;
 
+	sf::Vector2f pos = sf::Vector2f(250.f, 350.f);
+
 	while (window.isOpen()) {
 	    while (window.pollEvent(event)) {
 	        if (event.type == sf::Event::Closed)
@@ -89,12 +91,32 @@ int main(int argc, char** argv)
                 screenStack.onEvent(window, event);
 	    }
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+			pos += sf::Vector2f(0.f, -1.f);
+			lamp.setPosition(pos);
+			lamp.computeLight(obs);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+			pos += sf::Vector2f(-1.f, 0.f);
+			lamp.setPosition(pos);
+			lamp.computeLight(obs);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+			pos += sf::Vector2f(0.f, 1.f);
+			lamp.setPosition(pos);
+			lamp.computeLight(obs);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			pos += sf::Vector2f(1.f, 0.f);
+			lamp.setPosition(pos);
+			lamp.computeLight(obs);
+		}
 	    window.clear();
 	    screenStack.onDraw(window);
 		//menu_screen_state.render(window);
 	    window.draw(scene);
-        //window.draw(shape1);
-        //window.draw(shape2); pour dessiner les obstacles
+        window.draw(shape1);
+        window.draw(shape2); //pour dessiner les obstacles
         /*
         std::vector<Segment> segmentlist=lamp.rectangleToSegments(sf::Rect<float>(300.f,380.f,20.f,50.f));
         for (auto& it : segmentlist)

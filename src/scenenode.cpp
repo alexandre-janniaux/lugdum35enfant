@@ -35,7 +35,7 @@ void SceneNode::detachParent()
     assert(_found != m_parent->m_children.end());
 
 //    SceneNode* _pointer = *_found;
-    m_children.erase(_found);
+    m_parent->m_children.erase(_found);
     m_parent = nullptr;
 
     invalidate();

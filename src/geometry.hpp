@@ -5,7 +5,6 @@
 
 using V2d = sf::Vector2<double>;
 
-
 inline sf::Vector2f d2f(V2d vectorD)
 {
     return sf::Vector2f(vectorD.x,vectorD.y);
