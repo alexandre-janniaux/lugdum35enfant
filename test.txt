@@ -5,14 +5,14 @@
 	"hitBox":{"x":200,"y":100,"w":240,"h":180},
 	"tapisHitBox":{"x":210,"y":110,"w":220,"h":160}},
 	{"type":"cachette",
-	"sprite":{"file":"furniture/shelf1.png"},
+	"sprite":{"file":"shelf1.png"},
 	"hitBox":{"x":20,"y":120,"w":80,"h":60}},
 	{"type":"cachette",
 	"sprite":{"file":"sofa1.png"},
 	"hitBox":{"x":20,"y":500,"w":80,"h":60}},
 	{"type":"bruit",
 	"sprite":{"file":"shelf2.png"},
-	"hitBox":{"x":450,"y":500,"w":80,"h":60},
+	"hitBox":{"x":400,"y":500,"w":80,"h":60},
 	"bruitTemps":3},
 	{"type":"bruit",
 	"sprite":{"file":"shelf2.png"},
@@ -33,12 +33,5 @@
 	{"x":780,"y":230,"w":20,"h":250},
 	{"x":500,"y":210,"w":300,"h":20}
 	],
-"tilemap":{
-    "tileSet":[
-        {"key":"a", "sprite":{"file":"flooring/floorstone1.png"}, "isMur":false},
-        {"key":"b", "sprite":{"file":"wall/wallkakisheet.png"}, "isMur":true}],
-    "size":{"x":5, "y":5},
-    "tilemap":["bbbbb", "babab", "bbbaa", "baabb", "aaaaa"]
-},
 "initialPos":{"x":300,"y":750}
 }
