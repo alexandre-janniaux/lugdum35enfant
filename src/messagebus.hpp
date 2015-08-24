@@ -92,3 +92,8 @@ MessageType* MessageBus<MessageType>::next(MessageBusProxy<MessageType>* proxy) 
 
 template <typename MessageType>
 std::unique_ptr<MessageBus<MessageType>> MessageBus<MessageType>::m_bus = nullptr;
+
+template <typename MessageType>
+void SendMessage(const MessageType& message) {
+	MessageBus<MessageType>::getBus()->push(message);
+}
