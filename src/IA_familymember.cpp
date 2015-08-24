@@ -8,8 +8,15 @@
 
 #include "IA_familymember.hpp"
 
+void log(std::string texte)
+{
+    std::cout << std::endl;
+    std::cout << "IA FamilyMember : " << texte << std::endl;
+}
+
 sf::Vector2f FamilyMember::point_centre(sf::FloatRect hb_int, sf::FloatRect hb_ext, std::vector<sf::FloatRect> obstacles)
 {
+    log("Point_centre");
     std::vector<sf::Vector2f> points_candidats;
     sf::Vector2f A (hb_ext.left + (hb_ext.width / 2), hb_ext.top);
     sf::Vector2f D (hb_ext.left, hb_ext.top + hb_ext.height / 2);
@@ -35,21 +42,25 @@ sf::Vector2f FamilyMember::point_centre(sf::FloatRect hb_int, sf::FloatRect hb_e
         };
     }
     std::cout << "ERREUR DANS POINT CENTRE FAMILY MEMBER";
+    log("Point_centre : fin");
     return sf::Vector2f (-1, -1);
 }
 
 std::vector<sf::Vector2f> FamilyMember::normalise_reseau(std::vector<sf::Vector2f> reseau)
 {
+    log("Normalise_reseau");
     std::vector<sf::Vector2f> new_reseau {};
     for (auto point: reseau)
     {
         new_reseau.push_back(normaliser(point));
     }
+    log("Normalise_reseau : fin");
     return new_reseau;
 }
 
 std::vector<sf::Vector2f> FamilyMember::creer_reseau_meuble(std::vector<std::pair<sf::FloatRect,sf::FloatRect>> cachettes, std::vector<sf::FloatRect> obstacles)
 {
+    log("Creer_reseau_meuble");
     std::vector<sf::Vector2f> reseau {};
     for (auto meuble: cachettes)
     {
@@ -60,14 +71,16 @@ std::vector<sf::Vector2f> FamilyMember::creer_reseau_meuble(std::vector<std::pai
             reseau.push_back(point);
         }
     }
+    log("Creer_reseau_meuble : fin");
     return normalise_reseau(reseau);
 }
 
-FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> &obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> &cachettes, std::vector<std::pair<sf::Vector2f, float>> &lampes, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &interrupteurs):
+FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> &obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> &cachettes, std::vector<std::pair<sf::Vector2f, float>> &lampes, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> &interrupteurs):
 m_interrupteurs(interrupteurs),
 m_obstacles(obstacles),
 m_lampes(lampes)
 {
+    log("Creation");
     std::cout << "Taille de cachettes" << cachettes.size();
     // CONSTANTES
     m_taille = taille;
@@ -91,11 +104,13 @@ m_lampes(lampes)
 
     m_point_cible = pos;    
     retour();
+    log("Creation fin");
 }
 
 
 void FamilyMember::update(sf::Vector2f pos, bool lumiere)
 {
+    log("Update");
     m_pos = pos;
     m_is_enlighted = lumiere;
     sf::Vector2f vecteur = m_pos - m_point_cible;
@@ -103,10 +118,12 @@ void FamilyMember::update(sf::Vector2f pos, bool lumiere)
     {
         agir();
     }
+    log("Update : fin");
 }
 
 void FamilyMember::allerAuPoint(sf::Vector2f pos)
 {
+    log("Aller au point");
     if (distance_entre(pos, m_pos) > m_delta)
     {
         sf::Vector2f vitesse = pos - m_pos;
@@ -115,28 +132,34 @@ void FamilyMember::allerAuPoint(sf::Vector2f pos)
         setVitesse(vitesse);
         m_point_cible = pos;
     }
+    log("Aller au point : fin");
 }
 
 // Adapte au pas
 sf::Vector2f FamilyMember::normaliser(sf::Vector2f ancien_point)
 {
+    log("Normaliser");
     int ent_x = ancien_point.x / m_pas;
     int ent_y = ancien_point.y / m_pas;
+    log("Normaliser : fin");
     return sf::Vector2f (ent_x * m_pas, ent_y * m_pas);
 }
 
 void FamilyMember::lancerTrajetSpecial(sf::Vector2f point, IA_Mode mode)
 {
+    log("Lancer trajet special");
     m_mode_actuel = mode;
     m_cible = point;
     m_id_point_actuel = 0;
     sf::Vector2f depart = normaliser(m_pos);
     sf::Vector2f arrivee = normaliser(point);
     m_chemin_special = AStarGrille(depart, arrivee, m_obstacles, m_taille, m_pas);
+    log("Lancer trajet special : fin");
 }
 
 void FamilyMember::retour()
 {
+    log("Retour");
     sf::Vector2f best_point = m_reseau[0];
     for (auto point: m_reseau)
     {
@@ -146,10 +169,12 @@ void FamilyMember::retour()
         }
     }
     lancerTrajetSpecial(best_point, RETOUR);
+    log("Retour : fin");
 }
 
 void FamilyMember::bruitEntendu(sf::Vector2f pos)
 {
+    log("Bruit entendu");
     if (distance_entre(m_pos, pos) > m_delta)
     {
         lancerTrajetSpecial(pos, BRUIT);
@@ -158,6 +183,7 @@ void FamilyMember::bruitEntendu(sf::Vector2f pos)
     {
         rotater();
     }
+    log("Bruit entendu : fin");
 }
 
 void FamilyMember::lumiereEteinte(sf::Vector2f point)
@@ -165,6 +191,8 @@ void FamilyMember::lumiereEteinte(sf::Vector2f point)
  //   std::vector<std::pair<sf::Vector2f, float>> &m_lampes;
    // std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &m_interrupteurs;
     
+    log("Lumière éteinte");
+
     int id {-1};
     for (int k {0}; k < m_lampes.size(); k++)
     {
@@ -174,12 +202,14 @@ void FamilyMember::lumiereEteinte(sf::Vector2f point)
         }
     }
     
-    auto pos = point_centre(m_interrupteurs[k].first, m_interrupteurs[k].second, m_obstacles);
+    auto pos = point_centre(m_interrupteurs[id].first, m_interrupteurs[id].second, m_obstacles);
     lancerTrajetSpecial(pos, LUMIERE);
+    log("Lumière éteinte : fin");
 }
 
 void FamilyMember::rentrerDansLeRang()
 {
+    log("Rentrer dans le rang");
     m_mode_actuel = NORMAL;
     int id_best {1};
     for (int k {1}; k < m_chemin_special.size(); k++)
@@ -191,10 +221,12 @@ void FamilyMember::rentrerDansLeRang()
     }
     m_id_point_actuel = id_best - 1;
     allerAuPoint(m_chemin_special[id_best]);
+    log("Rentrer dans le rang : fin");
 }
 
 void FamilyMember::agir()
 {
+    log("Agir");
     if (m_mode_actuel != NORMAL)
     {
         if (m_id_point_actuel < m_chemin_special.size())
@@ -266,4 +298,5 @@ void FamilyMember::agir()
             allerAuPoint(m_chemin_special[m_id_point_actuel]);
         }
     }
+    log("Agir : fin");
 }
