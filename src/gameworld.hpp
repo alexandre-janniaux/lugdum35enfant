@@ -8,6 +8,7 @@
 // #include "familymember.hpp"
 #include "meuble.hpp"
 #include "wallscenenode.hpp"
+#include "json/json.h"
 
 class EntityScene;
 class EntityPool;
@@ -18,16 +19,23 @@ struct GameContext
 {
     //GameContext(sf::RenderWindow & window, SceneNode & father);
 
+<<<<<<< HEAD
     sf::RenderWindow* window;
     EntityScene* scene;
 	EntityPool* entityPool;
 	PhysicInstance* physic;
+=======
+    sf::RenderWindow & window;
+    SceneNode& sceneNode;
+>>>>>>> tilemapmanager
 };
 
 class GameWorld
 {
 public:
     GameWorld(GameContext& context, std::string const& fileName, SceneNode& father);
+    void getTileMap(Json::Value v, SceneNode& father);
+
 //private:
     typedef std::unique_ptr<Meuble> M_ptr;
     typedef std::unique_ptr<Lampe> L_ptr;
@@ -38,7 +46,8 @@ public:
     std::vector<L_ptr> m_lampes;
     std::vector<M_ptr> m_meubles;
     //std::vector<FamilyMember> m_family_members;
-    std::vector<WallSceneNode::uPtr> m_murs;
+    std::vector<WallSceneNode> m_murs;
+    std::vector<SpriteSceneNode> m_tiles;
 };
 
 #endif // GAMEWORLD_H_INCLUDED

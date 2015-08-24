@@ -1,4 +1,5 @@
 #include "spritescenenode.hpp"
+#include <iostream>
 
 SpriteSceneNode::SpriteSceneNode(int layer): SceneNode(layer)
 {
@@ -15,4 +16,7 @@ void SpriteSceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) co
 {
     states.transform *= getAbsoluteTransform();
     target.draw(m_sprite, states);
+
+    //target.draw(sf::CircleShape(49), states);
+
 }
