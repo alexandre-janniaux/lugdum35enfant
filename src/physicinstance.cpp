@@ -67,14 +67,9 @@ void PhysicInstance::update(sf::Time time, sf::Time step)
 
 void PhysicInstance::onSetEntitySpeedMessage(const SetEntitySpeedMessage& message)
 {
-	static std::size_t nb = 0;
-	std::cout << "SpeedMessageEntity nb [" << nb++ << "]entity : " << message.entity.id << std::endl;
-
 	auto search = m_bodiesOwned.find(message.entity);
 	if (search != m_bodiesOwned.end()) {
 		auto& body = *search->second;
-		//std::cout << "Position : " << body.getPosition().x << "/" << body.getPosition().y << std::endl;
-		//std::cout << "Speed : " << body.getSpeed().x << "/" << body.getSpeed().y << std::endl;
 		search->second->setSpeed(message.speed);
 	}
 }
@@ -84,12 +79,7 @@ void PhysicInstance::onSetEntityPositionMessage(const SetEntityPositionMessage& 
 	std::cout << "message : " << message.position.x << "/" << message.position.y << std::endl;
 	auto search = m_bodiesOwned.find(message.entity);
 	if (search != m_bodiesOwned.end()) {
-
 		auto& body = *search->second;
 		body.setPosition(message.position);
-		std::cout << "node address message :" << body.m_node << std::endl;
-		//std::cout << "Position : " << body.getPosition().x << "/" << body.getPosition().y << std::endl;
-		//std::cout << "Speed : " << body.getSpeed().x << "/" << body.getSpeed().y << std::endl;
-
 	}
 }

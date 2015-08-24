@@ -59,8 +59,6 @@ void Hero::move(int direction)
 		speed *= m_speed;
 	}
 	SendMessage(SetEntitySpeedMessage({m_entity, speed}));
-
-
 }
 
 void Hero::setPosition(const sf::Vector2f& position)

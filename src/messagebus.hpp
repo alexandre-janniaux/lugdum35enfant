@@ -1,6 +1,7 @@
 #pragma once
 
 #include <deque>
+#include <list>
 #include <memory>
 #include <iostream>
 #include <map>
@@ -30,14 +31,15 @@ class MessageBus {
 		MessageType* next(MessageBusProxy<MessageType>* proxy);
 
 	private:
-		using MessageQueue = std::deque<MessageType>;
+		using MessageQueue = std::vector<MessageType>;
+		using MessageCursor = std::size_t;
 		friend class MessageBusProxy<MessageType>;
 
 		void registerProxy(MessageBusProxy<MessageType>* proxy);
 		void unregisterProxy(MessageBusProxy<MessageType>* proxy);
 		
 		MessageQueue m_messages;
-		std::map<MessageBusProxy<MessageType>*, typename MessageQueue::iterator> m_proxys;
+		std::map<MessageBusProxy<MessageType>*, MessageCursor> m_proxys;
 
 		static std::unique_ptr<MessageBus<MessageType>> m_bus;
 };
@@ -49,7 +51,7 @@ template <typename MessageType>
 void MessageBus<MessageType>::push(const MessageType& message)
 {
 	if (m_proxys.size() == 0)
-		return;
+		return; // Nobody's listening, we don't need to push the message
 	MessageBusQueue::instance()->push<MessageType>();
 	m_messages.push_back(message);
 }
@@ -68,9 +70,7 @@ MessageBus<MessageType>* MessageBus<MessageType>::getBus()
 template <typename MessageType>
 void MessageBus<MessageType>::registerProxy(MessageBusProxy<MessageType>* proxy) {
 	auto cursor = m_messages.begin();
-	if (m_messages.size() > 0)
-		std::advance(cursor, m_messages.size()-1);
-	m_proxys.emplace(proxy, cursor);
+	m_proxys.emplace(proxy, m_messages.size());
 }
 
 template <typename MessageType>
@@ -87,10 +87,10 @@ void MessageBus<MessageType>::unregisterProxy(MessageBusProxy<MessageType>* prox
 template <typename MessageType>
 MessageType* MessageBus<MessageType>::next(MessageBusProxy<MessageType>* proxy) {
 	// TODO : implement next function
-	auto& iterator = m_proxys.at(proxy);
-	if (iterator == m_messages.end())
+	auto& cursor = m_proxys.at(proxy);
+	if (cursor == m_messages.size())
 		return nullptr;
-	return &*(iterator++);
+	return &m_messages.at(cursor++);
 }
 
 template <typename MessageType>
