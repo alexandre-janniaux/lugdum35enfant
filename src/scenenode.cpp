@@ -24,7 +24,7 @@ SceneNode::SceneNode(SceneNode & parent, sf::Vector2f pos, int layer)
 }
 
 SceneNode::SceneNode(SceneNode &&other)
-: m_children((other.m_children))
+: m_children(other.m_children)
 , m_parent(other.m_parent)
 , m_transform(other.m_transform)
 , m_absoluteTransform(other.m_absoluteTransform)
@@ -33,14 +33,16 @@ SceneNode::SceneNode(SceneNode &&other)
 {
     if (m_parent)
     {
-        auto _found = std::find_if(m_parent->m_children.begin(), m_parent->m_children.end(), [&] (SceneNode* p) -> bool { return p == &other; });
+        auto _found = std::find(m_parent->m_children.begin(), m_parent->m_children.end(), &other);
         assert(_found != m_parent->m_children.end());
-
         *(_found) = this;
     }
 
     for (auto it : m_children)
         it->m_parent = this;
+
+    other.m_children.clear();
+    other.m_parent = nullptr;
 }
 
 SceneNode::~SceneNode()
@@ -64,9 +66,11 @@ void SceneNode::detachParent()
     if (!m_parent)
         return;
 
-    auto _found = std::find_if(m_parent->m_children.begin(), m_parent->m_children.end(), [&] (SceneNode* p) -> bool { return p == this; });
+    auto _found = std::find(m_parent->m_children.begin(), m_parent->m_children.end(), this);
 
+    std::cerr << 1;
     assert(_found != m_parent->m_children.end());
+    std::cerr << 3;
 
 //    SceneNode* _pointer = *_found;
     m_parent->m_children.erase(_found);
