@@ -1,6 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include "level.hpp"
 #include "hud.hpp"
+#ifdef __APPLE__
+#include "ResourcePath.hpp"
+#endif
 
 int main()
 {
@@ -10,7 +13,11 @@ int main()
     TileHolder tiles;
 
     sf::Font myFont;
+#ifdef __APPLE__
+    myFont.loadFromFile(resourcePath() + "font.ttf");
+#else
     myFont.loadFromFile("font.ttf");
+#endif
     Level myLevel(tiles, levelView, myFont);
     Hud myHud(myFont, tiles);
 

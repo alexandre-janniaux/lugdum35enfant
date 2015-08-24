@@ -13,7 +13,6 @@ public :
     int freeID();
     sf::Texture& get(int id);
 
-private :
     std::map<int, sf::Texture> mTiles;
     int mFree;
 };
@@ -25,7 +24,6 @@ public :
     void render(sf::RenderWindow &window, bool tileTab);
     void update(sf::RenderWindow &window, int selectedTileID);
 
-private :
     sf::Vector2u mSize;
     std::vector<std::vector<int>> mMap;
     TileHolder &mTiles;

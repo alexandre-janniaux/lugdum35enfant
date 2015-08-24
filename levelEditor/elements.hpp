@@ -2,6 +2,8 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <sstream>
+#include <iostream>
+
 
 class Furniture
 {
@@ -17,8 +19,8 @@ public :
     void drag(sf::Vector2f mv);
     void editProperty(int property, std::string value);
 
-private :
     sf::Texture mTex;
+    std::string m_nom_fichier;
     std::string mType;
     sf::Vector2f mPos;
     sf::Vector2f mHitbox[2];
@@ -39,7 +41,6 @@ public :
     void drag(sf::Vector2f mv);
     void addPoint(sf::Vector2f point);
 
-private :
     std::vector<sf::Vector2f> mPoints;
     std::string mType;
     sf::Vector2f mPos;

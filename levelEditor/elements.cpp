@@ -1,18 +1,31 @@
 #include "elements.hpp"
 
+float abso(float x)
+{
+    if (x > 0)
+    {
+        return x;
+    }
+    else
+    {
+        return -x;
+    }
+}
+
 bool Furniture::loadFromTextureFile(std::string filename, sf::Vector2f pos, int layer)
 {
     if (!mTex.loadFromFile(filename))
         return false;
-
-    mType = "unknown";
+    m_nom_fichier = filename;
+    mType = "cachette";
     mLight = 0;
     mNoiseTime = 0.0f;
     mPos = pos;
+    float offset = 30.;
     mHitbox[0] = sf::Vector2f(pos.x, pos.y);
     mHitbox[1] = sf::Vector2f(pos.x + mTex.getSize().x, pos.y + mTex.getSize().y);
-    mRugHitbox[0] = sf::Vector2f(pos.x, pos.y);
-    mRugHitbox[1] = sf::Vector2f(pos.x, pos.y);
+    mRugHitbox[0] = sf::Vector2f(pos.x - offset, pos.y - offset);
+    mRugHitbox[1] = sf::Vector2f(pos.x + mTex.getSize().x + offset, pos.y + mTex.getSize().y + offset);
     mLayer = layer;
     return true;
 }
@@ -43,7 +56,7 @@ void Furniture::render(sf::RenderWindow &window, int selectedLayer, int hoveredL
 
 void Furniture::renderHitbox(sf::RenderWindow &window)
 {
-    sf::RectangleShape hitbox(sf::Vector2f(std::abs(mHitbox[0].x - mHitbox[1].x), std::abs(mHitbox[0].y - mHitbox[1].y)));
+    sf::RectangleShape hitbox(sf::Vector2f(abso(mHitbox[0].x - mHitbox[1].x), abso(mHitbox[0].y - mHitbox[1].y)));
     hitbox.setFillColor(sf::Color::Transparent);
     hitbox.setOutlineColor(sf::Color::Magenta);
     hitbox.setOutlineThickness(5.0f);
@@ -55,7 +68,7 @@ void Furniture::renderRugHitbox(sf::RenderWindow &window)
 {
     if (mRugHitbox[0].x != mRugHitbox[0].y)
     {
-        sf::RectangleShape hitbox(sf::Vector2f(std::abs(mRugHitbox[0].x - mRugHitbox[1].x), std::abs(mRugHitbox[0].y - mRugHitbox[1].y)));
+        sf::RectangleShape hitbox(sf::Vector2f(abso(mRugHitbox[0].x - mRugHitbox[1].x), abso(mRugHitbox[0].y - mRugHitbox[1].y)));
         hitbox.setFillColor(sf::Color::Transparent);
         hitbox.setOutlineColor(sf::Color::Green);
         hitbox.setOutlineThickness(5.0f);
@@ -114,7 +127,7 @@ void Furniture::editProperty(int property, std::string value)
     }
 }
 
-Enemy::Enemy(sf::Vector2f pos, int layer) : mType("unknown")
+Enemy::Enemy(sf::Vector2f pos, int layer) : mType("zone")
     , mPos(pos)
     , mLayer(layer)
 {

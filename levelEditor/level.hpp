@@ -30,6 +30,7 @@ public :
     void suppressFurniture();
     void suppressEnemy();
     int selectedTileID;
+    void save(std::string texte);
 
 private :
     sf::View &mView;

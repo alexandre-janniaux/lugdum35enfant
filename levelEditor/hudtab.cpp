@@ -1,4 +1,7 @@
 #include "hudtab.hpp"
+#ifdef __APPLE__
+#include "ResourcePath.hpp"
+#endif
 
 HudTab::HudTab(sf::Font &font) : mFont(font)
     , mTextfields (0)
@@ -61,6 +64,8 @@ void MainTab::update(sf::Event &event, sf::RenderWindow &window, Level &lvl)
             lvl.zoom(1);
         if (mButtons[1].containsMouse(window))
             lvl.zoom(-1);
+        if (mButtons[3].containsMouse(window))
+            lvl.save(mTextfields[0].getText());
     } else if (event.type == sf::Event::TextEntered) {
         for (auto &textfield : mTextfields) {
             textfield.update(event);
@@ -184,8 +189,13 @@ void IATab::update(sf::Event &event, sf::RenderWindow &window, Level &lvl)
 TabSelector::TabSelector(sf::Font &font) : mFont(font)
     , mTex ()
 {
+#ifdef __APPLE__
+    if (!mTex.loadFromFile(resourcePath() + "tabs.png"))
+        std::cerr << "Cannot load tab image" << std::endl;
+#else
     if (!mTex.loadFromFile("tabs.png"))
         std::cerr << "Cannot load tab image" << std::endl;
+#endif
 }
 
 void TabSelector::render(sf::RenderWindow &window, int tab)

@@ -1,4 +1,7 @@
 #include "tileselector.hpp"
+#ifdef __APPLE__
+#include "ResourcePath.hpp"
+#endif
 
 
 TileSelector::TileSelector(TileHolder &tiles) : mDragging(false)
@@ -7,8 +10,13 @@ TileSelector::TileSelector(TileHolder &tiles) : mDragging(false)
     , mIDs (0)
     , mTiles(tiles)
 {
+#ifdef __APPLE__
+    add(resourcePath() + "default-tile.png");
+    add(resourcePath() + "default-tile2.png");
+#else
     add("default-tile.png");
     add("default-tile2.png");
+#endif
     mSurface.create(HUD_WIDTH, TILESELECTOR_HEIGHT);
 }
 
