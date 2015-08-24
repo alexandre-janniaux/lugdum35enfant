@@ -3,6 +3,8 @@
 #include "physicparticle.hpp"
 #include "entitypool.hpp"
 
+#include <SFML/Graphics.hpp>
+
 #include <vector>
 #include <memory>
 

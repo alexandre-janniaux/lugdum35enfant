@@ -147,7 +147,7 @@ GameWorld::GameWorld(GameContext& context, std::string const& fileName, SceneNod
     Json::Value murs = root["murs"];
     for (unsigned int i = 0 ; i < murs.size() ; i++) 
     {
-        m_murs.push_back(WallSceneNode(father, toRect(murs[i])));
+        m_murs.push_back(WallSceneNode(father, toRect(murs[i]), context));
         m_obstacles.push_back(toRect(murs[i]));
     }
     

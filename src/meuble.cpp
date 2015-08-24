@@ -22,6 +22,7 @@ Meuble::Meuble(sf::Sprite &sprite, sf::Vector2f pos, sf::FloatRect hitBox, sf::F
 	m_entity = context.entityPool->createEntity();
 	auto node = context.scene->bindEntity(m_entity);
 	auto body = context.physic->bindEntity(m_entity);
+
 	body->setNode(node);
 	body->setHitbox(hitBox);
 
