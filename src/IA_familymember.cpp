@@ -160,17 +160,22 @@ void FamilyMember::bruitEntendu(sf::Vector2f pos)
     }
 }
 
-void FamilyMember::lumiereEteinte()
+void FamilyMember::lumiereEteinte(sf::Vector2f point)
 {
+ //   std::vector<std::pair<sf::Vector2f, float>> &m_lampes;
+   // std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &m_interrupteurs;
     
+    int id {-1};
+    for (int k {0}; k < m_lampes.size(); k++)
+    {
+        if (distance_entre(point, m_lampes[k].first) < m_lampes[k].second)
+        {
+            id = k;
+        }
+    }
     
-    
-    // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-    // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-    // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-    
-    
-    
+    auto pos = point_centre(m_interrupteurs[k].first, m_interrupteurs[k].second, m_obstacles);
+    lancerTrajetSpecial(pos, LUMIERE);
 }
 
 void FamilyMember::rentrerDansLeRang()
@@ -251,18 +256,14 @@ void FamilyMember::agir()
             {
                 id++;
             }
-            m_point_cible = m_reseau[id];
+            m_cible = m_reseau[id];
         }
         else
         {
             // Continuer !
             
-            
-            // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-            // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-            // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
-            
-            
+            m_id_point_actuel++;
+            allerAuPoint(m_chemin_special[m_id_point_actuel]);
         }
     }
 }
