@@ -90,7 +90,7 @@ MessageType* MessageBus<MessageType>::next(MessageBusProxy<MessageType>* proxy) 
 	auto& iterator = m_proxys.at(proxy);
 	if (iterator == m_messages.end())
 		return nullptr;
-	return &*(++iterator);
+	return &*(iterator++);
 }
 
 template <typename MessageType>
