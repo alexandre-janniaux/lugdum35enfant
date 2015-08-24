@@ -19,13 +19,13 @@ struct Noeud
 };
 
 template <typename T>
-T in(T x, std::vector<T> v)
+bool in(T x, std::vector<T> v)
 {
     return std::find(v.begin(), v.end(), x) != v.end();
 }
 
 template <typename T>
-T in(T x, std::list<T> v)
+bool in(T x, std::list<T> v)
 {
     return std::find(v.begin(), v.end(), x) != v.end();
 }

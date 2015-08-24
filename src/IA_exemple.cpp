@@ -57,7 +57,7 @@ void IA_exemple(GameWorld &gw)
     
     std::vector<sf::FloatRect> obstacles {};
 
-    sf::FloatRect carte (sf::FloatRect(0, 0, gw.m_size.x - 200, gw.m_size.y));
+    sf::FloatRect carte (sf::FloatRect(0, 0, gw.m_size.x - 200, gw.m_size.y - 300));
     for (auto &meuble: gw.m_meubles)
     {
         if (meuble->isObstacle())
@@ -72,13 +72,15 @@ void IA_exemple(GameWorld &gw)
     
     float pas = 10;
     std::vector<sf::Vector2f> reseau {};
+    /*
     reseau.push_back(sf::Vector2f (100, 50));
     reseau.push_back(sf::Vector2f (400, 50));
     reseau.push_back(sf::Vector2f (150, 400));
     reseau.push_back(sf::Vector2f (200, 700));
     reseau.push_back(sf::Vector2f (650, 350));
+    */
 
-    //reseau = trouverReseau(carte, obstacles, 30);
+    reseau = trouverReseau(carte, obstacles, 50);
     //printer(AStar(0, 1, reseau, obstacles));
     
     

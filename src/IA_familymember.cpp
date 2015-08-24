@@ -84,52 +84,61 @@ void FamilyMember::bruitEntendu(sf::Vector2f pos)
     }
 }
 
+void FamilyMember::rentrerDansLeRang()
+{
+    m_mode_actuel = NORMAL;
+    int id_best {1};
+    for (int k {1}; k < m_chemin_special.size(); k++)
+    {
+        if (distance_entre(m_pos, m_chemin_special[k]) < distance_entre(m_pos, m_chemin_special[id_best]))
+        {
+            id_best = k;
+        }
+    }
+    m_id_point_actuel = id_best - 1;
+    allerAuPoint(m_chemin_special[id_best]);
+}
+
 void FamilyMember::agir()
 {
-    if (m_mode_actuel == LUMIERE)
+    if (m_mode_actuel != NORMAL)
     {
-        if (m_id_point_actuel >= m_chemin_special.size())
+        if (m_id_point_actuel < m_chemin_special.size())
         {
-            interagir(); // On a trouvé l'interrupteur, en théorie
-            retour(); // On revient dans la boucle
+            m_id_point_actuel++;
+            allerAuPoint(m_chemin_special[m_id_point_actuel]);
         }
         else
         {
-            m_id_point_actuel++;
-            m_point_cible = m_chemin_special[m_id_point_actuel];
-            allerAuPoint(m_point_cible);
+            if (m_mode_actuel == LUMIERE)
+            {
+                interagir(); // On a trouvé l'interrupteur, en théorie
+                retour(); // On revient dans la boucle
+            }
+            else if (m_mode_actuel == BRUIT)
+            {
+                rotater(); // On a trouvé la source du bruit
+                retour(); // On revient dans la boucle
+            }
+            else if (m_mode_actuel == RETOUR)
+            {
+                rentrerDansLeRang();
+            }
         }
     }
-    else if (m_mode_actuel == BRUIT)
+    else
     {
-        if (m_id_point_actuel >= m_chemin_special.size())
-        {
-            rotater(); // On a trouvé la source du bruit
-            retour(); // On revient dans la boucle
-        }
-        else
-        {
-            m_id_point_actuel++;
-            m_point_cible = m_chemin_special[m_id_point_actuel];
-            allerAuPoint(m_point_cible);
-        }
-    }
-    else if (m_mode_actuel == RETOUR)
-    {
-        if (m_id_point_actuel >= m_chemin_special.size())
-        {
-            rotater(); // On a trouvé la source du bruit
-            retour(); // On revient dans la boucle
-        }
-        else
-        {
-            m_id_point_actuel++;
-            m_point_cible = m_chemin_special[m_id_point_actuel];
-            allerAuPoint(m_point_cible);
-        }
-    }
-    else if (m_mode_actuel == NORMAL)
-    {
+        // On est sur m_point_cible
         
+        // Erreur ?
+        if (distance_entre(m_pos, m_point_cible) > m_delta)
+        {
+            std::cout << "ERREUR : mauvaise réalité" << std::endl;
+        }
+        
+        if (in(m_point_cible, m_reseau))
+        {
+            rotater();
+        }
     }
 }

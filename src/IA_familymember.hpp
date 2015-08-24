@@ -38,7 +38,7 @@ private:
     int m_id_point_actuel; // Pour se repérer dans le chemin, speciale ou global
     IA_Mode m_mode_actuel; // 1 : Mode normal, 2 : Mode bruit, 3 : Mode vers lumière, 4 : Mode retour
     std::vector<sf::Vector2f> m_chemin_special;
-    sf::Vector2f m_cible; // Mode finit après ce point cible
+    sf::Vector2f m_cible; // Mode finit après ce point cible, donc pas pour normal
     // m_cible => utilisé avec traj speciale, et traj normale (meuble, point strat)
     
     sf::Vector2f normaliser(sf::Vector2f ancien_point);
@@ -46,6 +46,7 @@ private:
     void allerAuPoint(sf::Vector2f pos);
     void lancerTrajetSpecial(sf::Vector2f point, IA_Mode mode);
     void retour();
+    void rentrerDansLeRang();
     
     void setVitesse(sf::Vector2f vit)
     {
