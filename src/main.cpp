@@ -29,6 +29,18 @@ int main()
     sf::RenderWindow window({800,600}, "toto");
 */
 
+void drawSegment(sf::RenderWindow& win,Segment seg)
+{
+    sf::ConvexShape sh(4);
+    sh.setOutlineThickness(0);
+    sh.setOutlineColor(sf::Color::Yellow);
+    sh.setPoint(0,seg.p1);
+    sh.setPoint(1,seg.p2);
+    sh.setPoint(3,seg.p1+sf::Vector2f(1.f,1.f));
+    sh.setPoint(2,seg.p2+sf::Vector2f(1.f,1.f));
+    win.draw(sh);
+}
+
 int main(int argc, char** argv)
 {
 	sf::RenderWindow window;
@@ -51,13 +63,13 @@ int main(int argc, char** argv)
 	lamp.setPosition(sf::Vector2f(250.f,350.f));
 	lamp.attachParent(&scene.getRootNode());
 
-	sf::RectangleShape shape1(sf::Vector2f(20.f,20.f));
+	sf::RectangleShape shape1(sf::Vector2f(18.f,18.f));
 	shape1.setFillColor(sf::Color::Red);
-	shape1.setPosition(sf::Vector2f(200.f,300.f));
+	shape1.setPosition(sf::Vector2f(201.f,301.f));
 
-	sf::RectangleShape shape2(sf::Vector2f(20.f,50.f));
+	sf::RectangleShape shape2(sf::Vector2f(18.f,48.f));
 	shape2.setFillColor(sf::Color::Red);
-	shape2.setPosition(sf::Vector2f(300.f,380.f));
+	shape2.setPosition(sf::Vector2f(301.f,381.f));
 
 	std::vector<sf::Rect<float>> obs;
 	obs.clear();
@@ -81,8 +93,11 @@ int main(int argc, char** argv)
 	    screenStack.onDraw(window);
 		//menu_screen_state.render(window);
 	    window.draw(scene);
-        window.draw(shape1);
-        window.draw(shape2);
+        //window.draw(shape1);
+        //window.draw(shape2);
+        std::vector<Segment> segmentlist=lamp.rectangleToSegments(sf::Rect<float>(300.f,380.f,20.f,50.f));
+        for (auto& it : segmentlist)
+            drawSegment(window,it);
 	    window.display();
 		//screenStack.window_update(window);
 		screenStack.onUpdate(clock.getElapsedTime());

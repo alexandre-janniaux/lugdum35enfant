@@ -19,11 +19,12 @@ class Lamp : public SceneNode
         void computeLight(std::vector<sf::Rect<float>> const&);
         void addRay(sf::Vector2f, sf::Vector2f);
 
+        std::vector<Segment> rectangleToSegments(sf::Rect<float> const&);
+
     private:
         void generateBaseRay();
         void createRay(float, float);
         std::vector<Segment> splitRay(Segment,Segment);
-        std::vector<Segment> rectangleToSegments(sf::Rect<float> const&);
         void buildRays();
         sf::ConvexShape segmentToTriangle(Segment);
 

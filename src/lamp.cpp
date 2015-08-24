@@ -33,10 +33,15 @@ void Lamp::createRay(float angleStart, float angleEnd)
 std::vector<Segment> Lamp::rectangleToSegments(sf::Rect<float> const& rectangle)
 {
     std::vector<Segment> result;
-    result.push_back(Segment(sf::Vector2f(rectangle.left,rectangle.top),sf::Vector2f(rectangle.left,rectangle.top+rectangle.height)));
-    result.push_back(Segment(sf::Vector2f(rectangle.left,rectangle.top+rectangle.height),sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height)));
-    result.push_back(Segment(sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height),sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height)));
-    result.push_back(Segment(sf::Vector2f(rectangle.left+rectangle.width,rectangle.top),sf::Vector2f(rectangle.left,rectangle.top)));
+    result.clear();
+    result.push_back(Segment(sf::Vector2f(rectangle.left,rectangle.top),
+                             sf::Vector2f(rectangle.left,rectangle.top+rectangle.height)));
+    result.push_back(Segment(sf::Vector2f(rectangle.left,rectangle.top+rectangle.height),
+                             sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height)));
+    result.push_back(Segment(sf::Vector2f(rectangle.left+rectangle.width,rectangle.top),
+                             sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height)));
+    result.push_back(Segment(sf::Vector2f(rectangle.left+rectangle.width,rectangle.top),
+                             sf::Vector2f(rectangle.left,rectangle.top)));
     return result;
 }
 
