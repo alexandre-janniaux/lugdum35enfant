@@ -29,14 +29,15 @@ std::vector<int> getOrdreCommerce(int depart, std::vector<sf::Vector2f> reseau, 
         float distance_oiseau_mini = std::numeric_limits<float>::infinity();
         for (int id: restant)
         {
-            std::cout << "B";
-            auto chemin = AStar(actuel, id, reseau, obstacles);
-            float distance_noeuds = chemin.size();
+            float distance_noeuds;
+            /*auto chemin = AStar(actuel, id, reseau, obstacles);
+            distance_noeuds = chemin.size();
             if (distance_noeuds == 0)
             {
                 distance_noeuds = std::numeric_limits<float>::infinity();
             }
-            std::cout << "A";
+            */
+            distance_noeuds = distance_entre(reseau[actuel], reseau[id]);
             float distance_oiseau = distance_entre(reseau[actuel], reseau[id]);
             if (distance_noeuds < distance_noeuds_mini || (distance_noeuds == distance_noeuds_mini && distance_oiseau < distance_oiseau_mini))
             {

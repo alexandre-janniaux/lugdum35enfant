@@ -7,6 +7,7 @@
 //
 
 #include "IA_exemple.hpp"
+#include "IA_familymember.hpp"
 
 void ligner(sf::Vector2f point_a, sf::Vector2f point_b, sf::RenderWindow &window)
 {
@@ -57,7 +58,7 @@ void IA_exemple(GameWorld &gw)
     
     std::vector<sf::FloatRect> obstacles {};
 
-    sf::FloatRect carte (sf::FloatRect(0, 0, gw.m_size.x - 200, gw.m_size.y - 300));
+    sf::FloatRect carte (sf::FloatRect(0, 0, gw.m_size.x - 200, gw.m_size.y - 100));
     for (auto &meuble: gw.m_meubles)
     {
         if (meuble->isObstacle())
@@ -107,8 +108,24 @@ void IA_exemple(GameWorld &gw)
     }
     printer(reseau);
      */
-  
-    reseau = trouverReseau(carte, obstacles, 50);
+    std::vector<std::pair<sf::FloatRect, sf::FloatRect>> cachettes {};
+    
+    float offset = 25.;
+    for (auto &meuble: gw.m_meubles)
+    {
+        std::pair<sf::FloatRect, sf::FloatRect> cachette;
+        sf::FloatRect hb_ext (meuble->m_hitBox.left - offset, meuble->m_hitBox.top - offset, meuble->m_hitBox.width + 2 * offset, meuble->m_hitBox.height + 2 * offset);
+        cachette = std::make_pair(meuble->m_hitBox, hb_ext);
+        cachettes.push_back(cachette);
+    }
+    
+    
+    FamilyMember papa (sf::Vector2f (carte.width, carte.height), obstacles, std::vector<sf::Vector2f> {}, MEUBLE, sf::Vector2f (100, 100), cachettes, std::vector<std::pair<sf::Vector2f, float>> {}, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> {});
+
+    
+    reseau = papa.creer_reseau_meuble(cachettes, obstacles);
+    printer(reseau);
+    //reseau = trouverReseau(carte, obstacles, 50);
     //printer(AStar(0, 1, reseau, obstacles));
     
     

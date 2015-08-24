@@ -31,7 +31,10 @@ int whereIsPointInNoeuds(sf::Vector2f point, std::vector<Noeud> table)
 }
 
 std::vector<sf::Vector2f> AStarGrille(sf::Vector2f depart, sf::Vector2f arrivee, std::vector<sf::FloatRect> obstacles, sf::Vector2f taille, float pas)
-{    
+{
+    std::cout << "Chemin grille" << std::endl;
+    printer(depart);
+    printer(arrivee);
     std::vector<int> closedList;
     std::list<int> openList;
     std::vector<Noeud> noeuds;
@@ -45,6 +48,7 @@ std::vector<sf::Vector2f> AStarGrille(sf::Vector2f depart, sf::Vector2f arrivee,
     int id_min = -1;
     do
     {
+        std::cout << ".";
         // On chope le meilleur noeud
         id_min = openList.front();
         float distance_heuri_min = std::numeric_limits<float>::infinity();
@@ -107,6 +111,7 @@ std::vector<sf::Vector2f> AStarGrille(sf::Vector2f depart, sf::Vector2f arrivee,
             }
         }
     } while (noeuds[id_min].pos != arrivee);
+    std::cout << "C'est la fin !";
 
     std::vector<sf::Vector2f> chemin {arrivee};
     int actuel {id_min};

@@ -6,6 +6,7 @@
 #include "messagebus.hpp"
 #include "gamemessage.hpp"
 #include "resourcemanager.hpp"
+#include <cmath>
 
 Hero::Hero() :
 	m_sprite(make_unique<SpriteSceneNode>(15))

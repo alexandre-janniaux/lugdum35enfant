@@ -28,7 +28,7 @@ sf::Vector2f FamilyMember::point_centre(sf::FloatRect hb_int, sf::FloatRect hb_e
     
     for (auto point: points_candidats)
     {
-        if (dansAucunObstacle(point, obstacles))
+        if (dansAucunObstacle(point, obstacles) && point.x >= 0 && point.x <= m_taille.x && point.y >= 0 && point.y <= m_taille.y)
         {
             return point;
         };
@@ -53,16 +53,18 @@ std::vector<sf::Vector2f> FamilyMember::creer_reseau_meuble(std::vector<std::pai
     for (auto meuble: cachettes)
     {
         auto point = point_centre(meuble.first, meuble.second, obstacles);
+        printer(point);
         if (point != sf::Vector2f(-1, -1))
         {
             reseau.push_back(point);
         }
     }
-    return reseau;
+    return normalise_reseau(reseau);
 }
 
-FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> cachettes, std::vector<std::pair<sf::Vector2f, float>> lampes, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> interrupteurs)
+FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> &obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> &cachettes, std::vector<std::pair<sf::Vector2f, float>> &lampes, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &interrupteurs)
 {
+    std::cout << "Taille de cachettes" << cachettes.size();
     // CONSTANTES
     m_taille = taille;
     m_obstacles = obstacles;
@@ -70,11 +72,14 @@ FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> obsta
     {
         m_reseau = normalise_reseau(reseau);
     }
-    else if (type == ZONE)
+    else if (type == MEUBLE)
     {
+        std::cout << "Bef";
         m_reseau = creer_reseau_meuble(cachettes, obstacles);
+        printer(m_reseau);
+        std::cout << "After";
     }
-    m_chemin_global = generateRonde(sf::FloatRect (0, 0, taille.x, taille.y), obstacles, reseau, m_pas);
+    m_chemin_global = generateRonde(sf::FloatRect (0, 0, taille.x, taille.y), obstacles, m_reseau, m_pas);
     m_type = type;
     m_lampes = lampes;
     m_interrupteurs = interrupteurs;

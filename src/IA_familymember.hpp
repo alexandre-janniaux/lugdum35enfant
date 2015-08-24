@@ -19,8 +19,8 @@ public:
     void update(sf::Vector2f pos, bool lumiere); // On agit si on a dépassé
     void bruitEntendu(sf::Vector2f pos);
     void lumiereEteinte();
-    FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> cachettes, std::vector<std::pair<sf::Vector2f, float>> lampes, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> interrupteurs);
-private:
+    FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> &obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> &cachettes, std::vector<std::pair<sf::Vector2f, float>> &lampes, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &interrupteurs);
+//private:
     const float m_delta = 2.;
     const float m_norme_vitesse = 5.;
     const float m_pas = 10.;
