@@ -2,17 +2,17 @@
 
 Segment::Segment()
 {
-    p1=sf::Vector2f(0.f,0.f);
-    p2=sf::Vector2f(0.f,0.f);
+    p1=V2d(0.f,0.f);
+    p2=V2d(0.f,0.f);
 }
 
-Segment::Segment(sf::Vector2f pointA, sf::Vector2f pointB)
+Segment::Segment(V2d pointA, V2d pointB)
 {
     p1=pointA;
     p2=pointB;
 }
 
-const sf::Vector2f Segment::intersection_time(const Segment &other) const
+const V2d Segment::intersection_time(const Segment &other) const
 {
     auto dir1 = p2 - p1;
     auto dir2 = other.p2 - other.p1;
@@ -20,46 +20,46 @@ const sf::Vector2f Segment::intersection_time(const Segment &other) const
     Now we try to solve p1 + t1 * dir1 = other.p1 + t2 * dir2
     This is a system of two linear equations
     */
-    float a = dir1.x;
-    float b = -dir2.x;
-    float c = dir1.y;
-    float d = -dir2.y;
-    float det = (a * d - b * c);
+    double a = dir1.x;
+    double b = -dir2.x;
+    double c = dir1.y;
+    double d = -dir2.y;
+    double det = (a * d - b * c);
     if (-epsilon <= det && det <= epsilon) {
-        return sf::Vector2f(-42, -42); // Segments are parallel
+        return V2d(-42, -42); // Segments are parallel
     }
-    float e = other.p1.x - p1.x;
-    float f = other.p1.y - p1.y;
-    float t1 = (d * e - b * f) / det;
-    float t2 = (-c * e + a * f) / det;
-    return sf::Vector2f(t1, t2);
+    double e = other.p1.x - p1.x;
+    double f = other.p1.y - p1.y;
+    double t1 = (d * e - b * f) / det;
+    double t2 = (-c * e + a * f) / det;
+    return V2d(t1, t2);
 }
 
-const sf::Vector2f Segment::intersection(const Segment &other) const {
-    sf::Vector2f it = intersection_time(other);
+const V2d Segment::intersection(const Segment &other) const {
+    V2d it = intersection_time(other);
     if (check(it.x) && check(it.y)) {
         // Intersection
         return interp(p1, p2, it.x);
     }
-    return sf::Vector2f(-42, -42);
+    return V2d(-42, -42);
 };
 
-const sf::Vector2f Segment::intersection_droites(const Segment &other) const
+const V2d Segment::intersection_droites(const Segment &other) const
 {
-    sf::Vector2f it = intersection_time(other);
+    V2d it = intersection_time(other);
     return interp(p1, p2, it.x);
 };
 
-void Segment::intersection_triangle(const sf::Vector2f lumiere,
+void Segment::intersection_triangle(const V2d lumiere,
         const Segment &tri, std::vector<Segment> &result) {
     Segment tri1 = Segment(lumiere, tri.p1);
     Segment tri2 = Segment(lumiere, tri.p2);
-    sf::Vector2f it1 = intersection_time(tri1);
-    sf::Vector2f it2 = intersection_time(tri2);
-    sf::Vector2f it3 = intersection_time(tri);
-    sf::Vector2f si1 = interp(lumiere, tri.p1, it1.y);
-    sf::Vector2f si2 = interp(lumiere, tri.p2, it2.y);
-    sf::Vector2f si3 = interp(tri.p1, tri.p2, it3.y);
+    V2d it1 = intersection_time(tri1);
+    V2d it2 = intersection_time(tri2);
+    V2d it3 = intersection_time(tri);
+    V2d si1 = interp(lumiere, tri.p1, it1.y);
+    V2d si2 = interp(lumiere, tri.p2, it2.y);
+    V2d si3 = interp(tri.p1, tri.p2, it3.y);
 
     if (!(check(it1.y) || check(it2.y) || check(it3.y))) {
         // La droite du segment ne passe pas dans le triangle
@@ -69,8 +69,8 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
 
     if (!check_strict(it3.y)) {
         // La droite coupe les deux cotes principaux
-        float u, v;
-        sf::Vector2f pp1, pp2;
+        double u, v;
+        V2d pp1, pp2;
         if (it1.x < it2.x) {
             pp1 = p1; pp2 = p2; u = it1.x; v = it2.x;
         } else {
@@ -81,8 +81,8 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
             result.push_back(tri);
             return;
         }
-        sf::Vector2f inter1 = tri.intersection_droites(Segment(lumiere, pp1));
-        sf::Vector2f inter2 = tri.intersection_droites(Segment(lumiere, pp2));
+        V2d inter1 = tri.intersection_droites(Segment(lumiere, pp1));
+        V2d inter2 = tri.intersection_droites(Segment(lumiere, pp2));
         if (-epsilon > u && v > 1.f + epsilon) {
             // Completement a l'interieur
             result.push_back(Segment(tri.p1, inter1));
@@ -110,8 +110,8 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
 
     if (!check_strict(it1.y)) {
         // On coupe cote 2 et le bout
-        float u, v;
-        sf::Vector2f pp1, pp2;
+        double u, v;
+        V2d pp1, pp2;
         if (it3.x < it2.x) {
             pp1 = p1; pp2 = p2; u = it3.x; v = it2.x;
         } else {
@@ -122,8 +122,8 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
             result.push_back(tri);
             return;
         }
-        sf::Vector2f inter1 = tri.intersection_droites(Segment(lumiere, pp1));
-        sf::Vector2f inter2 = tri.intersection_droites(Segment(lumiere, pp2));
+        V2d inter1 = tri.intersection_droites(Segment(lumiere, pp1));
+        V2d inter2 = tri.intersection_droites(Segment(lumiere, pp2));
         if (-epsilon > u && v > 1.f + epsilon) {
             // Completement a l'interieur
             result.push_back(Segment(tri.p1, inter1));
@@ -151,8 +151,8 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
         }
     } else {
         // On coupe cote 1 et le bout
-        float u, v;
-        sf::Vector2f pp1, pp2;
+        double u, v;
+        V2d pp1, pp2;
         if (it1.x < it3.x) {
             pp1 = p1; pp2 = p2; u = it1.x; v = it3.x;
         } else {
@@ -163,8 +163,8 @@ void Segment::intersection_triangle(const sf::Vector2f lumiere,
             result.push_back(tri);
             return;
         }
-        sf::Vector2f inter1 = tri.intersection_droites(Segment(lumiere, pp1));
-        sf::Vector2f inter2 = tri.intersection_droites(Segment(lumiere, pp2));
+        V2d inter1 = tri.intersection_droites(Segment(lumiere, pp1));
+        V2d inter2 = tri.intersection_droites(Segment(lumiere, pp2));
         if (-epsilon > u && v > 1.f + epsilon) {
             // Completement a l'interieur
             result.push_back(Segment(tri.p1, inter1));

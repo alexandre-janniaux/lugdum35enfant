@@ -24,9 +24,9 @@ void Lamp::generateBaseRay()
 
 void Lamp::createRay(float angleStart, float angleEnd)
 {
-    sf::Vector2f _vec=getPosition();
-    sf::Vector2f _pointA(cos(angleStart)*m_radius,sin(angleStart)*m_radius);
-    sf::Vector2f _pointB(cos(angleEnd)*m_radius,sin(angleEnd)*m_radius);
+    V2d _vec=f2d(getPosition());
+    V2d _pointA((double)(cos(angleStart)*m_radius),(double)(sin(angleStart)*m_radius));
+    V2d _pointB((double)(cos(angleEnd)*m_radius),(double)(sin(angleEnd)*m_radius));
     m_lightSegmentList.push_back(Segment(_pointA+_vec,_pointB+_vec));
 }
 
@@ -34,14 +34,14 @@ std::vector<Segment> Lamp::rectangleToSegments(sf::Rect<float> const& rectangle)
 {
     std::vector<Segment> result;
     result.clear();
-    result.push_back(Segment(sf::Vector2f(rectangle.left,rectangle.top),
-                             sf::Vector2f(rectangle.left,rectangle.top+rectangle.height)));
-    result.push_back(Segment(sf::Vector2f(rectangle.left,rectangle.top+rectangle.height),
-                             sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height)));
-    result.push_back(Segment(sf::Vector2f(rectangle.left+rectangle.width,rectangle.top),
-                             sf::Vector2f(rectangle.left+rectangle.width,rectangle.top+rectangle.height)));
-    result.push_back(Segment(sf::Vector2f(rectangle.left+rectangle.width,rectangle.top),
-                             sf::Vector2f(rectangle.left,rectangle.top)));
+    result.push_back(Segment(V2d(rectangle.left,rectangle.top),
+                             V2d(rectangle.left,rectangle.top+rectangle.height)));
+    result.push_back(Segment(V2d(rectangle.left,rectangle.top+rectangle.height),
+                             V2d(rectangle.left+rectangle.width,rectangle.top+rectangle.height)));
+    result.push_back(Segment(V2d(rectangle.left+rectangle.width,rectangle.top),
+                             V2d(rectangle.left+rectangle.width,rectangle.top+rectangle.height)));
+    result.push_back(Segment(V2d(rectangle.left+rectangle.width,rectangle.top),
+                             V2d(rectangle.left,rectangle.top)));
     return result;
 }
 
@@ -65,7 +65,7 @@ void Lamp::computeLight(std::vector<sf::Rect<float>> const& obstacles)
         {
             for (auto it=m_lightSegmentList.begin(); it!=m_lightSegmentList.end(); it++) {
                 getPosition();
-                obstacleSegment.intersection_triangle(getPosition(),*it,_newRays);
+                obstacleSegment.intersection_triangle(f2d(getPosition()),*it,_newRays);
             }
             m_lightSegmentList.clear();
             for (auto it=_newRays.begin(); it!=_newRays.end(); it++) {
@@ -87,8 +87,8 @@ sf::ConvexShape Lamp::segmentToTriangle(Segment segment)
 {
     sf::ConvexShape triangle(3);
     triangle.setPoint(0,getPosition());
-    triangle.setPoint(1,segment.p1);
-    triangle.setPoint(2,segment.p2);
+    triangle.setPoint(1,d2f(segment.p1));
+    triangle.setPoint(2,d2f(segment.p2));
     triangle.setFillColor(m_color);
     return triangle;
 }
