@@ -21,7 +21,7 @@ MenuScreenState::MenuScreenState()
     m_view.reset(sf::FloatRect(0, 0, 800, 600));
 
     m_view.setSize(800, 600);
-    m_background_texture.loadFromFile("background.png");
+    m_background_texture.loadFromFile("graphics/background.png");
 
     m_background.setTexture(m_background_texture);
     m_background.setScale(800.0f / m_background.getLocalBounds().width,
