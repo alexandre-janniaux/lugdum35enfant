@@ -22,6 +22,9 @@ class MessageBus {
 
 		void push(const MessageType& message);
 
+		template<typename ResponseType>
+		const std::vector<ResponseType>&& request(const MessageType& message);
+
 		static MessageBus<MessageType>* getBus();
 
 		MessageType* next(MessageBusProxy<MessageType>* proxy);
@@ -97,3 +100,18 @@ template <typename MessageType>
 void SendMessage(const MessageType& message) {
 	MessageBus<MessageType>::getBus()->push(message);
 }
+
+template <typename MessageType, typename ResponseType>
+const std::vector<ResponseType>&& RequestMessage(const MessageType& message)
+{
+	MessageBus<MessageType>::getBus()->request(message);
+}
+
+template <typename MessageType, typename ResponseType>
+const ResponseType& RequestUnique(const MessageType& message)
+{
+	auto& response = RequestMessage<MessageType, ResponseType>(message);
+	if (response.size() != 1) throw std::runtime_error("More than 1 response");
+	return response[0];
+}
+
