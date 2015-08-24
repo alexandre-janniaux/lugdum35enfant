@@ -11,7 +11,9 @@ class Scene;
 class SceneNode: public sf::Drawable
 {
     public:
-        SceneNode(int layer = 0);
+
+//        SceneNode(SceneNode);
+        SceneNode(int layer);
         SceneNode(SceneNode & parent, int layer = 0);
         ~SceneNode();
         void detachParent();
@@ -21,6 +23,7 @@ class SceneNode: public sf::Drawable
         const sf::Vector2f& getPosition() const;
         int getLayer() const;
         std::vector<SceneNode*> const& getChildren() const;
+        void setLayer(int layer);
         void setPosition(sf::Vector2f const& pos);
         void move(sf::Vector2f const& mv);
 

@@ -9,8 +9,6 @@
 #include "meuble.hpp"
 
 
-/* Lampe */
-
 bool Lampe::isLighting(sf::Vector2f point) const
 {
     sf::Vector2f d = point - m_origin;
@@ -23,6 +21,7 @@ void Lampe::switcher()
 }
 
 /* Meuble */
+Meuble::Meuble(sf::Sprite &sprite, sf::FloatRect hitBox)
 
 bool Meuble::canInteract(sf::Vector2f point) const
 {

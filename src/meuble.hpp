@@ -9,20 +9,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "monster.hpp"
+#include "lampes.hpp"
 #include "spritescenenode.hpp"
-
-/* classe pour les lampes. */
-
-class Lampe: public SpriteSceneNode
-{
-public:
-    bool isLighting(sf::Vector2f point) const;
-    void switcher();
-private:
-    sf::Vector2f m_origin;
-    float m_rayon;
-    bool m_isOn; 
-};
 
 /* classe virtuelle pure du meuble de base, avec lequel on intéragit,
  * et les classes héritées des meubles plus spécifiques.
@@ -31,20 +19,24 @@ private:
 
 enum Action {CACHER, ALLUMER, BRUITER, FINIR};
 
-class Meuble: public SpriteSceneNode
+class Meuble
 {
 public:
+    inline Meuble(sf::Sprite &sprite, SceneNode& father, sf::FloatRect hitBox) : m_sn(father, 10, sprite), m_hitBox(hitBox) {};
+        
     virtual bool canInteract(sf::Vector2f point) const;
     virtual Action interact(Monster &me);
     virtual ~Meuble();
-//private:
-    sf::Sprite m_sprite;
+private:
+    SpriteSceneNode m_sn;
     sf::FloatRect m_hitBox;
 };
 
 class Lit: public Meuble
 {
 public:
+    inline Lit(sf::Sprite &sprite, SceneNode& father, sf::FloatRect hitBox) : Meuble(sprite, father, hitBox) {};
+        
     virtual Action interact(Monster &me);
     virtual ~Lit();
 };
@@ -52,18 +44,23 @@ public:
 class Cachette: public Meuble
 {
 public:
+    inline Cachette(sf::Sprite &sprite, SceneNode& father, sf::FloatRect hitBox) : Meuble(sprite, father, hitBox), m_used(false) {};
+
     virtual Action interact(Monster &me);
     virtual ~Cachette();
+private:
     bool m_used;
 };
 
 class Tapis: public Meuble
 {
 public:
+    inline Tapis(sf::Sprite &sprite, SceneNode& father, sf::FloatRect hitBox, sf::FloatRect intHitBox) : Meuble(sprite, father, hitBox), m_intHitBox(intHitBox), m_used(false) {};
+
     virtual bool canInteract(sf::Vector2f point) const;
     virtual Action interact(Monster &me);
     virtual ~Tapis();
-//private:
+private:
     sf::FloatRect m_intHitBox;
     bool m_used;
 };
@@ -71,17 +68,21 @@ public:
 class MeubleBruit: public Meuble
 {
 public:
+    inline MeubleBruit(sf::Sprite &sprite, SceneNode& father, sf::FloatRect hitBox, sf::Time time) : Meuble(sprite, father, hitBox), m_temps(time) {};
+
     virtual Action interact(Monster &me);
     virtual ~MeubleBruit();
-//private:
+private:
     sf::Time m_temps;
 };
 
 class Interrupteur: public Meuble
 {
 public:
+    inline Interrupteur(sf::Sprite &sprite, SceneNode& father, sf::FloatRect hitBox, Lampe &light) : Meuble(sprite, father, hitBox), m_light(&light) {};
+
     virtual Action interact(Monster &me);
     virtual ~Interrupteur();
-//private:
+private:
     Lampe *m_light;
 };

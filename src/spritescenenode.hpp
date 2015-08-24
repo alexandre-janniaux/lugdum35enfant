@@ -4,9 +4,12 @@
 #include "scenenode.hpp"
 
 
+
 class SpriteSceneNode : public SceneNode
 {
     public:
+        inline SpriteSceneNode(SceneNode& father, int layer, sf::Sprite const& sprite) :
+            SceneNode(father, layer), m_sprite(sprite) {}
         void setTexture(const sf::Texture& texture);
 
     protected:
