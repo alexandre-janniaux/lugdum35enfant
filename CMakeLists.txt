@@ -21,7 +21,6 @@ SET(
     src/collisionsolver.cpp
     src/physicinstance.cpp
     src/physicbody.cpp
-    src/messagestack.cpp
     src/messagebusqueue.cpp
     src/jsoncpp.cpp
     src/collisionsolver.cpp
