@@ -16,10 +16,14 @@ SET(
     src/menuscreenstate.cpp
     src/scene.cpp
     src/scenenode.cpp
+    src/spritescenenode.cpp
     src/sousmenu.cpp
     src/spritescenenode.cpp
     src/messagebusqueue.cpp
     src/jsoncpp.cpp
+    src/gameworld.cpp
+    src/lampes.cpp
+    src/meuble.cpp
 )
 
 ADD_EXECUTABLE(

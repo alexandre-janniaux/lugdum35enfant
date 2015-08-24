@@ -5,7 +5,6 @@
 #include <SFML/Graphics.hpp>
 // #include "familymember.hpp"
 #include "meuble.hpp"
-#include "gamecontext.hpp"
 
 class FamilyMember
 {};

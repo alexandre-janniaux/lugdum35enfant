@@ -1,7 +1,6 @@
 #include <fstream>
 #include "gameworld.hpp"
-#include "jsoncpp-src-0.5.0/include/json/json.h"
-#include "jsoncpp-src-0.5.0/include/json/value.h"
+#include "json/json.h"
 #include "resourcemanager.hpp"
 
 
