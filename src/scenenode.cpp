@@ -60,6 +60,12 @@ const sf::Transform& SceneNode::getAbsoluteTransform() const
     return m_absoluteTransform;
 }
 
+sf::Vector2f SceneNode::getAbsolutePosition() const
+{
+	return getAbsoluteTransform().transformPoint(sf::Vector2f(0,0));
+}
+
+
 const sf::Transform& SceneNode::getTransform() const
 {
     return m_transform.getTransform();
@@ -90,6 +96,11 @@ void SceneNode::setPosition(sf::Vector2f const& pos)
 {
     m_transform.setPosition(pos);
     invalidate();
+}
+
+void SceneNode::setAbsolutePosition(const sf::Vector2f& pos)
+{
+	m_transform.setPosition(getAbsoluteTransform().getInverse().transformPoint(pos));
 }
 
 void SceneNode::move(sf::Vector2f const& mv)
