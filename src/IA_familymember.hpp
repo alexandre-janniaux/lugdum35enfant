@@ -42,6 +42,7 @@ private:
     // m_cible => utilisé avec traj speciale, et traj normale (meuble, point strat)
     
     sf::Vector2f normaliser(sf::Vector2f ancien_point);
+    std::vector<sf::Vector2f> normalise_reseau(std::vector<sf::Vector2f> reseau);
     void agir();
     void allerAuPoint(sf::Vector2f pos);
     void lancerTrajetSpecial(sf::Vector2f point, IA_Mode mode);

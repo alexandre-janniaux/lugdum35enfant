@@ -8,6 +8,16 @@
 
 #include "IA_familymember.hpp"
 
+std::vector<sf::Vector2f> FamilyMember::normalise_reseau(std::vector<sf::Vector2f> reseau)
+{
+    std::vector<sf::Vector2f> new_reseau {};
+    for (auto point: reseau)
+    {
+        new_reseau.push_back(normaliser(point));
+    }
+    return new_reseau;
+}
+
 FamilyMember::FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos):m_taille(taille),m_obstacles(obstacles), m_reseau(reseau), m_type(type), m_chemin_global(generateRonde(sf::FloatRect (0, 0, taille.x, taille.y), obstacles, reseau, m_pas))
 {
     m_vit = sf::Vector2f (0, 0);
@@ -138,7 +148,35 @@ void FamilyMember::agir()
         
         if (in(m_point_cible, m_reseau))
         {
-            rotater();
+            if (m_type == ZONE)
+            {
+                rotater();
+            }
+            else if (m_type == MEUBLE)
+            {
+                interagir();
+            }
+            int id {0};
+            for (int k {0}; k < m_reseau.size(); k++)
+            {
+                if (m_point_cible == m_reseau[k])
+                {
+                    id = k;
+                }
+            }
+            if (id == m_reseau.size() - 1)
+            {
+                id = 0;
+            }
+            else
+            {
+                id++;
+            }
+            m_point_cible = m_reseau[id];
+        }
+        else
+        {
+            // Continuer !
         }
     }
 }

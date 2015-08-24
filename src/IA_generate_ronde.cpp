@@ -23,14 +23,20 @@ std::vector<int> getOrdreCommerce(int depart, std::vector<sf::Vector2f> reseau, 
     
     while (!restant.empty())
     {
-        
         // On prend le meilleur noeud a priori
         float distance_noeuds_mini = std::numeric_limits<float>::infinity();
         int id_min = restant.front();
         float distance_oiseau_mini = std::numeric_limits<float>::infinity();
         for (int id: restant)
         {
-            float distance_noeuds = AStar(actuel, id, reseau, obstacles).size();
+            std::cout << "B";
+            auto chemin = AStar(actuel, id, reseau, obstacles);
+            float distance_noeuds = chemin.size();
+            if (distance_noeuds == 0)
+            {
+                distance_noeuds = std::numeric_limits<float>::infinity();
+            }
+            std::cout << "A";
             float distance_oiseau = distance_entre(reseau[actuel], reseau[id]);
             if (distance_noeuds < distance_noeuds_mini || (distance_noeuds == distance_noeuds_mini && distance_oiseau < distance_oiseau_mini))
             {

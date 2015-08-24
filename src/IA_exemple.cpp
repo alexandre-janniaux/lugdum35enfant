@@ -72,15 +72,41 @@ void IA_exemple(GameWorld &gw)
     
     float pas = 10;
     std::vector<sf::Vector2f> reseau {};
+    
     /*
     reseau.push_back(sf::Vector2f (100, 50));
     reseau.push_back(sf::Vector2f (400, 50));
     reseau.push_back(sf::Vector2f (150, 400));
     reseau.push_back(sf::Vector2f (200, 700));
     reseau.push_back(sf::Vector2f (650, 350));
-    */
-
-    reseau = trouverReseau(carte, obstacles, 50);
+     */
+     
+    //reseau.push_back(sf::Vector2f (100, 100));
+    //reseau.push_back(sf::Vector2f (700, 100));
+    
+    reseau.push_back(sf::Vector2f (64,49));
+    reseau.push_back(sf::Vector2f (67,260));
+    reseau.push_back(sf::Vector2f (266,211));
+    reseau.push_back(sf::Vector2f (437,100));
+    reseau.push_back(sf::Vector2f (78,328));
+    reseau.push_back(sf::Vector2f (66,558));
+    reseau.push_back(sf::Vector2f (362,558));
+    reseau.push_back(sf::Vector2f (387,405));
+    reseau.push_back(sf::Vector2f (637,496));
+    reseau.push_back(sf::Vector2f (621,326));
+    reseau.push_back(sf::Vector2f (682,135));
+    reseau.push_back(sf::Vector2f (528,161));
+    
+    for (int k {0}; k < reseau.size(); k++)
+    {
+        auto point = reseau[k];
+        int x = point.x / 10;
+        int y = point.y / 10;
+        reseau[k] = sf::Vector2f (x * 10, y * 10);
+    }
+    printer(reseau);
+    
+    //reseau = trouverReseau(carte, obstacles, 50);
     //printer(AStar(0, 1, reseau, obstacles));
     
     
@@ -116,6 +142,7 @@ void IA_exemple(GameWorld &gw)
      */
     using namespace std::chrono;
     milliseconds time0 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+    
     auto chemin_global = generateRonde(carte, obstacles, reseau, pas);
     milliseconds time1 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
     std::cout << "Exécution : " << ((float) (time1 - time0).count()) / 1000. << std::endl;
@@ -142,6 +169,12 @@ void IA_exemple(GameWorld &gw)
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
                 //window.close();
                 std::cout << std::rand();
+            }
+            
+            if (event.type == sf::Event::MouseButtonPressed)
+            {
+                //window.close();
+                std::cout << "reseau.push_back(sf::Vector2f (" << event.mouseButton.x << "," << event.mouseButton.y << "));" << std::endl;
             }
         }
         

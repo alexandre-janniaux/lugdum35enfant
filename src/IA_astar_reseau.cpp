@@ -12,8 +12,9 @@ float distance_entre(sf::Vector2f point_a, sf::Vector2f point_b)
 {
     sf::Vector2f diff = point_b - point_a;
     //return std::abs(diff.x) + std::abs(diff.y);
-    return sqrt(diff.x * diff.x + diff.y * diff.y);
+    //return sqrt(diff.x * diff.x + diff.y * diff.y);
     //return diff.x * diff.x + diff.y * diff.y;
+    return std::max(std::abs(diff.x), std::abs(diff.y));
 }
 
 std::vector<int> getVoisins(int myNode, std::vector<Noeud> noeuds, std::vector<sf::FloatRect> obstacles)
@@ -41,7 +42,7 @@ std::vector<int> AStar(int depart, int arrivee, std::vector<sf::Vector2f> points
     noeuds[depart].distance = 0.;
     openList.push_back(depart);
     int id_min = -1;
-    while (id_min != arrivee)
+    while (id_min != arrivee && !openList.empty())
     {
         // On chope le meilleur noeud
         id_min = openList.front();
@@ -84,6 +85,10 @@ std::vector<int> AStar(int depart, int arrivee, std::vector<sf::Vector2f> points
                 }
             }
         }
+    }
+    if (id_min != arrivee)
+    {
+        return std::vector<int> {};
     }
     std::vector<int> chemin {arrivee};
     int actuel {arrivee};
