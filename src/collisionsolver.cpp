@@ -36,7 +36,7 @@ std::vector<bool> CollisionSolver::checkCollision(const std::vector< PhysicBody*
 			auto d = vec.x*vec.x + vec.y*vec.y;
 			if (d < (r1+r2)*(r1+r2)) {
 
-				if ((*body)->getType() & (*body2)->getType() != 0) {
+				if (((*body)->getType() & (*body2)->getType()) != 0) {
 					*collision = *collision2 = true;
 				}
 				// TODO test SAT
