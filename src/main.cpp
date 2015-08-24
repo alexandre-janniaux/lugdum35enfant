@@ -22,9 +22,8 @@ int main(int argc, char** argv)
 	
 	ScreenStack screenStack;
 	screenStack.registerState(ScreenState::Menu, make_unique<MenuScreenState>());
-//	screenStack.registerState(ScreenState::Game, make_unique<GameScreenState>());
+	screenStack.registerState(ScreenState::Game, make_unique<GameScreenState>());
 	
-//	screenStack.pushState(ScreenState::Game);
 	screenStack.pushState(ScreenState::Menu);
 	sf::Event event;
 	sf::Clock clock;
@@ -38,17 +37,13 @@ int main(int argc, char** argv)
 	        if (event.type == sf::Event::Closed)
                 window.close();
             else
-                //menu_screen_state.event(window, event);
                 screenStack.onEvent(window, event);
         }
         
         window.clear();
         screenStack.onDraw(window);
-        //menu_screen_state.render(window);
         window.display();
-        //screenStack.window_update(window);
         screenStack.onUpdate(clock.getElapsedTime());
-        //menu_screen_state.update(clock.getElapsedTime());
         clock.restart();
 		
 		quitMessageBus.readAll();
