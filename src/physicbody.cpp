@@ -77,6 +77,18 @@ sf::Vector2f PhysicBody::getPosition() const
 	return sf::Vector2f(0,0);
 }
 
+const sf::FloatRect& PhysicBody::getHitbox() const
+{
+	return m_hitBox
+}
+
+void PhysicBody::setHitbox(const sf::FloatRect& rect)
+{
+	m_hitBox = rect;
+}
+
+
+
 Entity PhysicBody::getRelatedEntity()
 {
 	return m_entity;

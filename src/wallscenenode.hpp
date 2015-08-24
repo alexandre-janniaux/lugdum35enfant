@@ -2,18 +2,23 @@
 #define HOUSESCENENODE_H_INCLUDED
 
 #include "scenenode.hpp"
+#include "entitypool.hpp"
+
 #include <memory>
 
-class WallSceneNode : public SceneNode
+class GameContext;
+
+class WallSceneNode
 {
     public:
         typedef std::unique_ptr<WallSceneNode> uPtr;
-        inline WallSceneNode(SceneNode& father, sf::FloatRect rect) : SceneNode(father, sf::Vector2f(rect.left, rect.top), 5), m_size(rect.width, rect.height) {};
+        WallSceneNode(SceneNode& father, sf::FloatRect rect, GameContext& context);
         inline sf::Vector2f const& getSize() const {return m_size;};
-    sf::FloatRect getRect();
+
+		sf::FloatRect getRect();
 
     protected:
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+		Entity m_entity;
         sf::Vector2f m_size;
 };
 

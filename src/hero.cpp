@@ -33,6 +33,7 @@ Hero* Hero::createHero(GameContext& context)
 	auto node = context.scene->bindEntity(hero->m_entity);
 	auto body = context.physic->bindEntity(hero->m_entity);
 	body->setNode(node);
+	body->setHitbox(m_sprite->getSprite().getLocalBounds());
 	node->setPosition({15.f,60.f});
 
 	hero->m_sprite->attachParent(*node);

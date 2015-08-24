@@ -87,7 +87,7 @@ GameWorld::GameWorld(GameContext& context, std::string const& fileName, SceneNod
     {
         Json::Value lampe = lampes[i];
         sf::Sprite sprite(toSprite(lampe["sprite"]));
-        m_lampes.push_back(L_ptr (new Lampe(father, sprite, toVect(lampe["position"]), toC(lampe["color"]), toVect(lampe["position"]), lampe["r"].asDouble(), lampe["angleStart"].asDouble(), lampe["angleEnd"].asDouble(), lampe["isOn"].asBool())));
+        m_lampes.push_back(L_ptr (new Lampe(sprite, toVect(lampe["position"]), toC(lampe["color"]), toVect(lampe["position"]), lampe["r"].asDouble(), lampe["angleStart"].asDouble(), lampe["angleEnd"].asDouble(), lampe["isOn"].asBool(), context)));
         m_lampesThibault.push_back(std::pair<sf::Vector2f, float>(toVect(lampe["position"]), lampe["r"].asDouble()));
     }
     m_interrupteurs.resize(m_lampesThibault.size());
@@ -108,27 +108,27 @@ GameWorld::GameWorld(GameContext& context, std::string const& fileName, SceneNod
 
         if (str == "tapis")
         {
-            m_meubles.push_back(M_ptr (new Tapis(sprite, pos, father, hitBox, interactBox)));
+            m_meubles.push_back(M_ptr (new Tapis(sprite, pos, hitBox, interactBox, context)));
             m_cachettes.push_back(std::pair<sf::FloatRect, sf::FloatRect>(interactBox, hitBox));
         }
 
         else if (str == "bruit")
         {
             float tmp = meuble["bruitTemps"].asDouble();
-            m_meubles.push_back(M_ptr (new MeubleBruit(sprite, pos, father ,hitBox, interactBox, sf::seconds(tmp))));
+            m_meubles.push_back(M_ptr (new MeubleBruit(sprite, pos, hitBox, interactBox, sf::seconds(tmp), context)));
             m_obstacles.push_back(hitBox);
         }
 
         else if (str == "lit")
         {
-            m_meubles.push_back(M_ptr (new Lit(sprite, pos, father, hitBox, interactBox)));
+            m_meubles.push_back(M_ptr (new Lit(sprite, pos, hitBox, interactBox, context)));
             m_obstacles.push_back(hitBox);
         }
 
 
         else if (str == "interrupteur")
         {
-            m_meubles.push_back(M_ptr (new Interrupteur(sprite, pos, father, hitBox, interactBox, *m_lampes[meuble["lumiere"].asInt()])));
+            m_meubles.push_back(M_ptr (new Interrupteur(sprite, pos, hitBox, interactBox, *m_lampes[meuble["lumiere"].asInt()], context)));
             m_obstacles.push_back(hitBox);
             m_interrupteurs[meuble["lumiere"].asInt()] = std::pair<sf::FloatRect, sf::FloatRect>(interactBox, hitBox); 
         }
@@ -136,7 +136,7 @@ GameWorld::GameWorld(GameContext& context, std::string const& fileName, SceneNod
         else if (str == "cachette")
         {
             auto interactBox = hitBox; // TODO TODO interactBox
-            m_meubles.push_back(M_ptr (new Cachette(sprite, pos, father, hitBox, interactBox)));
+            m_meubles.push_back(M_ptr (new Cachette(sprite, pos, hitBox, interactBox, context)));
             m_obstacles.push_back(hitBox);
             m_cachettes.push_back(std::pair<sf::FloatRect, sf::FloatRect>(interactBox, hitBox));
         }
@@ -147,7 +147,7 @@ GameWorld::GameWorld(GameContext& context, std::string const& fileName, SceneNod
     Json::Value murs = root["murs"];
     for (unsigned int i = 0 ; i < murs.size() ; i++) 
     {
-        m_murs.push_back(WallSceneNode(WallSceneNode(father, toRect(murs[i]))));
+        m_murs.push_back(WallSceneNode(father, toRect(murs[i])));
         m_obstacles.push_back(toRect(murs[i]));
     }
     

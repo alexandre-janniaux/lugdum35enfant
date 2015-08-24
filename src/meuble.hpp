@@ -11,6 +11,7 @@
 #include "monster.hpp"
 #include "lampes.hpp"
 #include "spritescenenode.hpp"
+#include "entitypool.hpp"
 
 /* classe virtuelle pure du meuble de base, avec lequel on intéragit,
  * et les classes héritées des meubles plus spécifiques.
@@ -19,16 +20,19 @@
 
 enum Action {CACHER, ALLUMER, BRUITER, FINIR};
 
+class GameContext;
+
 class Meuble
 {
 public:
-    inline Meuble(sf::Sprite &sprite, sf::Vector2f pos, SceneNode& father, sf::FloatRect hitBox, sf::FloatRect interactBox) : m_sn(father, pos, 10, sprite), m_hitBox(hitBox), m_interactBox(interactBox) {};
+    Meuble(sf::Sprite &sprite, sf::Vector2f pos, SceneNode& father, sf::FloatRect hitBox, sf::FloatRect interactBox, GameContext& context) : m_sn(father, pos, 10, sprite), m_hitBox(hitBox), m_interactBox(interactBox) {};
         
     virtual bool canInteract(sf::Vector2f point) const;
     virtual Action interact(Monster &me);
     virtual ~Meuble();
     virtual bool isObstacle();
 //private:
+	Entity m_entity;
     SpriteSceneNode m_sn;
     sf::FloatRect m_hitBox;
     sf::FloatRect m_interactBox;
@@ -37,7 +41,7 @@ public:
 class Lit: public Meuble
 {
 public:
-    inline Lit(sf::Sprite &sprite, sf::Vector2f pos, SceneNode& father, sf::FloatRect hitBox, sf::FloatRect interactBox) : Meuble(sprite, pos, father, hitBox, interactBox) {};
+    inline Lit(sf::Sprite &sprite, sf::Vector2f pos, sf::FloatRect hitBox, sf::FloatRect interactBox, GameContext) : Meuble(sprite, pos, hitBox, interactBox) {};
         
     virtual Action interact(Monster &me);
     virtual ~Lit();
