@@ -8,8 +8,9 @@
 #include "entitypool.hpp"
 #include "entitysystem.hpp"
 
+#include "physicbody.hpp"
 class CollisionSolver;
-class PhysicBody;
+//class PhysicBody;
 
 class PhysicInstance : public EntitySystem
 {
@@ -24,5 +25,5 @@ class PhysicInstance : public EntitySystem
 	private:
 		CollisionSolver* m_collisionSolver;
 		std::vector<PhysicBody*> m_bodies;
-		std::map<Entity, PhysicBody*> m_bodiesOwned;
+		std::map<Entity, std::unique_ptr<PhysicBody>> m_bodiesOwned;
 };

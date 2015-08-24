@@ -6,7 +6,9 @@
 #include <vector>
 #include <memory>
 
-class PhysicGeom;
+#include "physicgeom.hpp"
+
+//class PhysicGeom;
 class SceneNode;
 class PhysicInstance;
 
@@ -37,7 +39,7 @@ class PhysicBody
 
 		Entity m_entity;
 		SceneNode* m_node;
-		std::vector<std::unique_ptr<PhysicGeom>> m_geoms;
+		std::unique_ptr<PhysicGeom> m_geoms;
 		std::size_t m_type;
 		sf::Vector2f m_speed;
 		bool m_freeze;

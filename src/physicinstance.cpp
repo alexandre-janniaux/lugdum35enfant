@@ -6,6 +6,7 @@
 #include "cpp_std_11.hpp"
 #include <utility>
 
+
 PhysicInstance::PhysicInstance(CollisionSolver& collisionSolver) :
 	m_collisionSolver(&collisionSolver)
 {
@@ -16,9 +17,9 @@ PhysicBody& PhysicInstance::bindEntity(Entity entity)
 	auto search = m_bodiesOwned.find(entity);
 	if (search == m_bodiesOwned.end())
 	{
-		auto body = new PhysicBody(entity);
-		m_bodiesOwned.emplace(entity, body);
-		m_bodies.push_back(body);
+		std::unique_ptr<PhysicBody> body (new PhysicBody(entity));
+		m_bodiesOwned.emplace(entity, std::move(body));
+		m_bodies.push_back(body.get());
 		return *body;
 	}
 
@@ -30,7 +31,7 @@ void PhysicInstance::unbindEntity(Entity entity)
 	auto search = m_bodiesOwned.find(entity);
 	if (search != m_bodiesOwned.end())
 	{
-		m_bodies.erase(std::find(m_bodies.begin(), m_bodies.end(), search->second));
+		m_bodies.erase(std::find(m_bodies.begin(), m_bodies.end(), search->second.get()));
 		m_bodiesOwned.erase(search);
 	}
 }
