@@ -52,7 +52,6 @@ void PhysicInstance::update(sf::Time time, sf::Time step)
 	{
 		std::cout << "speed : " << m_bodies[i]->getSpeed().x << "/" << m_bodies[i]->getSpeed().y << std::endl;
 		particles[i] = m_bodies[i]->getPosition() + time.asSeconds()*m_bodies[i]->getSpeed();
-		//std::cout << "Position : " << particles[i].x << "/" << particles[i].y << std::endl;
 	}
 	const std::vector<bool>& collisions = m_collisionSolver->checkCollision(m_bodies, particles); // TODO: apply movement
 
@@ -70,7 +69,7 @@ void PhysicInstance::onSetEntitySpeedMessage(const SetEntitySpeedMessage& messag
 	auto search = m_bodiesOwned.find(message.entity);
 	if (search != m_bodiesOwned.end()) {
 		auto& body = *search->second;
-		search->second->setSpeed(message.speed);
+		body.setSpeed(message.speed);
 	}
 }
 

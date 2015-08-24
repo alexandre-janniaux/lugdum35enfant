@@ -14,10 +14,10 @@ class Hero
 
 		enum Direction {
 			NONE = 		0,
-			TOP = 		1 << 0,
-			BOTTOM = 	1 << 1,
-			LEFT = 		1 << 2,
-			RIGHT = 	1 << 3
+			TOP = 		0b0001,
+			BOTTOM = 	0b0010,
+			LEFT = 		0b0100,
+			RIGHT = 	0b1000
 		};
 
 		static Hero* createHero(GameContext& context);

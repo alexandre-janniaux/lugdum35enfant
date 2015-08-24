@@ -14,7 +14,7 @@ Hero::Hero() :
 
 	m_sprite->setTexture(TextureManager::instance()->get("graphics/furniture/shelf1.png"));
 	//m_sprite.setPosition(m_sprite.);
-	m_speed = 1.f;
+	m_speed = 60.f;
 }
 
 Hero::~Hero() {
@@ -41,24 +41,22 @@ Hero* Hero::createHero(GameContext& context)
 
 void Hero::move(int direction)
 {
-	bool move = (direction!=0) && (!(((direction & Hero::TOP) && (direction & Hero::BOTTOM)))  || !((direction & Hero::LEFT) && (direction & Hero::RIGHT)));
 
-	sf::Vector2f speed {0.f, 0.f};
-	if (! (direction & Hero::TOP) && (direction & Hero::BOTTOM)) {
-		if (direction & Hero::TOP) speed += {0.f, -1.f};
-		else if (direction & Hero::BOTTOM) speed += {0.f, 1.f};
-	}
-	if (!(direction & Hero::LEFT) && (direction & Hero::RIGHT)) {
-		if (direction & Hero::LEFT) speed += {-1.f, 0.f};
-		else if (direction & Hero::RIGHT) speed += {1.f, 0.f};
-	}
+	sf::Vector2i speed {0, 0};
 
-	if (move) {
-		std::cout << "speed " << speed.x << "/" << speed.y << std::endl;
-		speed /= std::sqrt(speed.x*speed.x + speed.y*speed.y);
-		speed *= m_speed;
+	if (direction & Hero::TOP) 		speed += {0, -1};
+	if (direction & Hero::BOTTOM) 	speed += {0, 1};
+	if (direction & Hero::LEFT) 	speed += {-1, 0};
+	if (direction & Hero::RIGHT)  	speed += {1, 0};
+
+
+	if (speed.x == 0 && speed.y == 0) {
+		SendMessage(SetEntitySpeedMessage({m_entity, sf::Vector2f(0.f,0.f)}));
 	}
-	SendMessage(SetEntitySpeedMessage({m_entity, speed}));
+	else {
+		auto norme = std::sqrt(speed.x*speed.x + speed.y*speed.y);
+		SendMessage(SetEntitySpeedMessage({m_entity, m_speed*sf::Vector2f(((float)speed.x)/norme, ((float)speed.y)/norme)}));
+	}
 }
 
 void Hero::setPosition(const sf::Vector2f& position)
