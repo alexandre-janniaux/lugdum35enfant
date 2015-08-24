@@ -22,6 +22,10 @@ Action Meuble::interact(Monster &me)
 Meuble::~Meuble()
 {}
 
+bool Meuble::isObstacle()
+{
+    return true;
+}
 
 /* Lit */
 
@@ -72,6 +76,10 @@ Action Tapis::interact(Monster &me)
 Tapis::~Tapis()
 {}
 
+bool Tapis::isObstacle()
+{
+    return false;
+}
 
 /* MeubleBruit */
 

@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef GAMEWORLD_H_INCLUDED
 #define GAMEWORLD_H_INCLUDED
 
@@ -6,9 +8,6 @@
 // #include "familymember.hpp"
 #include "meuble.hpp"
 #include "wallscenenode.hpp"
-
-class FamilyMember
-{};
 
 struct GameContext
 {
@@ -22,7 +21,7 @@ class GameWorld
 {
 public:
     GameWorld(std::string const& fileName, sf::RenderWindow& win ,SceneNode& father);
-private:
+//private:
     typedef std::unique_ptr<Meuble> M_ptr;
     typedef std::unique_ptr<Lampe> L_ptr;
 
@@ -31,7 +30,7 @@ private:
     sf::Vector2f m_checkPoint;
     std::vector<L_ptr> m_lampes;
     std::vector<M_ptr> m_meubles;
-    std::vector<FamilyMember> m_family_members;
+    //std::vector<FamilyMember> m_family_members;
     std::vector<WallSceneNode::uPtr> m_murs;
 };
 

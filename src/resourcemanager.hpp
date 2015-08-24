@@ -6,6 +6,10 @@
 #include <map>
 #include <SFML/Graphics.hpp>
 
+#if __APPLE__
+#include "ResourcePath.hpp"
+#endif
+
 #include "cpp_std_11.hpp"
 
 template <typename T>
@@ -21,8 +25,13 @@ public:
 	return m_instance.get();
     }
     
-    T& get(const std::string& filename)
+    T& get(const std::string& nom_fichier)
     {
+        std::string filename = nom_fichier;
+#if __APPLE__
+        filename = resourcePath() + nom_fichier;
+#endif
+
 	if(m_resources.find(filename) == m_resources.end())
 	{
 	    std::cout << "chargement de " << filename << std::endl;

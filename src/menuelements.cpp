@@ -3,8 +3,7 @@
 MenuElement::MenuElement()
 {
     auto fonts = FontManager::instance();
-    sf::Font& myfont = fonts->get("menu_font.ttf");
-    
+    sf::Font& myfont = fonts->get("menu_font.ttf");    
     m_displayLabel.setFont(myfont);
 }
 

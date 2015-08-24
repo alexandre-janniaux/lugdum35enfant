@@ -21,10 +21,10 @@ int main(int argc, char** argv)
 
 	window.create(window_mode, window_title);
 	window.setFramerateLimit(60);
-        Scene scene;
+    Scene scene;
 	
 // Pour afficher le niveau, décomenter ça et commenter screenStack.onDraw(scene); dans la boucle principale.
-//        GameWorld gw("test.txt", window, scene.getRootNode());
+    GameWorld gw("test.txt", window, scene.getRootNode());
 
 	
 	ScreenStack screenStack;
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
         
         window.clear();
         // Pour afficher le menu, décomenter ça et commenter GameWorld... avant la boucle principale;
-        screenStack.onDraw(window);
+        //screenStack.onDraw(window);
         window.draw(scene);
         window.display();
         screenStack.onUpdate(clock.getElapsedTime());

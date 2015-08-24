@@ -8,3 +8,8 @@ void WallSceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) cons
     states.transform *= getAbsoluteTransform();
     target.draw(m_shape, states);
 }
+
+sf::FloatRect WallSceneNode::getRect()
+{
+    return sf::FloatRect(getPosition(), getSize());
+}

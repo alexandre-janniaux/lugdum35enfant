@@ -12,7 +12,11 @@ sf::Sprite toSprite(Json::Value v)
     if (str.empty())
         return sf::Sprite();
     else
+#if __APPLE__
+        return sf::Sprite(tManager->get(str));
+#else
         return sf::Sprite(tManager->get("graphics/" + str));
+#endif
 }
 
 sf::Vector2f toVect(Json::Value v)

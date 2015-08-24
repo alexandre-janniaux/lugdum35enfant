@@ -10,6 +10,7 @@ class WallSceneNode : public SceneNode
         typedef std::unique_ptr<WallSceneNode> uPtr;
         inline WallSceneNode(SceneNode& father, sf::FloatRect rect) : SceneNode(father, sf::Vector2f(rect.left, rect.top), 5), m_size(rect.width, rect.height) {};
         inline sf::Vector2f const& getSize() const {return m_size;};
+    sf::FloatRect getRect();
 
     protected:
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

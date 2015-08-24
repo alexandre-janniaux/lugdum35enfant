@@ -27,7 +27,8 @@ public:
     virtual bool canInteract(sf::Vector2f point) const;
     virtual Action interact(Monster &me);
     virtual ~Meuble();
-private:
+    virtual bool isObstacle();
+//private:
     SpriteSceneNode m_sn;
     sf::FloatRect m_hitBox;
 };
@@ -60,6 +61,7 @@ public:
     virtual bool canInteract(sf::Vector2f point) const;
     virtual Action interact(Monster &me);
     virtual ~Tapis();
+    virtual bool isObstacle();
 private:
     sf::FloatRect m_intHitBox;
     bool m_used;
