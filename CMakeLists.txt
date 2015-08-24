@@ -9,35 +9,33 @@ FIND_PACKAGE(SFML COMPONENTS audio graphics window system REQUIRED)
 
 SET(
     SRCS
-    src/main.cpp
-    src/menuelements.cpp
-    src/screenstack.cpp
-    src/gamescreenstate.cpp
-    src/menuscreenstate.cpp
-    src/scene.cpp
-    src/scenenode.cpp
-    src/spritescenenode.cpp
-    src/wallscenenode.cpp
-    src/sousmenu.cpp
-    src/messagebusqueue.cpp
-    src/jsoncpp.cpp
-    src/gameworld.cpp
-    src/lampes.cpp
-    src/meuble.cpp
+    src/collisionsolver.cpp
     src/entitypool.cpp
     src/entityscene.cpp
     src/entitysystem.cpp
-    src/messagebusqueue.cpp
+    src/gamescreenstate.cpp
+    src/gameworld.cpp
+    src/geometry.cpp
+    src/hero.cpp
     src/jsoncpp.cpp
-    src/collisionsolver.cpp
+    src/lamp.cpp
+    src/lampes.cpp
+    src/lighthandler.cpp
+    src/lightray.cpp
+    src/main.cpp
+    src/menuelements.cpp
+    src/menuscreenstate.cpp
+    src/messagebusqueue.cpp
+    src/meuble.cpp
     src/physicinstance.cpp
     src/physicbody.cpp
     src/physicgeom.cpp
-    src/hero.cpp
-    src/lamp.cpp
-    src/lighthandler.cpp
-    src/geometry.cpp
-    src/lightray.cpp
+    src/scene.cpp
+    src/scenenode.cpp
+    src/screenstack.cpp
+    src/sousmenu.cpp
+    src/spritescenenode.cpp
+    src/wallscenenode.cpp
 )
 
 ADD_EXECUTABLE(

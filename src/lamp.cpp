@@ -79,7 +79,7 @@ void Lamp::computeLight(std::vector<sf::Rect<float>> const& obstacles)
     for (auto& it : m_lightSegmentList)
     {
         m_lights.push_back(make_unique<LightRay>(segmentToTriangle(it)));
-        m_lights.back()->attachParent(this);
+        m_lights.back()->attachParent(*this);
     }
 }
 

@@ -17,10 +17,10 @@ void Scene::draw(sf::RenderTarget& target,sf::RenderStates states) const
 
 SceneNode& Scene::getRootNode() const
 {
-    return *m_sceneNode.get();
+    return (*m_sceneNode.get());
 }
 
-void getRenderQueue(SceneNode const& sn, std::multimap<int, SceneNode const*>& queue)
+void Scene::getRenderQueue(SceneNode const& sn, std::multimap<int, SceneNode const*>& queue) const
 {
     queue.insert(std::pair<int,SceneNode const*>(sn.getLayer(), &sn));
     std::vector<SceneNode*> const &children = sn.getChildren();
