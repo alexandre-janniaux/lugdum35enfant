@@ -1,9 +1,9 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 
-PROJECT(LD35)
-
+SET(PROJECT_ROOT ${CMAKE_SOURCE_DIR})
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 
+PROJECT(LD35)
 
 FIND_PACKAGE(SFML COMPONENTS audio graphics window system REQUIRED)
 
@@ -19,6 +19,7 @@ SET(
     src/sousmenu.cpp
     src/spritescenenode.cpp
     src/messagebusqueue.cpp
+    src/jsoncpp.cpp
 )
 
 ADD_EXECUTABLE(
