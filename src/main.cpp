@@ -94,10 +94,12 @@ int main(int argc, char** argv)
 		//menu_screen_state.render(window);
 	    window.draw(scene);
         //window.draw(shape1);
-        //window.draw(shape2);
+        //window.draw(shape2); pour dessiner les obstacles
+        /*
         std::vector<Segment> segmentlist=lamp.rectangleToSegments(sf::Rect<float>(300.f,380.f,20.f,50.f));
         for (auto& it : segmentlist)
             drawSegment(window,it);
+        */ //Pour dessiner les contours d'un rectangle
 	    window.display();
 		//screenStack.window_update(window);
 		screenStack.onUpdate(clock.getElapsedTime());
