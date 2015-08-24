@@ -19,7 +19,7 @@ public:
     void update(sf::Vector2f pos, bool lumiere); // On agit si on a dépassé
     void bruitEntendu(sf::Vector2f pos);
     void lumiereEteinte(sf::Vector2f point);
-    FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> &obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> &cachettes, std::vector<std::pair<sf::Vector2f, float>> &lampes, std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &interrupteurs);
+    FamilyMember(sf::Vector2f taille, std::vector<sf::FloatRect> &obstacles, std::vector<sf::Vector2f> reseau, IA_Type type, sf::Vector2f pos, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> &cachettes, std::vector<std::pair<sf::Vector2f, float>> &lampes, std::vector<std::pair<sf::FloatRect, sf::FloatRect>> &interrupteurs);
 //private:
     const float m_delta = 2.;
     const float m_norme_vitesse = 5.;
@@ -32,7 +32,7 @@ public:
     std::vector<sf::Vector2f> m_chemin_global;
     IA_Type m_type; // 1 : IA meuble, 2 : IA zone
     std::vector<std::pair<sf::Vector2f, float>> &m_lampes;
-    std::vector<std::pair<sf::Vector2f, sf::Vector2f>> &m_interrupteurs;
+    std::vector<std::pair<sf::FloatRect, sf::FloatRect>> &m_interrupteurs;
 
     sf::Vector2f m_vit;
     sf::Vector2f m_pos;
@@ -68,7 +68,7 @@ public:
     void rotater()
     {
         //SendMessage(SetEntityRotationMessage(m_entity, rot));
-        std::cout << "ROTATION"
+        std::cout << "ROTATION";
     }
     
     void interagir()

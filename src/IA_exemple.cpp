@@ -68,7 +68,7 @@ void IA_exemple(GameWorld &gw)
     }
     for (auto &mur: gw.m_murs)
     {
-        obstacles.push_back(mur->getRect());
+        obstacles.push_back(mur.getRect());
     }
     
     float pas = 10;
@@ -119,7 +119,7 @@ void IA_exemple(GameWorld &gw)
         cachettes.push_back(cachette);
     }
     auto lampes = std::vector<std::pair<sf::Vector2f, float>> {};
-    auto interrupteurs = std::vector<std::pair<sf::Vector2f, sf::Vector2f>> {};
+    auto interrupteurs = std::vector<std::pair<sf::FloatRect, sf::FloatRect>> {};
     
     FamilyMember papa (sf::Vector2f (carte.width, carte.height), obstacles, std::vector<sf::Vector2f> {}, MEUBLE, sf::Vector2f (100, 100), cachettes, lampes, interrupteurs);
 
