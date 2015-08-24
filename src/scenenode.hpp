@@ -12,6 +12,7 @@ class SceneNode: public sf::Drawable
 {
     public:
         SceneNode(int layer=0);
+        ~SceneNode();
         void detachParent();
         void attachParent(SceneNode*);
         const sf::Transform& getAbsoluteTransform() const;
@@ -21,9 +22,9 @@ class SceneNode: public sf::Drawable
         std::vector<SceneNode*> const& getChildren() const;
         void setPosition(sf::Vector2f const& pos);
         void move(sf::Vector2f const& mv);
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
         void compute() const;
         void invalidate() const;
 

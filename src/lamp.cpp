@@ -1,5 +1,6 @@
 #include "lamp.hpp"
-
+#include "cpp_std_11.hpp"
+#include <iostream>
 
 Lamp::Lamp(sf::Color color,float radius, float angleStart,float angleEnd)
 : m_color(color)
@@ -23,9 +24,10 @@ void Lamp::generateBaseRay()
 
 void Lamp::createRay(float angleStart, float angleEnd)
 {
+    sf::Vector2f _vec=getPosition();
     sf::Vector2f _pointA(cos(angleStart)*m_radius,sin(angleStart)*m_radius);
     sf::Vector2f _pointB(cos(angleEnd)*m_radius,sin(angleEnd)*m_radius);
-    m_lightSegmentList.push_back(Segment(_pointA,_pointB));
+    m_lightSegmentList.push_back(Segment(_pointA+_vec,_pointB+_vec));
 }
 
 std::vector<Segment> Lamp::rectangleToSegments(sf::Rect<float> const& rectangle)
@@ -59,7 +61,11 @@ void Lamp::computeLight(std::vector<sf::Rect<float>> const& obstacles)
             auto it=m_lightSegmentList.begin();
             while (it!=m_lightSegmentList.end())
             {
-                obstacleSegment.intersection_triangle(getTransform().transformPoint(sf::Vector2f(0.f,0.f)),*it,_newRays);
+                std::cout << "na";
+                getPosition();
+                std::cout << "th";
+                obstacleSegment.intersection_triangle(getPosition(),*it,_newRays);
+                std::cout << "ou : " << m_lightSegmentList.size() << std::endl;
                 *it=_newRays.back();
                 _newRays.pop_back();
                 while (!_newRays.empty())
@@ -71,17 +77,20 @@ void Lamp::computeLight(std::vector<sf::Rect<float>> const& obstacles)
             }
         }
     }
+    std::cout << "t : E" << std::endl;
+    m_lights.clear();
     m_children.clear();
     for (auto& it : m_lightSegmentList)
     {
-        LightRay(segmentToTriangle(it)).attachParent(this);
+        m_lights.push_back(make_unique<LightRay>(segmentToTriangle(it)));
+        m_lights.back()->attachParent(this);
     }
 }
 
 sf::ConvexShape Lamp::segmentToTriangle(Segment segment)
 {
     sf::ConvexShape triangle(3);
-    triangle.setPoint(0,getTransform().transformPoint(sf::Vector2f(0.f,0.f)));
+    triangle.setPoint(0,getPosition());
     triangle.setPoint(1,segment.p1);
     triangle.setPoint(2,segment.p2);
     triangle.setFillColor(m_color);

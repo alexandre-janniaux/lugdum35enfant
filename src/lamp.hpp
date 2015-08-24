@@ -4,6 +4,7 @@
 #include "geometry.hpp"
 #include "lightray.hpp"
 #include <cmath>
+#include <memory>
 
 
 namespace Math
@@ -29,11 +30,11 @@ class Lamp : public SceneNode
     private:
         bool m_computedLight;
         //static float distance(sf::Vector2f);
-        //std::vector<sf::ConvexShape> m_light;
+        std::vector<std::unique_ptr<LightRay>> m_lights;
         std::vector<Segment> m_lightSegmentList;
         sf::Color m_color;
         float m_radius;
         float m_angleStart; //m_angleStart < m_angleEnd in radian
         float m_angleEnd;   //for full circle m_angleStart=0, m_angleEnd=2*M_PI
-        static const constexpr float RAY_STEP = Math::PI/24.f;
+        static const constexpr float RAY_STEP = Math::PI/12.f;
 };

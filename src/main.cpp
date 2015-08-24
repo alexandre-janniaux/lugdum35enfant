@@ -24,11 +24,7 @@ int main()
     ParticleEmitter<SmokeShape> p(shape_ref, scene.getRootNode());
     p.setFrequency(60);
     p.setNumberOfParticles(60);
-<<<<<<< HEAD
     p.setNumberOfParticlesMax(100);
-=======
-	p.setNumberOfParticlesMax(100);
->>>>>>> erreurs en moins
     p.setPosition({400.f, 300.f});
     sf::RenderWindow window({800,600}, "toto");
 */
@@ -51,8 +47,14 @@ int main(int argc, char** argv)
 	screenStack.pushState(ScreenState::Menu);
 
 	Scene scene;
-	Lamp(sf::Color::Blue,10.f,0.f,6.f).attachParent(scene.getRootNode());
-
+	Lamp lamp(sf::Color::Blue,200.f,0.f,6.f);
+	lamp.setPosition(sf::Vector2f(250.f,350.f));
+	lamp.attachParent(&scene.getRootNode());
+	std::vector<sf::Rect<float>> obs;
+	obs.clear();
+	obs.push_back(sf::Rect<float>(200.f,300.f,20.f,20.f));
+	lamp.computeLight(obs);
+    std::cout << "ghjkl" << std::endl;
 	sf::Event event;
 	sf::Clock clock;
 
@@ -68,8 +70,8 @@ int main(int argc, char** argv)
 	    window.clear();
 	    screenStack.onDraw(window);
 		//menu_screen_state.render(window);
-	    window.display();
 	    window.draw(scene);
+	    window.display();
 		//screenStack.window_update(window);
 		screenStack.onUpdate(clock.getElapsedTime());
 		//menu_screen_state.update(clock.getElapsedTime());

@@ -1,4 +1,5 @@
 #include "scenenode.hpp"
+#include <iostream>
 
 SceneNode::SceneNode(int layer)
 : m_children()
@@ -8,6 +9,11 @@ SceneNode::SceneNode(int layer)
 , m_layer(layer)
 , m_computed(false)
 {
+}
+
+SceneNode::~SceneNode()
+{
+    detachParent();
 }
 
 void SceneNode::attachParent(SceneNode* ptrParent)
