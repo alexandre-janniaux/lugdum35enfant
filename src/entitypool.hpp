@@ -11,6 +11,8 @@ struct Entity
 
 	ID id;
 	EntityPool* pool;
+
+	bool operator<(const Entity& other) const;
 };
 
 class EntityPool
@@ -22,6 +24,10 @@ class EntityPool
 		Entity kill(const Entity& entity);
 
 	private:
+		friend class EntitySystem;
+		void registerSystem(EntitySystem* system, const Entity& entity);
+		void unregisterSystem(EntitySystem* system, const Entity& entity);
+
 		std::vector<std::vector<EntitySystem*>*> m_systems;
 		Entity::ID m_currentID = 1;
 

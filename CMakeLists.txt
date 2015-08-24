@@ -25,6 +25,8 @@ SET(
     src/lampes.cpp
     src/meuble.cpp
     src/entitypool.cpp
+    src/entityscene.cpp
+    src/entitysystem.cpp
 )
 
 ADD_EXECUTABLE(
