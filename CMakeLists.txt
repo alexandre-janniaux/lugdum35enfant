@@ -9,6 +9,9 @@ FIND_PACKAGE(SFML COMPONENTS audio graphics window system REQUIRED)
 
 SET(
     SRCS
+    src/animationcomponent.cpp
+    src/animationgroup.cpp
+    src/animationservice.cpp
     src/collisionsolver.cpp
     src/entitypool.cpp
     src/entityscene.cpp
@@ -34,6 +37,7 @@ SET(
     src/scene.cpp
     src/scenenode.cpp
     src/screenstack.cpp
+    src/simpleanimation.cpp
     src/sousmenu.cpp
     src/soundservice.cpp
     src/spritescenenode.cpp
