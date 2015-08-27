@@ -116,6 +116,7 @@ void FamilyMember::update(sf::Vector2f pos, bool lumiere)
     sf::Vector2f vecteur = m_pos - m_point_cible;
     if (vecteur.x * m_vit.x + vecteur.y * m_vit.y >= 0)
     {
+        log("OK");
         agir();
     }
     log("Update : fin");
@@ -124,7 +125,9 @@ void FamilyMember::update(sf::Vector2f pos, bool lumiere)
 void FamilyMember::allerAuPoint(sf::Vector2f pos)
 {
     log("Aller au point");
-    if (distance_entre(pos, m_pos) > m_delta)
+    
+    
+     if (distance_entre(pos, m_pos) > m_delta)
     {
         sf::Vector2f vitesse = pos - m_pos;
         vitesse = vitesse / (vitesse.x * vitesse.x + vitesse.y * vitesse.y); // Vitesse normée
@@ -132,6 +135,12 @@ void FamilyMember::allerAuPoint(sf::Vector2f pos)
         setVitesse(vitesse);
         m_point_cible = pos;
     }
+
+    /*
+    m_pos = pos;
+    m_point_cible = pos;
+    printer(pos);
+    */
     log("Aller au point : fin");
 }
 
@@ -201,9 +210,12 @@ void FamilyMember::lumiereEteinte(sf::Vector2f point)
             id = k;
         }
     }
+    if (id != -1)
+    {
+        auto pos = point_centre(m_interrupteurs[id].first, m_interrupteurs[id].second, m_obstacles);
+        lancerTrajetSpecial(pos, LUMIERE);
+    }
     
-    auto pos = point_centre(m_interrupteurs[id].first, m_interrupteurs[id].second, m_obstacles);
-    lancerTrajetSpecial(pos, LUMIERE);
     log("Lumière éteinte : fin");
 }
 
@@ -211,16 +223,18 @@ void FamilyMember::rentrerDansLeRang()
 {
     log("Rentrer dans le rang");
     m_mode_actuel = NORMAL;
-    int id_best {1};
-    for (int k {1}; k < m_chemin_special.size(); k++)
+    int id_best {0};
+    for (int k {1}; k < m_chemin_global.size(); k++)
     {
-        if (distance_entre(m_pos, m_chemin_special[k]) < distance_entre(m_pos, m_chemin_special[id_best]))
+        if (distance_entre(m_pos, m_chemin_global[k]) < distance_entre(m_pos, m_chemin_global[id_best]))
         {
             id_best = k;
         }
     }
-    m_id_point_actuel = id_best - 1;
-    allerAuPoint(m_chemin_special[id_best]);
+    std::cout << "AU FINAL : " << distance_entre(m_pos, m_chemin_global[id_best]) << " et " << distance_entre(m_pos, m_chemin_global[0]);
+    printer(m_pos);
+    m_id_point_actuel = id_best;
+    log(std::to_string(id_best));
     log("Rentrer dans le rang : fin");
 }
 
@@ -229,8 +243,10 @@ void FamilyMember::agir()
     log("Agir");
     if (m_mode_actuel != NORMAL)
     {
-        if (m_id_point_actuel < m_chemin_special.size())
+        log("Pas normal");
+        if (m_id_point_actuel + 1 < m_chemin_special.size())
         {
+            printer(m_chemin_special);
             m_id_point_actuel++;
             allerAuPoint(m_chemin_special[m_id_point_actuel]);
         }
@@ -248,12 +264,14 @@ void FamilyMember::agir()
             }
             else if (m_mode_actuel == RETOUR)
             {
+                log("HEIN HEIN");
                 rentrerDansLeRang();
             }
         }
     }
     else
     {
+        log("WHAT ?!");
         // On est sur m_point_cible
         
         // Erreur ?
@@ -288,15 +306,19 @@ void FamilyMember::agir()
             {
                 id++;
             }
+            log(std::to_string(id));
             m_cible = m_reseau[id];
+        }
+        // Continuer !
+        if (m_id_point_actuel + 1 < m_chemin_global.size()) {
+            m_id_point_actuel++;
         }
         else
         {
-            // Continuer !
-            
-            m_id_point_actuel++;
-            allerAuPoint(m_chemin_special[m_id_point_actuel]);
+            m_id_point_actuel = 0;
         }
+        log("m_id_point_actuel" + std::to_string(m_id_point_actuel));
+        allerAuPoint(m_chemin_global[m_id_point_actuel]);
     }
     log("Agir : fin");
 }
