@@ -7,6 +7,8 @@
 #include <map>
 #include <utility>
 
+#include "linkedsmartbufferlist.hpp"
+
 template <typename T>
 class MessageBusProxy;
 
@@ -31,12 +33,14 @@ class MessageBus {
 		MessageType* next(MessageBusProxy<MessageType>* proxy);
 
 	private:
-		using MessageQueue = std::vector<MessageType>;
+		using MessageQueue = LinkedSmartBufferList<MessageType>;
 		using MessageCursor = std::size_t;
 		friend class MessageBusProxy<MessageType>;
 
 		void registerProxy(MessageBusProxy<MessageType>* proxy);
 		void unregisterProxy(MessageBusProxy<MessageType>* proxy);
+		
+		void tryCleanup();
 		
 		MessageQueue m_messages;
 		std::map<MessageBusProxy<MessageType>*, MessageCursor> m_proxys;
@@ -69,7 +73,6 @@ MessageBus<MessageType>* MessageBus<MessageType>::getBus()
 
 template <typename MessageType>
 void MessageBus<MessageType>::registerProxy(MessageBusProxy<MessageType>* proxy) {
-	auto cursor = m_messages.begin();
 	m_proxys.emplace(proxy, m_messages.size());
 }
 
@@ -90,11 +93,37 @@ MessageType* MessageBus<MessageType>::next(MessageBusProxy<MessageType>* proxy) 
 	auto& cursor = m_proxys.at(proxy);
 	if (cursor == m_messages.size())
 		return nullptr;
+	
+	tryCleanup();
+	
 	return &m_messages.at(cursor++);
 }
 
+
+template <typename MessageType>
+void MessageBus<MessageType>::tryCleanup() 
+{
+	std::size_t min_index = 0;
+	for(auto& pair : m_proxys)
+	{
+		min_index = std::min(pair.second,min_index);
+	}
+	
+	if (min_index > m_messages.buffer_size())
+	{
+		for(auto& pair : m_proxys)
+		{
+			pair.second -= m_messages.buffer_size();
+		}
+	}
+}
+
+
 template <typename MessageType>
 std::unique_ptr<MessageBus<MessageType>> MessageBus<MessageType>::m_bus = nullptr;
+
+
+
 
 template <typename MessageType>
 void SendMessage(const MessageType& message) {
