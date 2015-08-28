@@ -11,6 +11,7 @@ class AnimationService : public Singleton<AnimationService>
 {
     public:
         void open(int id,std::string fileName);
+        void play(int id,std::string animationName);
         void setRootNode(SceneNode&);
         void update(float);
 

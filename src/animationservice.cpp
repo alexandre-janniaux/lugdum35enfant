@@ -73,3 +73,14 @@ SpriteSceneNode* AnimationService::findSpriteSceneNode(int value)
         return sprite;
     }
 }
+
+void AnimationService::play(int id,std::string animationName)
+{
+    auto it = m_animationComponents.find(id);
+    if(it==m_animationComponents.end())
+    {
+        std::cout << "Error : Couldn't play animation (No animation loaded)" << std::endl;
+        return;
+    }
+    it->second.play(animationName);
+}

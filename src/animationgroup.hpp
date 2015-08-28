@@ -9,11 +9,10 @@ class AnimationGroup
 {
     public:
         void addAnimation(std::string,std::unique_ptr<Animation>);
-        std::string getName();
         void update(float);
-
+        void start();
+        void stop();
 
     private:
-        std::string m_name;
         std::map<std::string,std::unique_ptr<Animation>> m_animations;
 };

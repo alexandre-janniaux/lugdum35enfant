@@ -12,16 +12,31 @@ SimpleAnimation::SimpleAnimation(Json::Value animationJson,SpriteSceneNode* spri
     {
         addFrame(path+animationJson["images"][i].asString());
     }
+}
+
+void SimpleAnimation::start()
+{
     m_curFrame=m_frames.begin();
+    m_sprite->setVisible(true);
+    m_playing=true;
+}
+
+void SimpleAnimation::stop()
+{
+    m_sprite->setVisible(false);
+    m_playing=false;
 }
 
 void SimpleAnimation::update(float dt)
 {
-    m_curTime-=dt;
-    while (m_curTime<=0)
+    if(m_playing)
     {
-        m_curTime+=m_timePerFrame;
-        next();
+        m_curTime-=dt;
+        while (m_curTime<=0)
+        {
+            m_curTime+=m_timePerFrame;
+            next();
+        }
     }
 }
 

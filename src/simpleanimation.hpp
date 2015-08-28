@@ -15,6 +15,9 @@ class SimpleAnimation : public Animation
         void setLoop(bool);
         void setSprite(SpriteSceneNode*);
 
+        void start() override;
+        void stop() override;
+
     private:
         void next();
 

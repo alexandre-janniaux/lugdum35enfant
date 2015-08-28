@@ -9,6 +9,7 @@ FIND_PACKAGE(SFML COMPONENTS audio graphics window system REQUIRED)
 
 SET(
     SRCS
+    src/animation.cpp
     src/animationcomponent.cpp
     src/animationgroup.cpp
     src/animationservice.cpp

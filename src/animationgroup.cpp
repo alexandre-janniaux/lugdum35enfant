@@ -13,7 +13,18 @@ void AnimationGroup::update(float dt)
     }
 }
 
-std::string AnimationGroup::getName()
+void AnimationGroup::start()
 {
-    return m_name;
+    for(auto& animation : m_animations)
+    {
+        animation.second->start();
+    }
+}
+
+void AnimationGroup::stop()
+{
+    for(auto& animation : m_animations)
+    {
+        animation.second->stop();
+    }
 }

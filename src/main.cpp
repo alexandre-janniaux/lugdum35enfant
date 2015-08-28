@@ -31,6 +31,7 @@ int main(int argc, char** argv)
     AnimationService* animationservice = AnimationService::instance();
     animationservice->setRootNode(scene.getRootNode());
     animationservice->open(0,"ani.txt");
+    animationservice->play(0,"fast");
 
 	screenStack.pushState(ScreenState::Menu);
 	sf::Event event;

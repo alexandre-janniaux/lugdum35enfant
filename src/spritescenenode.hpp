@@ -14,12 +14,14 @@ class SpriteSceneNode : public SceneNode
         void setTexture(const sf::Texture& texture);
 		void setSprite(const sf::Sprite& sprite);
 		const sf::Sprite& getSprite() const;
+		void setVisible(bool);
 
     protected:
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
         sf::Sprite m_sprite;
+        bool m_visible;
 };
 
 #endif

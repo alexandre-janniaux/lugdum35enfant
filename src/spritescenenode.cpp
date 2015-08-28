@@ -1,11 +1,12 @@
 #include "spritescenenode.hpp"
 #include <iostream>
 
-SpriteSceneNode::SpriteSceneNode(int layer): SceneNode(layer)
+SpriteSceneNode::SpriteSceneNode(int layer)
+: SceneNode(layer)
+, m_visible(true)
 {
 
 }
-
 
 void SpriteSceneNode::setTexture(const sf::Texture& texture)
 {
@@ -22,13 +23,18 @@ const sf::Sprite& SpriteSceneNode::getSprite() const
 	return m_sprite;
 }
 
-
-
 void SpriteSceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    states.transform *= getAbsoluteTransform();
-    target.draw(m_sprite, states);
-
+    if(m_visible)
+    {
+        states.transform *= getAbsoluteTransform();
+        target.draw(m_sprite, states);
+    }
     //target.draw(sf::CircleShape(49), states);
 
+}
+
+void SpriteSceneNode::setVisible(bool visible)
+{
+    m_visible=visible;
 }

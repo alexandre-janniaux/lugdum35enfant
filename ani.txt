@@ -2,7 +2,7 @@
 	"animations" : 
 	[
 		{
-			"name" : "left",
+			"name" : "slow",
 			"content" :
 			[
 				{
@@ -11,6 +11,21 @@
 					"path" : "test/",
 					"images" : ["test1.png","test2.png","test3.png"],
 					"time" : 0.5,
+					"loop" : true,
+					"node" : 1
+				}
+			]
+		},
+		{
+			"name" : "fast",
+			"content" :
+			[
+				{
+					"name" : "main",
+					"type" : "simple",
+					"path" : "test/",
+					"images" : ["test1.png","test2.png","test3.png"],
+					"time" : 0.1,
 					"loop" : true,
 					"node" : 1
 				}
