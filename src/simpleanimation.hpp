@@ -3,14 +3,17 @@
 #include <string>
 #include "spritescenenode.hpp"
 #include "animation.hpp"
+#include "json/json.h"
 
 class SimpleAnimation : public Animation
 {
     public:
+        SimpleAnimation(Json::Value,SpriteSceneNode* sprite=nullptr);
         void update(float) override;
         void addFrame(std::string);
         void setFrameTime(float);
         void setLoop(bool);
+        void setSprite(SpriteSceneNode*);
 
     private:
         void next();

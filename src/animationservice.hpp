@@ -11,11 +11,15 @@ class AnimationService : public Singleton<AnimationService>
 {
     public:
         void open(int id,std::string fileName);
+        void setRootNode(SceneNode&);
+        void update(float);
 
     private:
-        std::unique_ptr<AnimationGroup> getGroupJson(Json::Value animationGroupJson,std::string path);
-        std::unique_ptr<Animation> getAnimationJson(Json::Value animationJson, std::string path);
+        SpriteSceneNode* findSpriteSceneNode(int);
+        std::unique_ptr<AnimationGroup> getGroupJson(Json::Value animationGroupJson);
+        std::unique_ptr<Animation> getAnimationJson(Json::Value animationJson);
 
     private:
         std::map<int,AnimationComponent> m_animationComponents;
+        static SceneNode* m_rootNode;
 };

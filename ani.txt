@@ -1,0 +1,20 @@
+{
+	"animations" : 
+	[
+		{
+			"name" : "left",
+			"content" :
+			[
+				{
+					"name" : "main",
+					"type" : "simple",
+					"path" : "test/",
+					"images" : ["test1.png","test2.png","test3.png"],
+					"time" : 0.5,
+					"loop" : true,
+					"node" : 1
+				}
+			]
+		}
+	]
+}

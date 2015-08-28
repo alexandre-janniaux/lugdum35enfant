@@ -7,9 +7,9 @@
 #include "screenstack.hpp"
 #include "resourcemanager.hpp"
 #include "messagebusproxy.hpp"
-#include "gameworld.hpp" 
-#include "scene.hpp" 
-
+#include "gameworld.hpp"
+#include "scene.hpp"
+#include "animationservice.hpp"
 
 int main(int argc, char** argv)
 {
@@ -22,11 +22,16 @@ int main(int argc, char** argv)
 	window.create(window_mode, window_title);
 	window.setFramerateLimit(60);
 
-	
+
 	ScreenStack screenStack;
 	screenStack.registerState(ScreenState::Menu, make_unique<MenuScreenState>());
 	screenStack.registerState(ScreenState::Game, make_unique<GameScreenState>());
-	
+
+	Scene scene;
+    AnimationService* animationservice = AnimationService::instance();
+    animationservice->setRootNode(scene.getRootNode());
+    animationservice->open(0,"ani.txt");
+
 	screenStack.pushState(ScreenState::Menu);
 	sf::Event event;
 	sf::Clock clock;
@@ -46,10 +51,12 @@ int main(int argc, char** argv)
         window.clear();
         screenStack.onDraw(window);
 
+        window.draw(scene);
         window.display();
+        animationservice->update(1.f/60.f);
         screenStack.onUpdate(clock.getElapsedTime());
         clock.restart();
-		
+
 		quitMessageBus.readAll();
 	}
 }

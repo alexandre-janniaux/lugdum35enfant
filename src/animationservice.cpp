@@ -3,6 +3,13 @@
 #include <iostream>
 #include "simpleanimation.hpp"
 
+SceneNode* AnimationService::m_rootNode=nullptr;
+
+void AnimationService::setRootNode(SceneNode& sceneNode)
+{
+    m_rootNode=&sceneNode;
+}
+
 void AnimationService::open(int id,std::string fileName)
 {
     AnimationComponent component;
@@ -21,38 +28,48 @@ void AnimationService::open(int id,std::string fileName)
         std::cout << "Error while reading animation file:\n" << reader.getFormattedErrorMessages();
         return;
     }
-    std::string _path=root["path"].asString();
     Json::Value _animations=root["animations"];
     for (int i(0);i<_animations.size();i++)
     {
-        component.addGroup(_animations[i]["name"].asString(),getGroupJson(_animations[i]["content"],_path));
+        component.addGroup(_animations[i]["name"].asString(),getGroupJson(_animations[i]["content"]));
     }
     m_animationComponents.emplace(id,std::move(component));
 }
 
-std::unique_ptr<AnimationGroup> AnimationService::getGroupJson(Json::Value animationGroupJson,std::string path)
+std::unique_ptr<AnimationGroup> AnimationService::getGroupJson(Json::Value animationGroupJson)
 {
     std::unique_ptr<AnimationGroup> _animationGroup (new AnimationGroup);
-    //std::string _path=animationGroupJson["path"]
     for (int i(0);i<animationGroupJson.size();i++)
     {
-        _animationGroup->addAnimation(animationGroupJson[i]["name"].asString(),getAnimationJson(animationGroupJson[i],path));
+        _animationGroup->addAnimation(animationGroupJson[i]["name"].asString(),getAnimationJson(animationGroupJson[i]));
     }
     return std::move(_animationGroup);
 }
 
-std::unique_ptr<Animation> AnimationService::getAnimationJson(Json::Value animationJson, std::string path)
+std::unique_ptr<Animation> AnimationService::getAnimationJson(Json::Value animationJson)
 {
     std::string _type=animationJson["type"].asString();
     if(_type=="simple")
     {
-        std::unique_ptr<SimpleAnimation> animation (new SimpleAnimation);
-        for (int i(0);i<animationJson["images"].size();i++)
-        {
-            animation->addFrame(path+animationJson["images"][i].asString());
-        }
-        animation->setFrameTime(animationJson["time"].asDouble());
-        animation->setLoop(animationJson["loop"].asBool());
+        std::unique_ptr<SimpleAnimation> animation (new SimpleAnimation(animationJson,findSpriteSceneNode(animationJson["node"].asInt())));
         return std::move(animation);
+    }
+}
+
+void AnimationService::update(float dt)
+{
+    for (auto& it : m_animationComponents)
+    {
+        it.second.update(dt);
+    }
+}
+
+SpriteSceneNode* AnimationService::findSpriteSceneNode(int value)
+{
+    if (value==1)
+    {
+        SpriteSceneNode* sprite (new SpriteSceneNode(0));
+        sprite->attachParent(*m_rootNode);
+        return sprite;
     }
 }
