@@ -1,7 +1,7 @@
 #pragma once
-#include "animationcomponent.hpp"
-#include "animationgroup.hpp"
-#include "animation.hpp"
+#include "animations/animationcomponent.hpp"
+#include "animations/animationgroup.hpp"
+#include "animations/animation.hpp"
 #include "singleton.hpp"
 #include "json/json.h"
 #include <string>

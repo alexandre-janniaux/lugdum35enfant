@@ -1,7 +1,7 @@
 #include "animationservice.hpp"
 #include <fstream>
 #include <iostream>
-#include "simpleanimation.hpp"
+#include "animations/simpleanimation.hpp"
 
 SceneNode* AnimationService::m_rootNode=nullptr;
 

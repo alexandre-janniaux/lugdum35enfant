@@ -1,5 +1,5 @@
 #pragma once
-#include "spritescenenode.hpp"
+#include "../spritescenenode.hpp"
 
 class Animation
 {

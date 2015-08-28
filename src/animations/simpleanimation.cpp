@@ -1,5 +1,5 @@
 #include "simpleanimation.hpp"
-#include "resourcemanager.hpp"
+#include "../resourcemanager.hpp"
 #include <iostream>
 
 SimpleAnimation::SimpleAnimation(Json::Value animationJson,SpriteSceneNode* sprite)

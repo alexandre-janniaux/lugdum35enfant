@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "spritescenenode.hpp"
+#include "../spritescenenode.hpp"
 #include "animation.hpp"
-#include "json/json.h"
+#include "../json/json.h"
 
 class SimpleAnimation : public Animation
 {
