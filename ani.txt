@@ -1,4 +1,16 @@
 {
+	"nodes" :
+	[
+		{
+			"name" : 1,
+			"from" : 0,
+			"create" : true,
+			"sprite" : true,
+			"layer" : 0
+		}
+
+	],
+
 	"animations" : 
 	[
 		{
@@ -27,6 +39,14 @@
 					"images" : ["test1.png","test2.png","test3.png"],
 					"time" : 0.1,
 					"loop" : true,
+					"node" : 1
+				},
+				{
+					"name" : "shake",
+					"type" : "shake",
+					"amplitude" : 200,
+					"soft" : 0.9,
+					"time" : 0.1,
 					"node" : 1
 				}
 			]

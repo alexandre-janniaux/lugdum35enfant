@@ -16,11 +16,17 @@ class AnimationService : public Singleton<AnimationService>
         void update(float);
 
     private:
-        SpriteSceneNode* findSpriteSceneNode(int);
         std::unique_ptr<AnimationGroup> getGroupJson(Json::Value animationGroupJson);
         std::unique_ptr<Animation> getAnimationJson(Json::Value animationJson);
 
     private:
         std::map<int,AnimationComponent> m_animationComponents;
         static SceneNode* m_rootNode;
+
+        //Awful, has to change :
+        void makeNodeMap(Json::Value);
+        SpriteSceneNode* findSpriteSceneNode(int);
+        SceneNode* findSceneNode(int);
+        std::map<int,SceneNode*> m_nodeMap;
+        std::map<int,SpriteSceneNode*> m_spriteNodeMap;
 };

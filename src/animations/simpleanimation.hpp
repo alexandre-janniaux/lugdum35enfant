@@ -9,12 +9,12 @@ class SimpleAnimation : public Animation
 {
     public:
         SimpleAnimation(Json::Value,SpriteSceneNode* sprite=nullptr);
-        void update(float) override;
         void addFrame(std::string);
         void setFrameTime(float);
         void setLoop(bool);
         void setSprite(SpriteSceneNode*);
 
+        void update(float) override;
         void start() override;
         void stop() override;
 

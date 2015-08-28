@@ -50,6 +50,7 @@ SET(
     src/animations/animationcomponent.cpp
     src/animations/animationgroup.cpp
     src/animations/simpleanimation.cpp
+    src/animations/shakinganimation.cpp
 )
 
 ADD_EXECUTABLE(

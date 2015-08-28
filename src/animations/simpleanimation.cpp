@@ -6,6 +6,7 @@ SimpleAnimation::SimpleAnimation(Json::Value animationJson,SpriteSceneNode* spri
 : m_loop(animationJson["loop"].asBool())
 , m_timePerFrame(animationJson["time"].asDouble())
 , m_sprite(sprite)
+, Animation()
 {
     std::string path = animationJson["path"].asString();
     for (int i(0);i<animationJson["images"].size();i++)
@@ -17,6 +18,9 @@ SimpleAnimation::SimpleAnimation(Json::Value animationJson,SpriteSceneNode* spri
 void SimpleAnimation::start()
 {
     m_curFrame=m_frames.begin();
+    TextureManager* textures = TextureManager::instance();
+    m_sprite->setTexture(textures->get(*m_curFrame));
+    m_curTime=m_timePerFrame;
     m_sprite->setVisible(true);
     m_playing=true;
 }
